@@ -15,6 +15,10 @@ class ADIS16448Protocol {
         static final IMURegister SENS_AVG = new IMURegister(0x38);
         static final IMURegister MSC_CTRL = new IMURegister(0x34);
         static final IMURegister PROD_ID = new IMURegister(0x56);
+        static final IMURegister XGYRO_OFF = new IMURegister(0x1A);
+        static final IMURegister YGYRO_OFF = new IMURegister(0x1C);
+        static final IMURegister ZGYRO_OFF = new IMURegister(0x1E);
+
     }
 
     private static class Constants {
@@ -27,6 +31,10 @@ class ADIS16448Protocol {
     // TODO: what is the global command doing?
     private static final byte[] globalCommand = {0x08, 0};
     private ConstantBufferSPI spi;
+
+    public double angularDriftX = 0;
+    public double angularDriftY = 0;
+    public double angularDriftZ = 0;
 
     public ADIS16448Protocol() {
         spi = new ConstantBufferSPI(SPI.Port.kMXP, 26);
@@ -44,6 +52,10 @@ class ADIS16448Protocol {
         Registers.SMPL_PRD.write(769, spi); // TODO: Magic Number
         Registers.MSC_CTRL.write(4, spi); // TODO: Magic Number
         Registers.SENS_AVG.write(1030, spi); // TODO: Magic Number
+
+        //angularDriftX = getGyroRegister(new byte[]{ , 0 }) * Constants.DegreePerSecondPerLSB;
+        //angularDriftY = getGyroRegister(new byte[]{ , 0 }) * Constants.DegreePerSecondPerLSB;
+        //angularDriftZ = getGyroRegister(new byte[]{ , 0 }) * Constants.DegreePerSecondPerLSB;
     }
 
     private short getGyroRegister(byte[] outData) {
@@ -59,9 +71,9 @@ class ADIS16448Protocol {
      */
     public IMUValue currentData() {
         Value3D gyro = new Value3D(
-            getGyroRegister(new byte[]{ 0x04, 0 }) * Constants.DegreePerSecondPerLSB,
-            getGyroRegister(new byte[]{ 0x06, 0 }) * Constants.DegreePerSecondPerLSB,
-            getGyroRegister(new byte[]{ 0x08, 0 }) * Constants.DegreePerSecondPerLSB
+                getGyroRegister(new byte[]{ 0x04, 0 }) * Constants.DegreePerSecondPerLSB,
+                getGyroRegister(new byte[]{ 0x06, 0 }) * Constants.DegreePerSecondPerLSB,
+                getGyroRegister(new byte[]{ 0x08, 0 }) * Constants.DegreePerSecondPerLSB
         );
 
         // TODO: kalman calculation?
