@@ -29,6 +29,7 @@ import com.lynbrookrobotics.sixteen.tasks.intake.roller.DirectIntakeRollerSpeed;
 import com.lynbrookrobotics.sixteen.tasks.shooter.ShooterTasks;
 import com.lynbrookrobotics.sixteen.tasks.shooter.arm.DirectShooterArmSpeed;
 import com.lynbrookrobotics.sixteen.tasks.shooter.arm.MoveShooterArmToAngle;
+import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.flywheel.CollectMinMax;
 import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.flywheel.DirectFlywheelSpeed;
 import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.secondary.SpinSecondary;
 import com.ni.vision.NIVision;
@@ -233,6 +234,15 @@ public class CoreEvents {
               shooterArm,
               intakeArm,
               hardware));
+
+      controls.operatorStick
+          .onHold(OperatorButtonAssignments.SHOOT_LONG)
+          .forEach(ShooterTasks.shootFar(
+              shooterFlywheel,
+              shooterSecondary,
+              shooterArm,
+              intakeArm,
+              hardware));
     }
 
     if (RobotConstants.HAS_INTAKE) {
@@ -258,9 +268,13 @@ public class CoreEvents {
               hardware
           ));
 
-      controls.operatorStick
-          .onHold(OperatorButtonAssignments.POP_OUT)
-          .forEach(IntakeTasks.popOut(intakeArm, intakeRoller, controls));
+      controls.driverStick
+          .onHold(14)
+          .forEach(new CollectMinMax(hardware));
+
+//      controls.operatorStick
+//          .onHold(OperatorButtonAssignments.POP_OUT)
+//          .forEach(IntakeTasks.popOut(intakeArm, intakeRoller, controls));
     }
 
     if (RobotConstants.HAS_INTAKE && RobotConstants.HAS_SHOOTER) {
@@ -403,7 +417,7 @@ public class CoreEvents {
           dashboard.datasetGroup("shooter")
               .addDataset((new TimeSeriesNumeric<>(
                   "Flywheel RPM",
-                  () -> 60 / hardware.shooterSpinnersHardware.hallEffect.getPeriod())));
+                  hardware.shooterSpinnersHardware.hallEffect::rawOutput)));
 
           dashboard.datasetGroup("shooter")
               .addDataset(new TimeSeriesNumeric<>(

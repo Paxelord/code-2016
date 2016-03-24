@@ -31,10 +31,7 @@ public class HallEffect extends Counter {
     setUpSource(source);
   }
 
-  /**
-   * Gets the RPM measured by the sensor.
-   */
-  public double getRPM() {
+  private void update() {
     double reported = 60 / getPeriod();
     if (getStopped()) {
       reported = 0;
@@ -45,6 +42,20 @@ public class HallEffect extends Counter {
     }
 
     averageRPM = (averageRPM * memory) + (curRPM * (1D - memory));
+  }
+
+  public double rawOutput() {
+    update();
+
+    return curRPM;
+  }
+
+  /**
+   * Gets the RPM measured by the sensor.
+   */
+  public double getRPM() {
+    update();
+
     return averageRPM;
   }
 }

@@ -28,7 +28,7 @@ public class CollectMinMax extends ContinuousTask {
 
   @Override
   protected void update() {
-    double currentRPM = hardware.shooterSpinnersHardware.hallEffect.getRPM();
+    double currentRPM = hardware.shooterSpinnersHardware.hallEffect.rawOutput();
 
     min = Math.min(min, currentRPM);
     max = Math.max(min, currentRPM);
@@ -36,6 +36,6 @@ public class CollectMinMax extends ContinuousTask {
 
   @Override
   protected void endTask() {
-    logger.info("Shot flywheel speeds: max - %.2f, min - %.2f", max, min);
+    logger.info(String.format("Shot flywheel speeds: max - %.2f, min - %.2f", max, min));
   }
 }

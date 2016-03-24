@@ -6,6 +6,7 @@ public class OperatorButtonAssignments {
 
   public static final int PREPARE_SHOOT = 7; // left side
   public static final int SHOOT_HIGH = 2; // middle center
+  public static final int SHOOT_LONG = 4; // right
   public static final int SHOOT_LOW = 3; // left center, use joystick on start for speed
 
   public static final int TRANSPORT_POSITION = 8; // left

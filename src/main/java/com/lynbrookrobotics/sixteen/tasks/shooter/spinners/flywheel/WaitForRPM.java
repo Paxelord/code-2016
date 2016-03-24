@@ -32,7 +32,7 @@ public class WaitForRPM extends FiniteTask {
       hardware.shooterSpinnersHardware.hallEffect.markNotWorking();
     }
 
-    double error = Math.abs( - targetRPM);
+    double error = Math.abs(curRPM - targetRPM);
 
     if (error <= THRESHOLD_RPM) {
       finished();

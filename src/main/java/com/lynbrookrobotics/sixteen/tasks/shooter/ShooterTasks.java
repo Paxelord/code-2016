@@ -78,10 +78,10 @@ public class ShooterTasks {
           ShooterConstants.BALL_PROXIMITY_THRESHOLD,
           shooterSecondary,
           hardware
-        ).then(new FixedTime(1000).andUntilDone(new SpinSecondary(
+        )).then(new FixedTime(1000).andUntilDone(new SpinSecondary(
             () -> ShooterFlywheelConstants.SHOOT_SECONDARY_POWER,
             shooterSecondary
-        ))).andUntilDone(new CollectMinMax(hardware)));
+        )));
 
     return withoutFlywheel.andUntilDone(new SpinFlywheelAtRPM(
         true,
@@ -91,6 +91,43 @@ public class ShooterTasks {
     )).andUntilDone(new KeepIntakeArmAtAngle(
         IntakeArmConstants.SHOOT_HIGH_SETPOINT,
         intakeArm,
+        hardware
+    ));
+  }
+
+  /**
+   * Shooting long task.
+   * @param shooterFlywheel Flywheel component
+   * @param shooterSecondary Secondary wheel component
+   * @param hardware Robot Hardware
+   * @return FiniteTask for shooting
+   */
+  public static FiniteTask shootFar(ShooterFlywheel shooterFlywheel,
+                                     ShooterSecondary shooterSecondary,
+                                     ShooterArm shooterArm,
+                                     IntakeArm intakeArm,
+                                     RobotHardware hardware) {
+    FiniteTask withoutFlywheel =
+        (new WaitForRPM(ShooterFlywheelConstants.SHOOT_RPM, hardware)
+            .and(new MoveShooterArmToAngle(
+                ShooterArmConstants.SHOOT_FAR,
+                hardware,
+                shooterArm
+            ))
+        ).then(new SpinSecondaryNoBall(
+            ShooterFlywheelConstants.SHOOT_SECONDARY_POWER,
+            ShooterConstants.BALL_PROXIMITY_THRESHOLD,
+            shooterSecondary,
+            hardware
+        ).then(new FixedTime(1000).andUntilDone(new SpinSecondary(
+            () -> ShooterFlywheelConstants.SHOOT_SECONDARY_POWER,
+            shooterSecondary
+        ))).andUntilDone(new CollectMinMax(hardware)));
+
+    return withoutFlywheel.andUntilDone(new SpinFlywheelAtRPM(
+        true,
+        ShooterFlywheelConstants.SHOOT_RPM,
+        shooterFlywheel,
         hardware
     ));
   }

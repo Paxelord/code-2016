@@ -18,13 +18,14 @@ public class ShooterArmConstants {
 
   @ConfigLoaded public static final double MAX_SPEED = config();
 
-  public static final double P_GAIN = 1.2 / 90D;
+  public static final double P_GAIN = 1.0 / 45D;
 
   public static final double I_GAIN = 0.0d;
   public static final int I_MEMORY = 1;
-  public static final int SHOOTER_ARM_ERROR = 5;
+  public static final int SHOOTER_ARM_ERROR = 2;
 
   public static final double SHOOT_ANGLE = REVERSE_LIMIT;
+  @ConfigLoaded public static final double SHOOT_FAR = config();
 
   public static final double STOWED_SETPOINT = FORWARD_LIMIT - 2;
 
