@@ -17,6 +17,8 @@ public class DrivetrainConstants {
 
   @ConfigLoaded public static final double MAX_ROTATIONAL_SPEED = config();
 
+  public static final double CURRENT_LIMIT_PERCENT = 0.5;
+
   public static final double SPY_TO_SHOOT =
       (100 - ShootingPositionConstants.DISTANCE_WHEEL_BOTTOM) / 12D;
   public static final double DEFENSE_RAMP_DISTANCE = 23 / 12D;
