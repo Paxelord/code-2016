@@ -6,7 +6,7 @@ import com.lynbrookrobotics.sixteen.control.pid.PID;
 
 import java.util.Optional;
 
-public abstract class ClosedTankDriveController extends DrivetrainController {
+public abstract class ClosedTankDriveController extends DitheredTankDriveController {
   private final PID leftPID;
   private final PID rightPID;
 
@@ -14,6 +14,8 @@ public abstract class ClosedTankDriveController extends DrivetrainController {
    * Constructs a drivetrain controller that runs closed loop on each side.
    */
   public ClosedTankDriveController(RobotHardware hardware) {
+    super(hardware);
+
     this.leftPID = new PID(
         () -> hardware.drivetrainHardware.leftEncoder.velocity.ground()
             / DrivetrainConstants.MAX_SPEED_FORWARD,
@@ -32,12 +34,12 @@ public abstract class ClosedTankDriveController extends DrivetrainController {
   public abstract double rightVelocity();
 
   @Override
-  public Optional<Double> leftPower() {
-    return Optional.of(leftVelocity() + leftPID.get());
+  public double leftTarget() {
+    return leftVelocity() + leftPID.get();
   }
 
   @Override
-  public Optional<Double> rightPower() {
-    return Optional.of(rightVelocity() + rightPID.get());
+  public double rightTarget() {
+    return rightVelocity() + rightPID.get();
   }
 }
