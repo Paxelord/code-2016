@@ -15,7 +15,7 @@ public class TowerVision {
     Imgproc.cvtColor(image, destination, Imgproc.COLOR_BGR2HSV);
 
     Mat mask = new Mat();
-    Core.inRange(destination, new Scalar(80, 0, 100), new Scalar(96, 255, 255), mask);
+    Core.inRange(destination, new Scalar(0, 0, 100), new Scalar(255, 255, 255), mask);
 
     ArrayList<MatOfPoint> contours = new ArrayList<>();
     Mat matHeirarchy = new Mat();
