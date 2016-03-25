@@ -2,6 +2,7 @@ package com.lynbrookrobotics.sixteen.components.drivetrain;
 
 import com.lynbrookrobotics.sixteen.config.RobotHardware;
 import com.lynbrookrobotics.sixteen.config.constants.DrivetrainConstants;
+import com.lynbrookrobotics.sixteen.config.constants.RobotConstants;
 
 import java.util.function.Supplier;
 
@@ -35,7 +36,7 @@ public class BlendedTeleoperatedController extends ClosedTankDriveController {
     this.constantTurnRadiusController = new ConstantTurnRadiusController(
         hardware,
         forwardSpeed,
-        turnInput);
+        curvature);
   }
 
   /**
@@ -48,8 +49,9 @@ public class BlendedTeleoperatedController extends ClosedTankDriveController {
    */
   public double blend(double forwardSpeed, double turnInPlaceOutput,
                       double constantRadiusOutput) {
-    double percentConstantTurn = Math.pow(forwardSpeed,
-        DrivetrainConstants.BLEND_EXPONENT);
+    double percentConstantTurn = RobotConstants.clamp(
+        2 * Math.pow(Math.abs(forwardSpeed), DrivetrainConstants.BLEND_EXPONENT),
+        0.0, 1.0);
 
     return percentConstantTurn * constantRadiusOutput
         + (1 - percentConstantTurn) * turnInPlaceOutput;

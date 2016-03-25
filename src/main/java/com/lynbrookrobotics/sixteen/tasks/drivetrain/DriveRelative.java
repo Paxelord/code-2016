@@ -10,7 +10,7 @@ import com.lynbrookrobotics.sixteen.config.constants.DrivetrainConstants;
  * Finite task to drive to some position relative to the position at the time of startTask().
  */
 public class DriveRelative extends FiniteTask {
-  private static final double errorThresholdForward = 15;
+  private static final double errorThresholdForward = 1D/12;
   private static final double errorThresholdTurn = 10;
 
   double distance;
