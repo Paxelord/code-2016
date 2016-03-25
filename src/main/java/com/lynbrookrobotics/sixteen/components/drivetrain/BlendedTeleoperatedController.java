@@ -59,9 +59,7 @@ public class BlendedTeleoperatedController extends ClosedTankDriveController {
    * Sums blended turn in place controller (arcade controller) and
    * blended turning at a constant turn radius controller outputs for linear
    * velocity for the left wheels in feet per second.
-   * @return Sum of blended turn in place controller (arcade controller) and
-   *    blended turning at a constant turn radius controller outputs for linear
-   *    velocity of the left wheels. This value is normalized
+   * @return The blended, normalized left velocity output of both controllers
    */
   @Override
   public double leftVelocity() {
@@ -73,9 +71,7 @@ public class BlendedTeleoperatedController extends ClosedTankDriveController {
    * Sums blended turn in place controller (arcade controller) and
    * blended turning at a constant turn radius controller outputs for linear
    * velocity for the right wheels in feet per second.
-   * @return Sum of blended turn in place controller (arcade controller) and
-   *    blended turning at a constant turn radius controller outputs for linear
-   *    velocity of the right wheels. This value is normalized
+   * @return The blended, normalized right velocity output of both controllers
    */
   @Override
   public double rightVelocity() {

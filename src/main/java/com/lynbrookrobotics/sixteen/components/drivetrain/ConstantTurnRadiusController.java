@@ -38,8 +38,7 @@ public class ConstantTurnRadiusController extends ClosedTankDriveController {
    * Calculates the normalized linear speed of the right wheels
    * at the ground for a given forward speed and a constant curvature. AKA
    * calculates wheel speed while turning at a constant radius
-   * @return the linear speed of the left wheels at the ground for the given
-   * curvature and forward speed
+   * @return The normalized speed of the left wheels
    */
   @Override
   public double leftVelocity() {
@@ -51,8 +50,7 @@ public class ConstantTurnRadiusController extends ClosedTankDriveController {
    * Calculates the normalized linear speed of the right wheels
    * at the ground for a given forward speed and a constant curvature. AKA
    * calculates wheel speed while turning at a constant radius
-   * @return the linear speed of the right wheels at the ground for the given
-   * curvature and forward speed
+   * @return The normalized speed of the right wheels
    */
   @Override
   public double rightVelocity() {
