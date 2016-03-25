@@ -1,5 +1,6 @@
 package com.lynbrookrobotics.sixteen.vision;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -15,7 +16,7 @@ public class TowerVision {
     Imgproc.cvtColor(image, destination, Imgproc.COLOR_BGR2HSV);
 
     Mat mask = new Mat();
-    Core.inRange(destination, new Scalar(0, 0, 100), new Scalar(255, 255, 255), mask);
+    Core.inRange(destination, new Scalar(0, 0, 175), new Scalar(255, 255, 255), mask);
 
     ArrayList<MatOfPoint> contours = new ArrayList<>();
     Mat matHeirarchy = new Mat();
@@ -34,8 +35,8 @@ public class TowerVision {
       }
     }
 
-    Imgproc.rectangle(destination, biggest.br(), biggest.tl(), new Scalar(255, 255, 255));
+    Imgproc.rectangle(out, biggest.br(), biggest.tl(), new Scalar(255, 255, 255));
 
-    return destination;
+    return out;
   }
 }

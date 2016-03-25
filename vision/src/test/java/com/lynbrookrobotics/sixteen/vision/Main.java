@@ -28,10 +28,10 @@ public class Main {
         Mat mat = new Mat(image.getHeight(),image.getWidth(), CvType.CV_8UC3);
         mat.put(0, 0, data);
 
-        ArrayList<Mat> hsvChannel = new ArrayList<>();
-        Core.split(TowerVision.detectHighGoal(mat), hsvChannel);
+//        ArrayList<Mat> hsvChannel = new ArrayList<>();
+//        Core.split(TowerVision.detectHighGoal(mat), hsvChannel);
 
-        Imgcodecs.imwrite(outFolder + file.getName(), hsvChannel.get(2));
+        Imgcodecs.imwrite(outFolder + file.getName(), TowerVision.detectHighGoal(mat));
       }
     }
   }
