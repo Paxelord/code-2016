@@ -30,7 +30,7 @@ public class Drivetrain extends Component<DrivetrainController> {
     this.enabledDrive = new BlendedTeleoperatedController(
         robotHardware,
         () -> -controls.driverStick.getY(),
-        controls.driverWheel::getX
+        () -> Math.pow(controls.driverWheel.getX(), 3)
     );
   }
 
