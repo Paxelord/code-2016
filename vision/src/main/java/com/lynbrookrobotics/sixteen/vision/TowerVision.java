@@ -9,8 +9,10 @@ import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
 
+import akka.japi.tuple.Tuple3;
+
 public class TowerVision {
-  public static Mat detectHighGoal(Mat image) {
+  public static Tuple3<Mat, Double, Double> detectHighGoal(Mat image) {
     Mat destination = new Mat();
     Imgproc.cvtColor(image, destination, Imgproc.COLOR_BGR2HSV);
 
@@ -36,6 +38,6 @@ public class TowerVision {
 
     Imgproc.rectangle(out, biggest.br(), biggest.tl(), new Scalar(255, 255, 255));
 
-    return out;
+    return new Tuple3<>(out, (biggest.tl().x + biggest.br().x)/2, biggest.br().y);
   }
 }

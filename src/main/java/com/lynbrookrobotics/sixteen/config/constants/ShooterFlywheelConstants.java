@@ -15,7 +15,7 @@ public class ShooterFlywheelConstants {
   public static final double I_GAIN = 8D / 125;
   public static final double I_MEMORY = 0.9;
 
-  public static final double MAX_RPM = 7900;
+  public static final double MAX_RPM = 8150;
 
   public static final double THRESHOLD_RPM = 500;
 

@@ -7,9 +7,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 
 public class HallEffect extends Counter {
   DigitalInput source;
-  private static final double memory = 0.6;
   double curRPM = 0;
-  double averageRPM = 0;
 
   boolean working = true;
 
@@ -37,11 +35,11 @@ public class HallEffect extends Counter {
       reported = 0;
     }
 
-    if (reported < 20000 && (reported - averageRPM) <= ShooterFlywheelConstants.MAX_RPM) {
+    if (reported < 20000) {
       curRPM = reported;
     }
 
-    averageRPM = (averageRPM * memory) + (curRPM * (1D - memory));
+//    averageRPM = (averageRPM * memory) + (curRPM * (1D - memory));
   }
 
   public double rawOutput() {
@@ -56,6 +54,6 @@ public class HallEffect extends Counter {
   public double getRPM() {
     update();
 
-    return averageRPM;
+    return curRPM;
   }
 }
