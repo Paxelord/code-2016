@@ -17,7 +17,7 @@ public class ShooterFlywheelConstants {
 
   public static final double MAX_RPM = 8150;
 
-  public static final double THRESHOLD_RPM = 500;
+  public static final double THRESHOLD_RPM = 50;
 
   // with partial battery only 7396
   @ConfigLoaded public static final double SHOOT_RPM = config();

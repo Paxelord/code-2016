@@ -31,7 +31,7 @@ public class Main {
 //        ArrayList<Mat> hsvChannel = new ArrayList<>();
 //        Core.split(TowerVision.detectHighGoal(mat), hsvChannel);
 
-        Imgcodecs.imwrite(outFolder + file.getName(), TowerVision.detectHighGoal(mat));
+        Imgcodecs.imwrite(outFolder + file.getName(), TowerVision.detectHighGoal(mat).t1());
       }
     }
   }

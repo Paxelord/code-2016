@@ -33,7 +33,7 @@ public class DrivetrainConstants {
       (51 + ShootingPositionConstants.DISTANCE_WHEEL_BOTTOM) / 12D;
 
   public static final double LOWBAR_BACKWARD_DISTANCE =
-      -(47.75 + ShootingPositionConstants.DISTANCE_WHEEL_BOTTOM) / 12D;
+      -(59.75 + ShootingPositionConstants.DISTANCE_WHEEL_BOTTOM) / 12D;
 
   //Track AKA distance between wheels
   public static final double TRACK = 21.75; //Measured in inches

@@ -304,7 +304,7 @@ public class AutoGenerator {
           drivetrain
       );
 
-      if (defense == Defense.LOWBAR || defense == Defense.ROCKWALL) {
+      if (defense == Defense.ROCKWALL) {
         driveUp = new FiniteTask() {
           @Override
           protected void startTask() {
@@ -319,6 +319,16 @@ public class AutoGenerator {
           protected void endTask() {
           }
         };
+      } else if (defense == Defense.LOWBAR) {
+        driveUp = (new MoveIntakeArmToAngle(
+            IntakeArmConstants.LOWBAR_ANGLE,
+            intakeArm,
+            hardware
+        ).and(new MoveShooterArmToAngle(
+            ShooterArmConstants.FORWARD_LIMIT,
+            hardware,
+            shooterArm
+        )));
       }
 
       if (defense == Defense.DRAWBRIDGE || defense == Defense.SALLYPORT) {

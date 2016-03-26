@@ -18,7 +18,7 @@ public class ShooterFlywheelSpeedController extends ShooterFlywheelController {
   public ShooterFlywheelSpeedController(double targetRPM, RobotHardware hardware) {
     this.flywheelPID = new PID(
         hardware.shooterSpinnersHardware.hallEffect::getRPM,
-        targetRPM
+        Math.abs(targetRPM)
     ).withP(ShooterFlywheelConstants.P_GAIN)
         .withI(ShooterFlywheelConstants.I_GAIN, ShooterFlywheelConstants.I_MEMORY);
 
@@ -31,6 +31,6 @@ public class ShooterFlywheelSpeedController extends ShooterFlywheelController {
 
   @Override
   public double flywheelSpeed() {
-    return (targetRPM / ShooterFlywheelConstants.MAX_RPM) + flywheelPID.get();
+    return (targetRPM / ShooterFlywheelConstants.MAX_RPM) + Math.copySign(flywheelPID.get(), targetRPM);
   }
 }

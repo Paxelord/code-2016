@@ -13,6 +13,7 @@ import com.lynbrookrobotics.sixteen.config.constants.IntakeArmConstants;
 import com.lynbrookrobotics.sixteen.config.constants.IntakeRollerConstants;
 import com.lynbrookrobotics.sixteen.config.constants.RobotConstants;
 import com.lynbrookrobotics.sixteen.config.constants.ShooterArmConstants;
+import com.lynbrookrobotics.sixteen.config.constants.ShooterFlywheelConstants;
 import com.lynbrookrobotics.sixteen.tasks.FixedTime;
 import com.lynbrookrobotics.sixteen.tasks.intake.arm.DirectIntakeArmSpeed;
 import com.lynbrookrobotics.sixteen.tasks.intake.arm.MoveIntakeArmToAngle;
@@ -21,6 +22,8 @@ import com.lynbrookrobotics.sixteen.tasks.lights.DirectLightsColor;
 import com.lynbrookrobotics.sixteen.tasks.shooter.arm.MoveShooterArmToAngle;
 import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.SpinUntilBall;
 import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.flywheel.DirectFlywheelSpeed;
+import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.flywheel.SpinFlywheelAtRPM;
+import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.flywheel.WaitForRPM;
 import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.secondary.SpinSecondary;
 
 public class IntakeTasks {
@@ -33,8 +36,8 @@ public class IntakeTasks {
                                    ShooterFlywheel flywheel,
                                    ShooterSecondary secondary,
                                    RobotHardware hardware) {
-    return
-        (new MoveIntakeArmToAngle(
+    FiniteTask withoutSignal =
+        ((new MoveIntakeArmToAngle(
             IntakeArmConstants.COLLECT_SETPOINT,
             arm,
             hardware
@@ -42,6 +45,9 @@ public class IntakeTasks {
           ShooterArmConstants.STOWED_SETPOINT,
           hardware,
           shooterArm
+        )).and(new WaitForRPM(
+            IntakeRollerConstants.COLLECT_SPEED * ShooterFlywheelConstants.MAX_RPM,
+            hardware
         ))).then(
             (new SpinUntilBall(hardware, flywheel, secondary)
                 .then(new FixedTime(50).andUntilDone(new DirectLightsColor(
@@ -50,9 +56,7 @@ public class IntakeTasks {
                     () -> 1.0,
                     () -> 0.0,
                     RobotConstants.lights
-                ).and(new DirectFlywheelSpeed(
-                    () -> -IntakeRollerConstants.COLLECT_SPEED, flywheel
-                )).and(new SpinSecondary(
+                ).and(new SpinSecondary(
                     () -> -IntakeRollerConstants.COLLECT_SPEED, secondary
                 )).and(new ContinuousTask() {
                   @Override
@@ -80,13 +84,17 @@ public class IntakeTasks {
                     () -> IntakeRollerConstants.COLLECT_SPEED, roller
                 ))
             )
-        ).then(new FixedTime(1000).andUntilDone(new DirectLightsColor(
-            () -> false,
-            () -> 0.0,
-            () -> 1.0,
-            () -> 0.0,
-            RobotConstants.lights
-        )));
+        )).andUntilDone(new SpinFlywheelAtRPM(false,
+            -IntakeRollerConstants.COLLECT_SPEED * ShooterFlywheelConstants.MAX_RPM, flywheel, hardware
+        ));
+
+    return withoutSignal.then(new FixedTime(1000).andUntilDone(new DirectLightsColor(
+        () -> false,
+        () -> 0.0,
+        () -> 1.0,
+        () -> 0.0,
+        RobotConstants.lights
+    )));
   }
 
   /**
