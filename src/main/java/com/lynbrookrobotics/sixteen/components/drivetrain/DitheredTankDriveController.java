@@ -79,7 +79,7 @@ public abstract class DitheredTankDriveController extends DrivetrainController {
       return Optional.of(powerOrBrake.left().get());
     } else {
       return calculateDither(powerOrBrake.right().get(), leftTick)
-          ? Optional.empty() : Optional.of(0D);
+          ? Optional.empty() : Optional.of(leftTarget());
     }
   }
 
@@ -97,7 +97,7 @@ public abstract class DitheredTankDriveController extends DrivetrainController {
       return Optional.of(powerOrBrake.left().get());
     } else {
       return calculateDither(powerOrBrake.right().get(), rightTick)
-          ? Optional.empty() : Optional.of(0D);
+          ? Optional.empty() : Optional.of(rightTarget());
     }
   }
 }

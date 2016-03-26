@@ -15,7 +15,7 @@ public class BlendedTeleoperatedController extends ClosedTankDriveController {
   Supplier<Double> curvature;
 
   ArcadeDriveController arcadeDriveController;
-  ConstantTurnRadiusController constantTurnRadiusController;
+  ArcadeDriveController constantTurnRadiusController;
 
   /**
    * Constructs a blended Blended Teloperatored Controller
@@ -33,10 +33,10 @@ public class BlendedTeleoperatedController extends ClosedTankDriveController {
         forwardSpeed,
         turnInput);
 
-    this.constantTurnRadiusController = new ConstantTurnRadiusController(
-        hardware,
+    this.constantTurnRadiusController = ArcadeDriveController.of(hardware,
         forwardSpeed,
-        curvature);
+        () -> Math.abs(forwardSpeed.get()) * curvature.get() * (DrivetrainConstants.TRACK / 2)
+    );
   }
 
   /**
