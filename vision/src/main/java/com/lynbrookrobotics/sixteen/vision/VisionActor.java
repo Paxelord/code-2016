@@ -41,14 +41,13 @@ public class VisionActor extends UntypedActor {
 
   private Procedure<Object> ready(final ActorRef send) {
     self().tell(new ProcessTarget(), getSelf());
+    Mat frame = new Mat();
 
     return msg -> {
       if (msg instanceof ProcessTarget) {
-        Mat frame = new Mat();
         camera.read(frame);
 
         TowerVision.detectHighGoal(frame).ifPresent(processed -> {
-          processed.t1().release();
           send.tell(UdpMessage.send(ByteString.fromString(
               processed.t2() + " " + processed.t3()
           ), roboRIO), getSelf());
