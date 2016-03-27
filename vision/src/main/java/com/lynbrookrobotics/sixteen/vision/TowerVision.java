@@ -12,13 +12,16 @@ import java.util.Optional;
 
 import akka.japi.tuple.Tuple3;
 
+// java -Djava.library.path=/usr/local/share/OpenCV/java -jar vision-ly-0.1-SNAPSHOT.jar
 public class TowerVision {
+  private static int H_LOW_THRESHOLD = 150;
+
   public static Optional<Tuple3<Mat, Double, Double>> detectHighGoal(Mat image) {
     Mat destination = new Mat();
     Imgproc.cvtColor(image, destination, Imgproc.COLOR_BGR2HSV);
 
     Mat mask = new Mat();
-    Core.inRange(destination, new Scalar(0, 0, 150), new Scalar(255, 255, 255), mask);
+    Core.inRange(destination, new Scalar(0, 0, H_LOW_THRESHOLD), new Scalar(255, 255, 255), mask);
 
     ArrayList<MatOfPoint> contours = new ArrayList<>();
     Mat matHeirarchy = new Mat();

@@ -22,6 +22,7 @@ import com.lynbrookrobotics.sixteen.config.constants.RobotConstants;
 import com.lynbrookrobotics.sixteen.config.constants.ShooterArmConstants;
 import com.lynbrookrobotics.sixteen.sensors.potentiometer.Potentiometer;
 import com.lynbrookrobotics.sixteen.tasks.DefenseRoutines;
+import com.lynbrookrobotics.sixteen.tasks.drivetrain.AimForShot;
 import com.lynbrookrobotics.sixteen.tasks.intake.IntakeTasks;
 import com.lynbrookrobotics.sixteen.tasks.intake.arm.DirectIntakeArmSpeed;
 import com.lynbrookrobotics.sixteen.tasks.intake.arm.MoveIntakeArmToAngle;
@@ -127,9 +128,9 @@ public class CoreEvents {
       try {
         NIVision.Image image = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
 
-        USBCamera camera = new USBCamera("cam0");
-//        camera.setBrightness(50);
-        camera.setExposureManual(100);
+        USBCamera camera = new USBCamera("cam1");
+        camera.setBrightness(50);
+        camera.setExposureAuto();
         camera.updateSettings();
         camera.startCapture();
 
@@ -235,14 +236,25 @@ public class CoreEvents {
               intakeArm,
               hardware));
 
-      controls.operatorStick
-          .onHold(OperatorButtonAssignments.SHOOT_LONG)
-          .forEach(ShooterTasks.shootFar(
-              shooterFlywheel,
-              shooterSecondary,
-              shooterArm,
-              intakeArm,
-              hardware));
+//      controls.operatorStick
+//          .onHold(OperatorButtonAssignments.SHOOT_LONG)
+//          .forEach(ShooterTasks.shootFar(
+//              shooterFlywheel,
+//              shooterSecondary,
+//              shooterArm,
+//              intakeArm,
+//              hardware));
+
+      try {
+        controls.operatorStick
+            .onHold(OperatorButtonAssignments.SHOOT_LONG)
+            .forEach(new AimForShot(
+                hardware,
+                drivetrain
+            ));
+      } catch (Throwable e) {
+        e.printStackTrace();
+      }
     }
 
     if (RobotConstants.HAS_INTAKE) {

@@ -34,6 +34,7 @@ public class MoveIntakeArmToAngle extends FiniteTask {
   protected void startTask() {
     goodTicks = 0;
     intakeArm.setController(new IntakeArmAngleController(targetAngle, robotHardware));
+    intakeArm.forceBrake = true;
   }
 
   /**
@@ -54,5 +55,6 @@ public class MoveIntakeArmToAngle extends FiniteTask {
   @Override
   protected void endTask() {
     intakeArm.resetToDefault();
+    intakeArm.forceBrake = false;
   }
 }

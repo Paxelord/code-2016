@@ -14,6 +14,7 @@ import com.lynbrookrobotics.sixteen.config.constants.ShooterArmConstants;
 import com.lynbrookrobotics.sixteen.config.constants.ShootingPositionConstants;
 import com.lynbrookrobotics.sixteen.tasks.DefenseRoutines;
 import com.lynbrookrobotics.sixteen.tasks.FixedTime;
+import com.lynbrookrobotics.sixteen.tasks.drivetrain.AimForShot;
 import com.lynbrookrobotics.sixteen.tasks.drivetrain.ContinuousStraightDrive;
 import com.lynbrookrobotics.sixteen.tasks.drivetrain.DriveRelative;
 import com.lynbrookrobotics.sixteen.tasks.drivetrain.TurnByAngle;
@@ -154,7 +155,7 @@ public class AutoGenerator {
           ShootingPositionConstants.ONE_TURN,
           hardware,
           drivetrain
-      ).then(new DriveRelative(
+      )/*.then(new AimForShot(hardware, drivetrain))*/.then(new DriveRelative(
           hardware,
           ShootingPositionConstants.ONE_FORWARD_SECOND,
           MAX_FORWARD_SPEED,
@@ -331,6 +332,8 @@ public class AutoGenerator {
         return driveUp.then(new DriveRelative(hardware, 0.5, MAX_FORWARD_SPEED, drivetrain));
       } else {
         return driveUp.then(cross(defense)).then(driveToShootingPosition(startingPosition)).then(
+            new AimForShot(hardware, drivetrain)
+        ).then(
             ShooterTasks.shootHigh(shooterFlywheel, shooterSecondary, shooterArm, intakeArm, hardware)
         );
       }

@@ -24,40 +24,45 @@ public class AimForShot extends FiniteTask {
   private static double DEG_TO_RAD = (Math.PI * 2)/360;
 
   private static ActorRef communicator =
-      RobotConstants.system.actorOf(Props.create((Creator<Actor>) () -> new VisionReceiverActor(
-          new InetSocketAddress("localhost", 0),
-          target -> {
-            if (gyro != null) {
-              double yDegreesFromCenter =
-                  (target._2 - VisionConstants.IMAGE_HEIGHT/2) *
-                      (VisionConstants.IMAGE_VERTICAL_FOV / VisionConstants.IMAGE_HEIGHT);
-              System.out.println("yDegreesFromCenter = " + yDegreesFromCenter);
-              double yAbsoluteDegrees = yDegreesFromCenter + VisionConstants.CAMERA_TILT;
-              System.out.println("yAbsoluteDegrees = " + yAbsoluteDegrees);
+      RobotConstants.system.actorOf(Props.create(new Creator<Actor>() {
+        @Override
+        public Actor create() throws Exception {
+          return new VisionReceiverActor(
+              null,
+              target -> {
+                if (gyro != null) {
+                  double yDegreesFromCenter =
+                      (target._2 - VisionConstants.IMAGE_HEIGHT/2) *
+                          (VisionConstants.IMAGE_VERTICAL_FOV / VisionConstants.IMAGE_HEIGHT);
+//                  System.out.println("yDegreesFromCenter = " + yDegreesFromCenter);
+                  double yAbsoluteDegrees = yDegreesFromCenter + VisionConstants.CAMERA_TILT;
+//                  System.out.println("yAbsoluteDegrees = " + yAbsoluteDegrees);
 
-              double robotToTower = VisionConstants.CAMERA_TOWER_HEIGHT / Math.tan(yAbsoluteDegrees * DEG_TO_RAD);
-              double cameraToGoal = VisionConstants.CAMERA_TOWER_HEIGHT / Math.sin(yAbsoluteDegrees * DEG_TO_RAD);
+                  double robotToTower = VisionConstants.CAMERA_TOWER_HEIGHT / Math.tan(yAbsoluteDegrees * DEG_TO_RAD);
+                  double cameraToGoal = VisionConstants.CAMERA_TOWER_HEIGHT / Math.sin(yAbsoluteDegrees * DEG_TO_RAD);
 
-              System.out.println("robotToTower = " + robotToTower);
-              System.out.println("cameraToGoal = " + cameraToGoal);
+//                  System.out.println("robotToTower = " + robotToTower);
+//                  System.out.println("cameraToGoal = " + cameraToGoal);
 
-              double xDegreesFromCenter =
-                  (target._1 - VisionConstants.IMAGE_WIDTH/2) *
-                      (VisionConstants.IMAGE_HORIZONTAL_FOV / VisionConstants.IMAGE_WIDTH);
-              System.out.println("xDegreesFromCenter = " + xDegreesFromCenter);
-              double xCameraOffset = Math.tan(xDegreesFromCenter * DEG_TO_RAD) * cameraToGoal;
-              System.out.println("xCameraOffset = " + xCameraOffset);
-              double xRobotOffset = xCameraOffset + VisionConstants.CAMERA_TO_MIDDLE;
-              System.out.println("xRobotOffset = " + xRobotOffset);
+                  double xDegreesFromCenter =
+                      (target._1 - VisionConstants.IMAGE_WIDTH/2) *
+                          (VisionConstants.IMAGE_HORIZONTAL_FOV / VisionConstants.IMAGE_WIDTH);
+//                  System.out.println("xDegreesFromCenter = " + xDegreesFromCenter);
+                  double xCameraOffset = Math.tan(xDegreesFromCenter * DEG_TO_RAD) * cameraToGoal;
+//                  System.out.println("xCameraOffset = " + xCameraOffset);
+                  double xRobotOffset = xCameraOffset + VisionConstants.CAMERA_TO_MIDDLE;
+//                  System.out.println("xRobotOffset = " + xRobotOffset);
 
-              double xAngularOffset = Math.atan(xRobotOffset / cameraToGoal) / DEG_TO_RAD;
-              System.out.println("xAngularOffset = " + xAngularOffset);
+                  double xAngularOffset = (Math.atan(xRobotOffset / cameraToGoal) / DEG_TO_RAD) + 15;
+                  System.out.println("xAngularOffset = " + xAngularOffset);
 
-              angularError = xAngularOffset;
-              targetAngle = gyro.currentPosition().valueZ() + xAngularOffset;
-            }
-          }
-      )));
+                  angularError = xAngularOffset;
+                  targetAngle = gyro.currentPosition().valueZ() + xAngularOffset;
+                }
+              }
+          );
+        }
+      }));
 
   private final RobotHardware hardware;
   private final Drivetrain drivetrain;
@@ -83,7 +88,7 @@ public class AimForShot extends FiniteTask {
   @Override
   protected void update() {
     System.out.println(angularError);
-    if (angularError <= 10) {
+    if (Math.abs(angularError) <= 1) {
       finished();
     }
   }
