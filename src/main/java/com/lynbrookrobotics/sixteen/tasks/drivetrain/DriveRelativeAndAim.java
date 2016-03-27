@@ -4,7 +4,7 @@ import com.lynbrookrobotics.potassium.tasks.FiniteTask;
 import com.lynbrookrobotics.sixteen.components.drivetrain.DriveStraightController;
 import com.lynbrookrobotics.sixteen.components.drivetrain.Drivetrain;
 import com.lynbrookrobotics.sixteen.config.RobotHardware;
-import com.lynbrookrobotics.sixteen.config.constants.VisionConstants;
+import com.lynbrookrobotics.sixteen.sensors.vision.VisionCalculation;
 
 /**
  * Finite task to drive to some position relative to the position at the time of startTask().
@@ -29,7 +29,7 @@ public class DriveRelativeAndAim extends FiniteTask {
                              double forwardDistance,
                              double maxSpeed,
                              Drivetrain drivetrain) {
-    VisionConstants.gyro = hardware.drivetrainHardware.mainGyro;
+    VisionCalculation.gyro = hardware.drivetrainHardware.mainGyro;
     this.maxSpeed = maxSpeed;
     this.distance = forwardDistance;
     this.hardware = hardware;
@@ -50,13 +50,13 @@ public class DriveRelativeAndAim extends FiniteTask {
 
   @Override
   public void startTask() {
-    VisionConstants.angularError = Double.POSITIVE_INFINITY;
-    VisionConstants.targetAngle = hardware.drivetrainHardware.mainGyro.currentPosition().valueZ();
+    VisionCalculation.angularError = Double.POSITIVE_INFINITY;
+    VisionCalculation.targetAngle = hardware.drivetrainHardware.mainGyro.currentPosition().valueZ();
 
     double currentAverage = hardware.drivetrainHardware.currentDistance();
     driveDistanceController = new DriveStraightController(hardware,
         currentAverage + distance,
-        () -> VisionConstants.targetAngle,
+        () -> VisionCalculation.targetAngle,
         maxSpeed
     );
     drivetrain.setController(driveDistanceController);

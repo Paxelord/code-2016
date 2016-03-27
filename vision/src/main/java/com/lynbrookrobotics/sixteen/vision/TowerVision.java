@@ -17,31 +17,33 @@ public class TowerVision {
   private static int H_LOW_THRESHOLD = 150;
 
   public static Optional<Tuple3<Mat, Double, Double>> detectHighGoal(Mat image) {
-    Imgproc.cvtColor(image, image, Imgproc.COLOR_BGR2HSV);
+    Mat destination = new Mat();
+    Imgproc.cvtColor(image, destination, Imgproc.COLOR_BGR2HSV);
 
     Mat mask = new Mat();
-    Core.inRange(image, new Scalar(0, 0, H_LOW_THRESHOLD), new Scalar(255, 255, 255), mask);
+    Core.inRange(destination, new Scalar(0, 0, H_LOW_THRESHOLD), new Scalar(255, 255, 255), mask);
 
     ArrayList<MatOfPoint> contours = new ArrayList<>();
+    Mat matHeirarchy = new Mat();
 
-    Core.bitwise_and(image, image, image, mask);
-    Imgproc.findContours(mask, contours, mask, Imgproc.RETR_EXTERNAL,
+    Mat out = new Mat();
+    Core.bitwise_and(destination, destination, out, mask);
+    Imgproc.findContours(mask, contours, matHeirarchy, Imgproc.RETR_EXTERNAL,
         Imgproc.CHAIN_APPROX_SIMPLE);
 
-    mask.release();
     Rect biggest = null;
     for (MatOfPoint matOfPoint: contours) {
       Rect rec = Imgproc.boundingRect(matOfPoint);
 
-      if ((biggest == null && rec.width > rec.height) || (rec.area() < 100000 && rec.area() > biggest.area())) {
+      if (biggest == null || (rec.area() < 100000 && rec.area() > biggest.area())) {
         biggest = rec;
       }
     }
 
     if (biggest != null) {
-      Imgproc.rectangle(image, biggest.br(), biggest.tl(), new Scalar(255, 255, 255));
+      Imgproc.rectangle(out, biggest.br(), biggest.tl(), new Scalar(255, 255, 255));
 
-      return Optional.of(new Tuple3<>(image, (biggest.tl().x + biggest.br().x) / 2, biggest.br().y));
+      return Optional.of(new Tuple3<>(out, (biggest.tl().x + biggest.br().x) / 2, biggest.br().y));
     } else {
       return Optional.empty();
     }
