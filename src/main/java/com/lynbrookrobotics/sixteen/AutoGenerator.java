@@ -17,6 +17,7 @@ import com.lynbrookrobotics.sixteen.tasks.FixedTime;
 import com.lynbrookrobotics.sixteen.tasks.drivetrain.AimForShot;
 import com.lynbrookrobotics.sixteen.tasks.drivetrain.ContinuousStraightDrive;
 import com.lynbrookrobotics.sixteen.tasks.drivetrain.DriveRelative;
+import com.lynbrookrobotics.sixteen.tasks.drivetrain.DriveRelativeAndAim;
 import com.lynbrookrobotics.sixteen.tasks.drivetrain.TurnByAngle;
 import com.lynbrookrobotics.sixteen.tasks.intake.arm.KeepIntakeArmAtAngle;
 import com.lynbrookrobotics.sixteen.tasks.intake.arm.MoveIntakeArmToAngle;
@@ -155,7 +156,7 @@ public class AutoGenerator {
           ShootingPositionConstants.ONE_TURN,
           hardware,
           drivetrain
-      )/*.then(new AimForShot(hardware, drivetrain))*/.then(new DriveRelative(
+      ).then(new DriveRelativeAndAim(
           hardware,
           ShootingPositionConstants.ONE_FORWARD_SECOND,
           MAX_FORWARD_SPEED,

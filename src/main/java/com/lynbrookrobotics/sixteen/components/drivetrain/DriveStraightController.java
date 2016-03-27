@@ -4,6 +4,8 @@ import com.lynbrookrobotics.sixteen.config.RobotHardware;
 import com.lynbrookrobotics.sixteen.config.constants.RobotConstants;
 import com.lynbrookrobotics.sixteen.control.pid.PID;
 
+import java.util.function.Supplier;
+
 /**
  * A controller that drives to an absolute position of the robot, AKA origin.
  */
@@ -24,7 +26,7 @@ public class DriveStraightController extends ClosedArcadeDriveController {
    */
   public DriveStraightController(RobotHardware hardware,
                                  double targetDistance,
-                                 double targetAngle,
+                                 Supplier<Double> targetAngle,
                                  double maxSpeed) {
     super(hardware);
 
@@ -40,6 +42,20 @@ public class DriveStraightController extends ClosedArcadeDriveController {
         () -> hardware.drivetrainHardware.mainGyro.currentPosition().valueZ(),
         targetAngle)
         .withP(1D / 90).withI(3D / (90), 0.4);
+  }
+
+  /**
+   * Constructs a controller that drives to an absolute position.
+   * @param hardware robot hardware to use
+   * @param targetDistance the distance to drive to
+   * @param targetAngle the angle to drive to
+   * @param maxSpeed the maximum forward speed
+   */
+  public DriveStraightController(RobotHardware hardware,
+                                 double targetDistance,
+                                 double targetAngle,
+                                 double maxSpeed) {
+    this(hardware, targetDistance, () -> targetAngle, maxSpeed);
   }
 
   /**

@@ -9,8 +9,11 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import javax.imageio.ImageIO;
+
+import akka.japi.tuple.Tuple3;
 
 public class Main {
   public static void main(String[] args) throws Exception {
@@ -28,10 +31,20 @@ public class Main {
         Mat mat = new Mat(image.getHeight(),image.getWidth(), CvType.CV_8UC3);
         mat.put(0, 0, data);
 
-//        ArrayList<Mat> hsvChannel = new ArrayList<>();
-//        Core.split(TowerVision.detectHighGoal(mat), hsvChannel);
+        Optional<Tuple3<Mat, Double, Double>> val = TowerVision.detectHighGoal(mat);
+        val.ifPresent(t -> {
+          ArrayList<Mat> hsvChannel = new ArrayList<>();
+          Core.split(t.t1(), hsvChannel);
 
-        Imgcodecs.imwrite(outFolder + file.getName(), TowerVision.detectHighGoal(mat).get().t1());
+          Imgcodecs.imwrite(outFolder + file.getName(), hsvChannel.get(2));
+        });
+
+        if (!val.isPresent()) {
+          ArrayList<Mat> hsvChannel = new ArrayList<>();
+          Core.split(mat, hsvChannel);
+
+          Imgcodecs.imwrite(outFolder + file.getName(), hsvChannel.get(2));
+        }
       }
     }
   }

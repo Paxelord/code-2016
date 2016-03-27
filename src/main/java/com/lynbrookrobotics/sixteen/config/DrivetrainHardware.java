@@ -22,8 +22,8 @@ public class DrivetrainHardware {
   public final DrivetrainEncoder leftEncoder;
   public final DrivetrainEncoder rightEncoder;
 
-  public final GyroL3GD20H gyro;
-  public final ADIS16448 imu;
+  private final GyroL3GD20H gyro;
+  private final ADIS16448 imu;
   public final DigitalGyro mainGyro;
 
 
