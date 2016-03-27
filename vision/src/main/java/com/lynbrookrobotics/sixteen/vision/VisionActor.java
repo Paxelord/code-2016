@@ -48,6 +48,7 @@ public class VisionActor extends UntypedActor {
         camera.read(frame);
 
         TowerVision.detectHighGoal(frame).ifPresent(processed -> {
+          processed.t1().release();
           send.tell(UdpMessage.send(ByteString.fromString(
               processed.t2() + " " + processed.t3()
           ), roboRIO), getSelf());
