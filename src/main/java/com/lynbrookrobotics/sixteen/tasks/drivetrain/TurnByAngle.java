@@ -26,17 +26,24 @@ public class TurnByAngle extends FiniteTask {
     this.angle = angle;
   }
 
+  private int goodTicks = 0;
+
   @Override
   protected void startTask() {
     controller = new TurnByAngleController(angle, hardware);
     drivetrain.setController(controller);
+
+    goodTicks = 0;
   }
 
   @Override
   protected void update() {
-    System.out.println("LEFT: " + controller.difference());
     if (controller.difference() < 5) {
-      finished();
+      goodTicks++;
+
+      if (goodTicks >= 25) {
+        finished();
+      }
     }
   }
 

@@ -25,12 +25,12 @@ public class IntakeArm extends Component<IntakeArmController> {
     this.robotHardware = robotHardware;
   }
 
-  public boolean forceCoast = false;
+  public boolean forceBrake = false;
 
   @Override
   protected void setOutputs(IntakeArmController intakeArmController) {
     robotHardware.intakeArmHardware.motor.enableBrakeMode(
-        DriverStation.getInstance().isEnabled() && !forceCoast
+        forceBrake
     );
 
     double output = intakeArmController.armSpeed();

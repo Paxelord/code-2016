@@ -28,8 +28,11 @@ public class MoveIntakeArmToAngle extends FiniteTask {
     this.robotHardware = robotHardware;
   }
 
+  private int goodTicks = 0;
+
   @Override
   protected void startTask() {
+    goodTicks = 0;
     intakeArm.setController(new IntakeArmAngleController(targetAngle, robotHardware));
   }
 
@@ -40,7 +43,11 @@ public class MoveIntakeArmToAngle extends FiniteTask {
   protected void update() {
     if (Math.abs(robotHardware.intakeArmHardware.pot.getAngle() - targetAngle)
         < IntakeArmConstants.ARM_ERROR) {
-      finished();
+      goodTicks++;
+
+      if (goodTicks >= 25) {
+        finished();
+      }
     }
   }
 

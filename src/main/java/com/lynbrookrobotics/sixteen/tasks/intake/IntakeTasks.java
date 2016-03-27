@@ -58,21 +58,7 @@ public class IntakeTasks {
                     RobotConstants.lights
                 ).and(new SpinSecondary(
                     () -> -IntakeRollerConstants.COLLECT_SPEED, secondary
-                )).and(new ContinuousTask() {
-                  @Override
-                  protected void startTask() {
-                    arm.forceCoast = true;
-                  }
-
-                  @Override
-                  protected void update() {
-                  }
-
-                  @Override
-                  protected void endTask() {
-                    arm.forceCoast = false;
-                  }
-                })))
+                ))))
             ).andUntilDone(
                 new DirectLightsColor(
                     () -> false,

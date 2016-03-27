@@ -8,16 +8,17 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import akka.japi.tuple.Tuple3;
 
 public class TowerVision {
-  public static Tuple3<Mat, Double, Double> detectHighGoal(Mat image) {
+  public static Optional<Tuple3<Mat, Double, Double>> detectHighGoal(Mat image) {
     Mat destination = new Mat();
     Imgproc.cvtColor(image, destination, Imgproc.COLOR_BGR2HSV);
 
     Mat mask = new Mat();
-    Core.inRange(destination, new Scalar(0, 0, 175), new Scalar(255, 255, 255), mask);
+    Core.inRange(destination, new Scalar(0, 0, 150), new Scalar(255, 255, 255), mask);
 
     ArrayList<MatOfPoint> contours = new ArrayList<>();
     Mat matHeirarchy = new Mat();
@@ -27,17 +28,21 @@ public class TowerVision {
     Imgproc.findContours(mask, contours, matHeirarchy, Imgproc.RETR_EXTERNAL,
         Imgproc.CHAIN_APPROX_SIMPLE);
 
-    Rect biggest = new Rect(0, 0, 0, 0);
+    Rect biggest = null;
     for (MatOfPoint matOfPoint: contours) {
       Rect rec = Imgproc.boundingRect(matOfPoint);
 
-      if (rec.area() > biggest.area() && rec.width > rec.height && rec.area() > 600) {
+      if (biggest == null || (rec.area() < 100000 && rec.area() > biggest.area())) {
         biggest = rec;
       }
     }
 
-    Imgproc.rectangle(out, biggest.br(), biggest.tl(), new Scalar(255, 255, 255));
+    if (biggest != null) {
+      Imgproc.rectangle(out, biggest.br(), biggest.tl(), new Scalar(255, 255, 255));
 
-    return new Tuple3<>(out, (biggest.tl().x + biggest.br().x)/2, biggest.br().y);
+      return Optional.of(new Tuple3<>(out, (biggest.tl().x + biggest.br().x) / 2, biggest.br().y));
+    } else {
+      return Optional.empty();
+    }
   }
 }

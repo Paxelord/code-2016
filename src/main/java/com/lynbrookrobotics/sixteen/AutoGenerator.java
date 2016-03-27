@@ -130,18 +130,14 @@ public class AutoGenerator {
           shooterArm
       ))).then(new DriveRelative(
           hardware,
-          DrivetrainConstants.LOWBAR_BACKWARD_DISTANCE,
-          MAX_FORWARD_SPEED,
+          DrivetrainConstants.LOWBAR_DISTANCE,
+          0.25,
           drivetrain
       ).andUntilDone(new KeepIntakeArmAtAngle(
           IntakeArmConstants.LOWBAR_ANGLE,
           intakeArm,
           hardware
-      ))).then(new TurnByAngle(
-          180,
-          hardware,
-          drivetrain
-      ));
+      )));
     }
   }
 
@@ -333,25 +329,10 @@ public class AutoGenerator {
 
       if (defense == Defense.DRAWBRIDGE || defense == Defense.SALLYPORT) {
         return driveUp.then(new DriveRelative(hardware, 0.5, MAX_FORWARD_SPEED, drivetrain));
-      } /*else if (defense == Defense.LOWBAR) {
-        // #ROLLOYOLO
-        return (new MoveIntakeArmToAngle(
-            IntakeArmConstants.LOWBAR_ANGLE,
-            intakeArm,
-            hardware
-        ).and(new MoveShooterArmToAngle(
-            ShooterArmConstants.FORWARD_LIMIT,
-            hardware,
-            shooterArm
-        ))).then(new FixedTime(3000).andUntilDone(
-            new ContinuousStraightDrive(
-                () -> -0.5,
-                hardware,
-                drivetrain
-            ))
+      } else {
+        return driveUp.then(cross(defense)).then(driveToShootingPosition(startingPosition)).then(
+            ShooterTasks.shootHigh(shooterFlywheel, shooterSecondary, shooterArm, intakeArm, hardware)
         );
-      } */else {
-        return driveUp.then(cross(defense)).then(driveToShootingPosition(startingPosition));
       }
     }
   }

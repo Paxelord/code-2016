@@ -127,9 +127,9 @@ public class CoreEvents {
       try {
         NIVision.Image image = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
 
-        USBCamera camera = new USBCamera("cam1");
-        camera.setBrightness(50);
-        camera.setExposureAuto();
+        USBCamera camera = new USBCamera("cam0");
+//        camera.setBrightness(50);
+        camera.setExposureManual(100);
         camera.updateSettings();
         camera.startCapture();
 

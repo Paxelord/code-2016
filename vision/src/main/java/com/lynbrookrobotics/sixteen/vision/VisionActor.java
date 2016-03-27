@@ -19,7 +19,11 @@ public class VisionActor extends UntypedActor {
 
   final InetSocketAddress roboRIO;
 
-  private final VideoCapture camera = new VideoCapture(0);
+  private static final VideoCapture camera = new VideoCapture(0);
+
+  public VisionActor() {
+    this(new InetSocketAddress("roborio-846-frc.local", 5846));
+  }
 
   public VisionActor(InetSocketAddress roboRIO) {
     this.roboRIO = roboRIO;
@@ -43,11 +47,11 @@ public class VisionActor extends UntypedActor {
       if (msg instanceof ProcessTarget) {
         Mat frame = new Mat();
         camera.read(frame);
-        Tuple3<Mat, Double, Double> processed = TowerVision.detectHighGoal(frame);
-
-        send.tell(UdpMessage.send(ByteString.fromString(
-            processed.t2() + " " + processed.t3()
-        ), roboRIO), getSelf());
+        TowerVision.detectHighGoal(frame).ifPresent(processed -> {
+          send.tell(UdpMessage.send(ByteString.fromString(
+              processed.t2() + " " + processed.t3()
+          ), roboRIO), getSelf());
+        });
 
         self().tell(new ProcessTarget(), getSelf());
       }

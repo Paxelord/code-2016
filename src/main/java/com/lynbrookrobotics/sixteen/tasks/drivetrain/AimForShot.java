@@ -19,6 +19,7 @@ import akka.japi.Creator;
 public class AimForShot extends FiniteTask {
   private static DigitalGyro gyro = null;
   private static double targetAngle;
+  private static double angularError;
 
   private static ActorRef communicator =
       RobotConstants.system.actorOf(Props.create((Creator<Actor>) () -> new VisionReceiverActor(
@@ -28,19 +29,29 @@ public class AimForShot extends FiniteTask {
               double yDegreesFromCenter =
                   (target._2 - VisionConstants.IMAGE_HEIGHT/2) *
                       (VisionConstants.IMAGE_VERTICAL_FOV / VisionConstants.IMAGE_HEIGHT);
+              System.out.println("yDegreesFromCenter = " + yDegreesFromCenter);
               double yAbsoluteDegrees = yDegreesFromCenter + VisionConstants.CAMERA_TILT;
+              System.out.println("yAbsoluteDegrees = " + yAbsoluteDegrees);
 
               double robotToTower = VisionConstants.CAMERA_TOWER_HEIGHT / Math.tan(yAbsoluteDegrees);
               double cameraToGoal = VisionConstants.CAMERA_TOWER_HEIGHT / Math.sin(yAbsoluteDegrees);
 
+              System.out.println("robotToTower = " + robotToTower);
+              System.out.println("cameraToGoal = " + cameraToGoal);
+
               double xDegreesFromCenter =
                   (target._1 - VisionConstants.IMAGE_WIDTH/2) *
                       (VisionConstants.IMAGE_HORIZONTAL_FOV / VisionConstants.IMAGE_WIDTH);
+              System.out.println("xDegreesFromCenter = " + xDegreesFromCenter);
               double xCameraOffset = Math.tan(xDegreesFromCenter) * cameraToGoal;
+              System.out.println("xCameraOffset = " + xCameraOffset);
               double xRobotOffset = xCameraOffset + VisionConstants.CAMERA_TO_MIDDLE;
+              System.out.println("xRobotOffset = " + xRobotOffset);
 
               double xAngularOffset = Math.atan(xRobotOffset / cameraToGoal);
+              System.out.println("xAngularOffset = " + xAngularOffset);
 
+              angularError = xAngularOffset;
               targetAngle = gyro.currentPosition().valueZ() + xAngularOffset;
             }
           }
@@ -58,6 +69,7 @@ public class AimForShot extends FiniteTask {
   private TurnToAngleController control;
   @Override
   protected void startTask() {
+    angularError = Double.POSITIVE_INFINITY;
     targetAngle = gyro.currentPosition().valueZ();
     control = new TurnToAngleController(
         () -> targetAngle,
@@ -68,7 +80,8 @@ public class AimForShot extends FiniteTask {
 
   @Override
   protected void update() {
-    if (control.difference() <= 3) {
+    System.out.println(angularError);
+    if (angularError <= 10) {
       finished();
     }
   }

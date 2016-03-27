@@ -14,6 +14,7 @@ import com.lynbrookrobotics.sixteen.config.constants.ShooterArmConstants;
 import com.lynbrookrobotics.sixteen.config.constants.ShooterConstants;
 import com.lynbrookrobotics.sixteen.config.constants.ShooterFlywheelConstants;
 import com.lynbrookrobotics.sixteen.tasks.FixedTime;
+import com.lynbrookrobotics.sixteen.tasks.intake.arm.ForceIntakeBrake;
 import com.lynbrookrobotics.sixteen.tasks.intake.arm.KeepIntakeArmAtAngle;
 import com.lynbrookrobotics.sixteen.tasks.intake.arm.MoveIntakeArmToAngle;
 import com.lynbrookrobotics.sixteen.tasks.intake.roller.DirectIntakeRollerSpeed;
@@ -35,9 +36,9 @@ public class ShooterTasks {
    * @return FiniteTask for shooting
    */
   public static ContinuousTask prepareShootHigh(ShooterFlywheel shooterFlywheel,
-                                            ShooterArm shooterArm,
+                                                ShooterArm shooterArm,
                                                 IntakeArm intakeArm,
-                                            RobotHardware hardware) {
+                                                RobotHardware hardware) {
     return new MoveShooterArmToAngle(
         ShooterArmConstants.SHOOT_ANGLE,
         hardware,
@@ -51,7 +52,7 @@ public class ShooterTasks {
         ShooterFlywheelConstants.SHOOT_RPM,
         shooterFlywheel,
         hardware
-    ));
+    )).and(new ForceIntakeBrake(intakeArm));
   }
 
   /**
@@ -92,7 +93,7 @@ public class ShooterTasks {
         IntakeArmConstants.SHOOT_HIGH_SETPOINT,
         intakeArm,
         hardware
-    ));
+    ).and(new ForceIntakeBrake(intakeArm)));
   }
 
   /**
