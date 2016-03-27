@@ -3,4 +3,5 @@
 project/project
 target/
 outImages/
-vision/lib
+vision/lib/*
+!vision/lib/*.jar
