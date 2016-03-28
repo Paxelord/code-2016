@@ -31,6 +31,10 @@ public class TowerVision {
     Imgproc.findContours(mask, contours, matHeirarchy, Imgproc.RETR_EXTERNAL,
         Imgproc.CHAIN_APPROX_SIMPLE);
 
+    destination.release();
+    mask.release();
+    matHeirarchy.release();
+
     Rect biggest = null;
     for (MatOfPoint matOfPoint: contours) {
       Rect rec = Imgproc.boundingRect(matOfPoint);
@@ -45,6 +49,7 @@ public class TowerVision {
 
       return Optional.of(new Tuple3<>(out, (biggest.tl().x + biggest.br().x) / 2, biggest.br().y));
     } else {
+      out.release();
       return Optional.empty();
     }
   }

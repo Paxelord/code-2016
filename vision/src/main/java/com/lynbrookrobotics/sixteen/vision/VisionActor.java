@@ -12,6 +12,8 @@ import akka.io.UdpMessage;
 import akka.japi.Procedure;
 import akka.util.ByteString;
 
+import static org.opencv.videoio.Videoio.CAP_PROP_AUTO_EXPOSURE;
+
 public class VisionActor extends UntypedActor {
   private static class ProcessTarget {
   }
@@ -26,6 +28,7 @@ public class VisionActor extends UntypedActor {
 
   public VisionActor(InetSocketAddress roboRIO) {
     this.roboRIO = roboRIO;
+//    camera.set(CAP_PROP_AUTO_EXPOSURE, 0);
 
     // request creation of a SimpleSender
     final ActorRef mgr = Udp.get(getContext().system()).getManager();
@@ -45,13 +48,17 @@ public class VisionActor extends UntypedActor {
     return msg -> {
       if (msg instanceof ProcessTarget) {
         Mat frame = new Mat();
-        camera.read(frame);
-
-        TowerVision.detectHighGoal(frame).ifPresent(processed -> {
-          send.tell(UdpMessage.send(ByteString.fromString(
-              processed.t2() + " " + processed.t3()
-          ), roboRIO), getSelf());
-        });
+        try {
+          camera.read(frame);
+          TowerVision.detectHighGoal(frame).ifPresent(processed -> {
+            processed.t1().release();
+            send.tell(UdpMessage.send(ByteString.fromString(
+                processed.t2() + " " + processed.t3()
+            ), roboRIO), getSelf());
+          });
+        } catch (Throwable throwable) {
+          throwable.printStackTrace();
+        }
 
         self().tell(new ProcessTarget(), getSelf());
       }

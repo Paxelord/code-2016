@@ -22,6 +22,9 @@ import org.opencv.videoio.VideoCapture;
 
 import akka.japi.tuple.Tuple3;
 
+import static org.opencv.videoio.Videoio.CAP_PROP_AUTO_EXPOSURE;
+import static org.opencv.videoio.Videoio.CAP_PROP_EXPOSURE;
+
 public class LiveMain extends JPanel{
   BufferedImage image;
 
@@ -29,7 +32,8 @@ public class LiveMain extends JPanel{
     System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
     LiveMain t = new LiveMain();
-    VideoCapture camera = new VideoCapture(0);
+    VideoCapture camera = new VideoCapture(1);
+    camera.set(CAP_PROP_AUTO_EXPOSURE, 0);
 
     Mat frame = new Mat();
     camera.read(frame);

@@ -332,8 +332,18 @@ public class AutoGenerator {
       if (defense == Defense.DRAWBRIDGE || defense == Defense.SALLYPORT) {
         return driveUp.then(new DriveRelative(hardware, 0.5, MAX_FORWARD_SPEED, drivetrain));
       } else {
-        return driveUp.then(cross(defense)).then(driveToShootingPosition(startingPosition)).then(
-            new AimForShot(hardware, drivetrain)
+        return driveUp.then(cross(defense)).then(driveToShootingPosition(startingPosition).andUntilDone(ShooterTasks.prepareShootHigh(
+            shooterFlywheel,
+            shooterArm,
+            intakeArm,
+            hardware
+        ))).then(
+            new AimForShot(hardware, drivetrain).andUntilDone(ShooterTasks.prepareShootHigh(
+                shooterFlywheel,
+                shooterArm,
+                intakeArm,
+                hardware
+            ))
         ).then(
             ShooterTasks.shootHigh(shooterFlywheel, shooterSecondary, shooterArm, intakeArm, hardware)
         );
