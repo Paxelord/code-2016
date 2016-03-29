@@ -2,7 +2,7 @@ package com.lynbrookrobotics.sixteen.config.constants;
 
 public class OperatorButtonAssignments {
   public static final int COLLECT = 14; // operator override side
-  public static final int ABORT_CURRENT_TASK = 1; // back trigger
+//  public static final int ABORT_CURRENT_TASK = 1; // back trigger
 
   public static final int PREPARE_SHOOT = 7; // left side
   public static final int SHOOT_HIGH = 2; // middle center
@@ -23,5 +23,5 @@ public class OperatorButtonAssignments {
   public static final int PORTCULLIS = 9;
   public static final int LOWBAR = 10;
 
-  public static final int POP_OUT = 4;
+  public static final int POP_OUT = 1;
 }

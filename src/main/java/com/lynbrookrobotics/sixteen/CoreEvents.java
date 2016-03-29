@@ -284,9 +284,9 @@ public class CoreEvents {
           .onHold(14)
           .forEach(new CollectMinMax(hardware));
 
-//      controls.operatorStick
-//          .onHold(OperatorButtonAssignments.POP_OUT)
-//          .forEach(IntakeTasks.popOut(intakeArm, intakeRoller, controls));
+      controls.operatorStick
+          .onHold(OperatorButtonAssignments.POP_OUT)
+          .forEach(IntakeTasks.popOut(intakeArm, intakeRoller, controls));
     }
 
     if (RobotConstants.HAS_INTAKE && RobotConstants.HAS_SHOOTER) {
@@ -332,9 +332,9 @@ public class CoreEvents {
     }
 
     // Abort on button press
-    controls.operatorStick
-        .onPress(OperatorButtonAssignments.ABORT_CURRENT_TASK)
-        .forEach(Task::abortCurrentTask);
+//    controls.operatorStick
+//        .onPress(OperatorButtonAssignments.ABORT_CURRENT_TASK)
+//        .forEach(Task::abortCurrentTask);
 
     // AUTO
     AutoGenerator generator = new AutoGenerator(
