@@ -20,7 +20,9 @@ public class AimForShot extends FiniteTask {
     this.drivetrain = drivetrain;
   }
 
+  private int goodTicks = 0;
   private TurnToAngleController control;
+
   @Override
   protected void startTask() {
     VisionCalculation.angularError = Double.POSITIVE_INFINITY;
@@ -30,12 +32,20 @@ public class AimForShot extends FiniteTask {
         hardware
     );
     drivetrain.setController(control);
+
+    goodTicks = 0;
   }
 
   @Override
   protected void update() {
     if (Math.abs(VisionCalculation.angularError) <= 1 && Math.abs(control.difference()) <= 1) {
-      finished();
+      goodTicks++;
+
+      if (goodTicks >= 50) {
+        finished();
+      }
+    } else {
+      goodTicks = 0;
     }
   }
 
