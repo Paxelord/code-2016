@@ -46,7 +46,7 @@ public class IntakeTasks {
           hardware,
           shooterArm
         )).and(new WaitForRPM(
-            IntakeRollerConstants.COLLECT_SPEED * ShooterFlywheelConstants.MAX_RPM,
+            IntakeRollerConstants.FLYWHEEL_COLLECT_SPEED * ShooterFlywheelConstants.MAX_RPM,
             hardware
         ))).then(
             (new SpinUntilBall(hardware, flywheel, secondary)
@@ -71,7 +71,7 @@ public class IntakeTasks {
                 ))
             )
         )).andUntilDone(new SpinFlywheelAtRPM(false,
-            -IntakeRollerConstants.COLLECT_SPEED * ShooterFlywheelConstants.MAX_RPM, flywheel, hardware
+            -IntakeRollerConstants.FLYWHEEL_COLLECT_SPEED * ShooterFlywheelConstants.MAX_RPM, flywheel, hardware
         ));
 
     return withoutSignal.then(new FixedTime(1000).andUntilDone(new DirectLightsColor(
