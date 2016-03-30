@@ -1,18 +1,24 @@
 package com.lynbrookrobotics.sixteen.vision;
 
+import com.lynbrookrobotics.funkydashboard.FunkyDashboard;
+import com.lynbrookrobotics.funkydashboard.ImageStream;
+
 import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.awt.image.WritableRaster;
 import java.net.InetSocketAddress;
+import java.util.Optional;
 
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
 import akka.io.Udp;
 import akka.io.UdpMessage;
 import akka.japi.Procedure;
+import akka.japi.tuple.Tuple3;
 import akka.util.ByteString;
-
-import static org.opencv.videoio.Videoio.CAP_PROP_AUTO_EXPOSURE;
 
 public class VisionActor extends UntypedActor {
   private static class ProcessTarget {
@@ -26,13 +32,22 @@ public class VisionActor extends UntypedActor {
     this(new InetSocketAddress("roborio-846-frc.local", 8846));
   }
 
+  BufferedImage lastImage = null;
   public VisionActor(InetSocketAddress roboRIO) {
     this.roboRIO = roboRIO;
-//    camera.set(CAP_PROP_AUTO_EXPOSURE, 0);
 
     // request creation of a SimpleSender
     final ActorRef mgr = Udp.get(getContext().system()).getManager();
     mgr.tell(UdpMessage.simpleSender(), getSelf());
+
+    FunkyDashboard dashboard = new FunkyDashboard();
+    dashboard.bindRoute("tamarin.local", 8080, getContext().system());
+    dashboard.datasetGroup("vision").addDataset(
+        new ImageStream(
+            "Vision Output",
+            () -> lastImage
+        )
+    );
   }
 
   @Override
@@ -49,19 +64,45 @@ public class VisionActor extends UntypedActor {
       if (msg instanceof ProcessTarget) {
         Mat frame = new Mat();
         try {
-          camera.read(frame);
-          TowerVision.detectHighGoal(frame).ifPresent(processed -> {
-            processed.t1().release();
-            send.tell(UdpMessage.send(ByteString.fromString(
-                processed.t2() + " " + processed.t3()
-            ), roboRIO), getSelf());
-          });
+          if (camera.read(frame)) {
+            Optional<Tuple3<Mat, Double, Double>> detect = TowerVision.detectHighGoal(frame);
+            detect.ifPresent(processed -> {
+              lastImage = matToBufferedImage(processed.t1());
+              processed.t1().release();
+              send.tell(UdpMessage.send(ByteString.fromString(
+                  processed.t2() + " " + processed.t3()
+              ), roboRIO), getSelf());
+            });
+
+            if (!detect.isPresent()) {
+              lastImage = matToBufferedImage(frame);
+            }
+          }
         } catch (Throwable throwable) {
           throwable.printStackTrace();
         }
 
+        frame.release();
+
         self().tell(new ProcessTarget(), getSelf());
       }
     };
+  }
+
+  private BufferedImage matToBufferedImage(Mat frame) {
+    //Mat() to BufferedImage
+    int type = 0;
+    if (frame.channels() == 1) {
+      type = BufferedImage.TYPE_BYTE_GRAY;
+    } else if (frame.channels() == 3) {
+      type = BufferedImage.TYPE_3BYTE_BGR;
+    }
+    BufferedImage image = new BufferedImage(frame.width(), frame.height(), type);
+    WritableRaster raster = image.getRaster();
+    DataBufferByte dataBuffer = (DataBufferByte) raster.getDataBuffer();
+    byte[] data = dataBuffer.getData();
+    frame.get(0, 0, data);
+
+    return image;
   }
 }

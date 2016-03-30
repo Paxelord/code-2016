@@ -4,7 +4,5 @@ fork in Test := true
 
 libraryDependencies += "com.typesafe.akka" % "akka-actor_2.11" % "2.3.12"
 
-//assemblyExcludedJars in assembly := {
-//  val cp = (fullClasspath in assembly).value
-//  cp filter {_.data.getName == "opencv-310.jar"}
-//}
+resolvers += "Funky-Repo" at "http://team846.github.io/repo"
+libraryDependencies += "com.lynbrookrobotics" % "funky-dashboard_2.11" % "0.1.0-SNAPSHOT"

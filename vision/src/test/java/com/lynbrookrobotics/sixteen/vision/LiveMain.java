@@ -1,5 +1,8 @@
 package com.lynbrookrobotics.sixteen.vision;
 
+import com.lynbrookrobotics.funkydashboard.FunkyDashboard;
+import com.lynbrookrobotics.funkydashboard.ImageStream;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -20,58 +23,45 @@ import javax.swing.JPanel;
 import org.opencv.core.*;
 import org.opencv.videoio.VideoCapture;
 
+import akka.actor.ActorSystem;
 import akka.japi.tuple.Tuple3;
 
 import static org.opencv.videoio.Videoio.CAP_PROP_AUTO_EXPOSURE;
 import static org.opencv.videoio.Videoio.CAP_PROP_EXPOSURE;
 
-public class LiveMain extends JPanel{
-  BufferedImage image;
+public class LiveMain {
+  BufferedImage image = null;
 
   public static void main (String args[]) throws InterruptedException{
     System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
+    ActorSystem system = ActorSystem.apply("foo");
+    FunkyDashboard dashboard = new FunkyDashboard();
+    dashboard.bindRoute("localhost", 8080, system);
+
     LiveMain t = new LiveMain();
-    VideoCapture camera = new VideoCapture(1);
+    VideoCapture camera = new VideoCapture(0);
     camera.set(CAP_PROP_AUTO_EXPOSURE, 0);
 
     Mat frame = new Mat();
-    camera.read(frame);
+    dashboard.datasetGroup("vision").addDataset(
+        new ImageStream(
+            "foo",
+            () -> {
+              if (camera.read(frame)) {
+                Optional<Tuple3<Mat, Double, Double>> detect = TowerVision.detectHighGoal(frame);
+                if (detect.isPresent()) {
+                  t.image = t.matToBufferedImage(detect.get().t1());
+                } else {
+                  t.image = t.matToBufferedImage(frame);
+                }
+              }
 
-    if(!camera.isOpened()){
-      System.out.println("Error");
-    } else {
-      while(true){
-        if (camera.read(frame)) {
-          Optional<Tuple3<Mat, Double, Double>> detect = TowerVision.detectHighGoal(frame);
-          if (detect.isPresent()) {
-            BufferedImage image = t.matToBufferedImage(detect.get().t1());
-            t.image = image;
-            t.repaint();
-          } else {
-            BufferedImage image = t.matToBufferedImage(frame);
-            t.image = image;
-            t.repaint();
-          }
-        }
-      }
-    }
-    camera.release();
+              return t.image;
+            }
+        )
+    );
   }
-
-  @Override
-  public void paint(Graphics g) {
-    g.drawImage(image, 0, 0, this);
-  }
-
-  public LiveMain() {
-    JFrame frame0 = new JFrame();
-    frame0.getContentPane().add(this);
-    frame0.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame0.setSize(1000, 1000);
-    frame0.setVisible(true);
-  }
-
 
   public BufferedImage matToBufferedImage(Mat frame) {
     //Mat() to BufferedImage
