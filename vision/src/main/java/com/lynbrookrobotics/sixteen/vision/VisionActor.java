@@ -6,6 +6,7 @@ import com.lynbrookrobotics.funkydashboard.ImageStream;
 import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
@@ -41,7 +42,7 @@ public class VisionActor extends UntypedActor {
     mgr.tell(UdpMessage.simpleSender(), getSelf());
 
     FunkyDashboard dashboard = new FunkyDashboard();
-    dashboard.bindRoute("tamarin.local", 8080, getContext().system());
+    dashboard.bindRoute("tarsier.local", 8080, getContext().system());
     dashboard.datasetGroup("vision").addDataset(
         new ImageStream(
             "Vision Output",
@@ -103,6 +104,12 @@ public class VisionActor extends UntypedActor {
     byte[] data = dataBuffer.getData();
     frame.get(0, 0, data);
 
-    return image;
+    Image resize = image.getScaledInstance(200, (int) (frame.height() * (200D / frame.width())), Image.SCALE_SMOOTH);
+    BufferedImage ret = new BufferedImage(200, (int) (frame.height() * (200D / frame.width())), BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2d = ret.createGraphics();
+    g2d.drawImage(resize, 0, 0, null);
+    g2d.dispose();
+
+    return ret;
   }
 }

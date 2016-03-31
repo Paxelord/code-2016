@@ -14,14 +14,14 @@ import akka.japi.tuple.Tuple3;
 
 // java -Djava.library.path=/usr/local/share/OpenCV/java -jar vision-ly-0.1-SNAPSHOT.jar
 public class TowerVision {
-  private static int H_LOW_THRESHOLD = 150;
+  private static int V_LOW_THRESHOLD = 150;
 
   public static Optional<Tuple3<Mat, Double, Double>> detectHighGoal(Mat image) {
     Mat destination = new Mat();
     Imgproc.cvtColor(image, destination, Imgproc.COLOR_BGR2HSV);
 
     Mat mask = new Mat();
-    Core.inRange(destination, new Scalar(0, 0, H_LOW_THRESHOLD), new Scalar(255, 255, 255), mask);
+    Core.inRange(destination, new Scalar(0, 0, V_LOW_THRESHOLD), new Scalar(255, 255, 255), mask);
 
     ArrayList<MatOfPoint> contours = new ArrayList<>();
     Mat matHeirarchy = new Mat();
@@ -39,7 +39,11 @@ public class TowerVision {
     for (MatOfPoint matOfPoint: contours) {
       Rect rec = Imgproc.boundingRect(matOfPoint);
 
-      if (biggest == null || (rec.area() < 100000 && rec.area() > biggest.area())) {
+      double percent = Imgproc.contourArea(matOfPoint) / rec.area();
+      boolean isTower = rec.area() < 100000 &&
+          rec.width > rec.height * 0.75 &&
+          percent >= 0.1 && percent <= 0.5;
+      if (isTower && (biggest == null || rec.area() > biggest.area())) {
         biggest = rec;
       }
     }
