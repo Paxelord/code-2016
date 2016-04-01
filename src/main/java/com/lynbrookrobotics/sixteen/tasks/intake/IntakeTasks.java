@@ -17,6 +17,7 @@ import com.lynbrookrobotics.sixteen.config.constants.ShooterFlywheelConstants;
 import com.lynbrookrobotics.sixteen.tasks.FixedTime;
 import com.lynbrookrobotics.sixteen.tasks.intake.arm.DirectIntakeArmSpeed;
 import com.lynbrookrobotics.sixteen.tasks.intake.arm.ForceIntakeBrake;
+import com.lynbrookrobotics.sixteen.tasks.intake.arm.KeepIntakeArmAtAngle;
 import com.lynbrookrobotics.sixteen.tasks.intake.arm.MoveIntakeArmToAngle;
 import com.lynbrookrobotics.sixteen.tasks.intake.roller.DirectIntakeRollerSpeed;
 import com.lynbrookrobotics.sixteen.tasks.lights.DirectLightsColor;
@@ -69,19 +70,23 @@ public class IntakeTasks {
                     RobotConstants.lights
                 ).and(new DirectIntakeRollerSpeed(
                     () -> IntakeRollerConstants.COLLECT_SPEED, roller
+                )).and(new KeepIntakeArmAtAngle(
+                    IntakeArmConstants.COLLECT_SETPOINT,
+                    arm,
+                    hardware
                 ))
             )
         )).andUntilDone(new SpinFlywheelAtRPM(false,
             -IntakeRollerConstants.FLYWHEEL_COLLECT_SPEED * ShooterFlywheelConstants.MAX_RPM, flywheel, hardware
         ));
 
-    return (withoutSignal.then(new FixedTime(1000).andUntilDone(new DirectLightsColor(
+    return withoutSignal.then(new FixedTime(1000).andUntilDone(new DirectLightsColor(
         () -> false,
         () -> 0.0,
         () -> 1.0,
         () -> 0.0,
         RobotConstants.lights
-    )))).andUntilDone(new ForceIntakeBrake(arm));
+    )));
   }
 
   /**
