@@ -38,8 +38,6 @@ public class HallEffect extends Counter {
     if (reported < 20000) {
       curRPM = reported;
     }
-
-//    averageRPM = (averageRPM * memory) + (curRPM * (1D - memory));
   }
 
   public double rawOutput() {
