@@ -162,15 +162,18 @@ public class ShooterTasks {
         () -> 1.0,
         shooterSecondary
     )).and(new DirectIntakeRollerSpeed(
-        () -> -ShooterFlywheelConstants.SHOOT_SECONDARY_LOW_POWER,
+        () -> -1.0, //CHANGEME
         intakeRoller
     ));
 
-    FiniteTask rollOut = new SpinFlywheelToRPM(
+    FiniteTask rollOut = (new SpinFlywheelToRPM(
         ShooterFlywheelConstants.MAX_RPM * 0.5,
         shooterFlywheel,
         hardware
-    ).then(new SpinSecondaryNoBall(
+    ).andUntilDone(new DirectIntakeRollerSpeed(
+        () -> -1.0, //CHANGEME
+        intakeRoller
+    ))).then(new SpinSecondaryNoBall(
         1.0,
         ShooterConstants.BALL_PROXIMITY_THRESHOLD,
         shooterSecondary,

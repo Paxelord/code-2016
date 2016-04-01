@@ -7,6 +7,8 @@ name := "code-2016"
 
 version := "0.1.0"
 
+robotClass := "com.lynbrookrobotics.sixteen.LaunchRobot"
+
 scalaVersion := "2.11.7"
 
 lazy val vision = project
