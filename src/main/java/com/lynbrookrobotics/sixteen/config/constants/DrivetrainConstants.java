@@ -21,10 +21,10 @@ public class DrivetrainConstants {
 
   public static final double SPY_TO_SHOOT =
       (100 - ShootingPositionConstants.DISTANCE_WHEEL_BOTTOM) / 12D;
-  public static final double DEFENSE_RAMP_DISTANCE = 23 / 12D;
+  public static final double DEFENSE_RAMP_DISTANCE = 45 / 12D; // 72 inches line to ramp
 
   public static final double MOAT_FORWARD_DISTANCE =
-      (51 + ShootingPositionConstants.DISTANCE_WHEEL_BOTTOM) / 12D;
+      (74 + ShootingPositionConstants.DISTANCE_WHEEL_BOTTOM) / 12D;
   public static final double RAMPARTS_FORWARD_DISTANCE =
       (50 + ShootingPositionConstants.DISTANCE_WHEEL_BOTTOM) / 12D;
   public static final double ROCKWALL_FORWARD_DISTANCE =

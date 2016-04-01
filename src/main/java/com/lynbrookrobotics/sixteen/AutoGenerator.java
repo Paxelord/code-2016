@@ -92,8 +92,8 @@ public class AutoGenerator {
     } else if (defense == Defense.MOAT) {
       return new DriveRelative(
           hardware,
-          DrivetrainConstants.MOAT_FORWARD_DISTANCE,
-          MAX_FORWARD_SPEED,
+          DrivetrainConstants.DEFENSE_RAMP_DISTANCE + DrivetrainConstants.MOAT_FORWARD_DISTANCE,
+          0.75,
           drivetrain
       );
     } else if (defense == Defense.RAMPARTS) {
@@ -302,7 +302,7 @@ public class AutoGenerator {
           drivetrain
       );
 
-      if (defense == Defense.ROCKWALL) {
+      if (defense == Defense.ROCKWALL || defense == Defense.MOAT) {
         driveUp = new FiniteTask() {
           @Override
           protected void startTask() {
@@ -332,7 +332,7 @@ public class AutoGenerator {
       if (defense == Defense.DRAWBRIDGE || defense == Defense.SALLYPORT) {
         return driveUp.then(new DriveRelative(hardware, 0.5, MAX_FORWARD_SPEED, drivetrain));
       } else {
-        return driveUp.then(cross(defense)).then(driveToShootingPosition(startingPosition).andUntilDone(ShooterTasks.prepareShootHigh(
+        return driveUp.then(cross(defense));/*.then(driveToShootingPosition(startingPosition).andUntilDone(ShooterTasks.prepareShootHigh(
             shooterFlywheel,
             shooterArm,
             intakeArm,
@@ -346,7 +346,7 @@ public class AutoGenerator {
             ))
         ).then(
             ShooterTasks.shootHigh(shooterFlywheel, shooterSecondary, shooterArm, intakeArm, hardware)
-        );
+        );*/
       }
     }
   }
