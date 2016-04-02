@@ -132,7 +132,7 @@ public class AutoGenerator {
           shooterArm
       ))).then(new DriveRelative(
           hardware,
-          DrivetrainConstants.LOWBAR_DISTANCE,
+          DrivetrainConstants.DEFENSE_RAMP_DISTANCE + DrivetrainConstants.LOWBAR_DISTANCE,
           0.25,
           drivetrain
       ).andUntilDone(new KeepIntakeArmAtAngle(
@@ -231,19 +231,28 @@ public class AutoGenerator {
     } else {
       return new DriveRelative(
           hardware,
-          ShootingPositionConstants.FIVE_FORWARD,
+          ShootingPositionConstants.FIVE_FORWARD_FIRST,
           MAX_FORWARD_SPEED,
           drivetrain
       ).then(new TurnByAngle(
-          ShootingPositionConstants.FIVE_TURN,
+          ShootingPositionConstants.FIVE_TURN_FIRST,
           hardware,
           drivetrain
-      ).then(new DriveRelative(
+      )).then(new DriveRelative(
           hardware,
           ShootingPositionConstants.FIVE_FORWARD_SECOND,
           MAX_FORWARD_SPEED,
           drivetrain
-      )));
+      )).then(new TurnByAngle(
+          ShootingPositionConstants.FIVE_TURN_SECOND,
+          hardware,
+          drivetrain
+      )).then(new DriveRelative(
+          hardware,
+          ShootingPositionConstants.FIVE_FORWARD_THIRD,
+          MAX_FORWARD_SPEED,
+          drivetrain
+      ));
     }
   }
 
@@ -332,7 +341,7 @@ public class AutoGenerator {
       if (defense == Defense.DRAWBRIDGE || defense == Defense.SALLYPORT) {
         return driveUp.then(new DriveRelative(hardware, 0.5, MAX_FORWARD_SPEED, drivetrain));
       } else {
-        return driveUp.then(cross(defense));/*.then(driveToShootingPosition(startingPosition).andUntilDone(ShooterTasks.prepareShootHigh(
+        return driveUp.then(cross(defense)).then(driveToShootingPosition(startingPosition).andUntilDone(ShooterTasks.prepareShootHigh(
             shooterFlywheel,
             shooterArm,
             intakeArm,
@@ -346,7 +355,7 @@ public class AutoGenerator {
             ))
         ).then(
             ShooterTasks.shootHigh(shooterFlywheel, shooterSecondary, shooterArm, intakeArm, hardware)
-        );*/
+        );
       }
     }
   }

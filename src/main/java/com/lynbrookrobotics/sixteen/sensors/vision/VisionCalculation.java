@@ -83,7 +83,7 @@ public class VisionCalculation {
                   double xRobotOffset = xCameraOffset + VisionConstants.CAMERA_TO_MIDDLE_HORIZONTAL;
 //                  System.out.println("xRobotOffset = " + xRobotOffset);
 
-                  double xAngularOffset = (Math.atan(xRobotOffset / robotToGoal) / DEG_TO_RAD) + 13;
+                  double xAngularOffset = (Math.atan(xRobotOffset / robotToGoal) / DEG_TO_RAD) + 11;
                   System.out.println("xAngularOffset = " + xAngularOffset);
 
                   angularError = xAngularOffset;

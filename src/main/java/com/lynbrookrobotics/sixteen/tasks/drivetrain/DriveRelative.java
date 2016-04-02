@@ -11,7 +11,7 @@ import com.lynbrookrobotics.sixteen.config.constants.DrivetrainConstants;
  */
 public class DriveRelative extends FiniteTask {
   private static final double errorThresholdForward = 1D/12;
-  private static final double errorThresholdTurn = 10;
+  private static final double errorThresholdTurn = 3;
 
   double distance;
   RobotHardware hardware;

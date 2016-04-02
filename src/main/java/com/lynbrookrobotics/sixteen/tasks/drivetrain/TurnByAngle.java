@@ -38,10 +38,10 @@ public class TurnByAngle extends FiniteTask {
 
   @Override
   protected void update() {
-    if (controller.difference() < 5) {
+    if (Math.abs(controller.difference()) < 3) {
       goodTicks++;
 
-      if (goodTicks >= 25) {
+      if (goodTicks >= 50) {
         finished();
       }
     }
