@@ -12,5 +12,5 @@ public class IntakeRollerConstants {
 
   @ConfigLoaded public static final double COLLECT_SPEED = config();
 
-  public static final double FLYWHEEL_COLLECT_SPEED = 0.5;
+  @ConfigLoaded public static final double FLYWHEEL_COLLECT_SPEED = config();
 }

@@ -26,6 +26,7 @@ import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.SpinUntilBall;
 import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.flywheel.DirectFlywheelSpeed;
 import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.flywheel.SpinFlywheelAtRPM;
 import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.flywheel.WaitForRPM;
+import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.flywheel.WaitForRPMBeyond;
 import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.secondary.SpinSecondary;
 
 public class IntakeTasks {
@@ -47,7 +48,7 @@ public class IntakeTasks {
           ShooterArmConstants.STOWED_SETPOINT,
           hardware,
           shooterArm
-        )).and(new WaitForRPM(
+        )).and(new WaitForRPMBeyond(
             IntakeRollerConstants.FLYWHEEL_COLLECT_SPEED * ShooterFlywheelConstants.MAX_RPM,
             hardware
         ))).then(

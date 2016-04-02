@@ -64,6 +64,14 @@ public class IntakeArm extends Component<IntakeArmController> {
       output = 0;
     }
 
+    if (shooterPosition > ShooterArmConstants.INTAKE_BLOCK_THRESHOLD
+        && intakePosition < IntakeArmConstants.SHOOTER_NOTCH_FORWARD_LIMIT
+        && intakePosition > IntakeArmConstants.SHOOTER_NOTCH_FORWARD_LIMIT - 35
+        && output > 0) {
+      System.out.println("Not allowing forward because shooter notch will hit");
+      output = 0;
+    }
+
     output = RobotConstants.clamp(
         output,
         -IntakeArmConstants.MAX_SPEED,

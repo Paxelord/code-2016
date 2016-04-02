@@ -17,10 +17,12 @@ public class IntakeArmConstants {
   @ConfigLoaded public static final double SHOOTER_STOWED_REVERSE_LIMIT = config();
   @ConfigLoaded public static final double SHOOTER_LOW_REVERSE_LIMIT = config();
 
+  @ConfigLoaded public static final double SHOOTER_NOTCH_FORWARD_LIMIT = config();
+
   @ConfigLoaded public static final double MAX_SPEED = config();
 
   // negative because pot increases as arm moves back
-  public static final double P_GAIN = -2D / 40;
+  public static final double P_GAIN = -1.5D / 40;
 
   public static final double I_GAIN = 0.0;
 

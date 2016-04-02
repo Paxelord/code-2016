@@ -16,6 +16,8 @@ public class ShooterArmConstants {
   @ConfigLoaded public static final double STOWED_THRESHOLD = config();
   @ConfigLoaded public static final double LOW_THRESHOLD = config();
 
+  @ConfigLoaded public static final double INTAKE_BLOCK_THRESHOLD = config();
+
   @ConfigLoaded public static final double MAX_SPEED = config();
 
   public static final double P_GAIN = 1.0 / 45D;
