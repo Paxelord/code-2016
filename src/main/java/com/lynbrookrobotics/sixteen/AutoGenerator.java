@@ -284,7 +284,7 @@ public class AutoGenerator {
           DrivetrainConstants.SPY_TO_SHOOT,
           MAX_FORWARD_SPEED,
           drivetrain
-      ).then(ShooterTasks.shootFar(
+      ).then(ShooterTasks.shootShort(
           shooterFlywheel,
           shooterSecondary,
           shooterArm,
@@ -354,7 +354,7 @@ public class AutoGenerator {
                 hardware
             ))
         ).then(
-            ShooterTasks.shootFar(shooterFlywheel, shooterSecondary, shooterArm, intakeArm, hardware)
+            ShooterTasks.shootShort(shooterFlywheel, shooterSecondary, shooterArm, intakeArm, hardware)
         );
       }
     }
