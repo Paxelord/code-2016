@@ -20,7 +20,9 @@ import com.lynbrookrobotics.sixteen.config.constants.OperatorButtonAssignments;
 import com.lynbrookrobotics.sixteen.config.constants.RobotConstants;
 import com.lynbrookrobotics.sixteen.config.constants.ShooterArmConstants;
 import com.lynbrookrobotics.sixteen.sensors.potentiometer.Potentiometer;
+import com.lynbrookrobotics.sixteen.sensors.vision.VisionCalculation;
 import com.lynbrookrobotics.sixteen.tasks.DefenseRoutines;
+import com.lynbrookrobotics.sixteen.tasks.drivetrain.AimForShot;
 import com.lynbrookrobotics.sixteen.tasks.intake.IntakeTasks;
 import com.lynbrookrobotics.sixteen.tasks.intake.arm.DirectIntakeArmSpeed;
 import com.lynbrookrobotics.sixteen.tasks.intake.arm.MoveIntakeArmToAngle;
@@ -250,17 +252,18 @@ public class CoreEvents {
               shooterArm,
               intakeArm,
               hardware));
-//
-//      try {
+
+      try {
+        AimForShot aim = new AimForShot(
+            hardware,
+            drivetrain
+        );
 //        controls.operatorStick
 //            .onHold(OperatorButtonAssignments.SHOOT_LONG)
-//            .forEach(new AimForShot(
-//                hardware,
-//                drivetrain
-//            ));
-//      } catch (Throwable e) {
-//        e.printStackTrace();
-//      }
+//            .forEach(aim);
+      } catch (Throwable e) {
+        e.printStackTrace();
+      }
     }
 
     if (RobotConstants.HAS_INTAKE) {
