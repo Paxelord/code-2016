@@ -5,7 +5,7 @@ public class OperatorButtonAssignments {
 //  public static final int ABORT_CURRENT_TASK = 1; // back trigger
 
   public static final int PREPARE_SHOOT = 7; // left side
-  public static final int SHOOT_HIGH = 2; // middle center
+  public static final int SHOOT_SHORT = 2; // middle center
   public static final int SHOOT_LONG = 4; // right
   public static final int SHOOT_LOW = 3; // left center, use joystick on start for speed
 

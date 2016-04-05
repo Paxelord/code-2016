@@ -33,7 +33,7 @@ public class IntakeArmConstants {
   // setpoints are from forward limit
   @ConfigLoaded public static final double COLLECT_SETPOINT = config();
   @ConfigLoaded public static final double TRANSPORT_SETPOINT = config();
-  @ConfigLoaded public static final double SHOOT_HIGH_SETPOINT = config();
+  @ConfigLoaded public static final double SHOOT_SETPOINT = config();
 
   public static final double PORTCULLIS_DRIVE_DISTANCE = 5.928322751274909;
 

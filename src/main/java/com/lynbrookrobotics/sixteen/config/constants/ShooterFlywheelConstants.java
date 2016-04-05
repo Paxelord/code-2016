@@ -20,7 +20,11 @@ public class ShooterFlywheelConstants {
   public static final double THRESHOLD_RPM = 50;
 
   // with partial battery only 7396
-  @ConfigLoaded public static final double SHOOT_RPM = config();
+  @ConfigLoaded public static final double SHOOT_SHORT_RPM = config();
+  @ConfigLoaded public static final double SHOOT_MID_RPM = config();
+  @ConfigLoaded public static final double SHOOT_FAR_RPM = config();
+
+
   public static final double SHOOT_SECONDARY_POWER = 1;
   public static final double SHOOT_SECONDARY_LOW_POWER = 0.75;
 

@@ -3,7 +3,6 @@ package com.lynbrookrobotics.sixteen;
 import com.lynbrookrobotics.funkydashboard.TimeSeriesNumeric;
 import com.lynbrookrobotics.potassium.defaults.events.InGameState;
 import com.lynbrookrobotics.potassium.tasks.FiniteTask;
-import com.lynbrookrobotics.potassium.tasks.Task;
 import com.lynbrookrobotics.sixteen.components.drivetrain.Drivetrain;
 import com.lynbrookrobotics.sixteen.components.drivetrain.DrivetrainController;
 import com.lynbrookrobotics.sixteen.components.intake.arm.IntakeArm;
@@ -22,7 +21,6 @@ import com.lynbrookrobotics.sixteen.config.constants.RobotConstants;
 import com.lynbrookrobotics.sixteen.config.constants.ShooterArmConstants;
 import com.lynbrookrobotics.sixteen.sensors.potentiometer.Potentiometer;
 import com.lynbrookrobotics.sixteen.tasks.DefenseRoutines;
-import com.lynbrookrobotics.sixteen.tasks.drivetrain.AimForShot;
 import com.lynbrookrobotics.sixteen.tasks.intake.IntakeTasks;
 import com.lynbrookrobotics.sixteen.tasks.intake.arm.DirectIntakeArmSpeed;
 import com.lynbrookrobotics.sixteen.tasks.intake.arm.MoveIntakeArmToAngle;
@@ -35,7 +33,6 @@ import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.flywheel.DirectFlywhe
 import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.secondary.SpinSecondary;
 import com.ni.vision.NIVision;
 
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.vision.USBCamera;
@@ -228,33 +225,42 @@ public class CoreEvents {
           ));
 
       controls.operatorStick
-          .onHold(OperatorButtonAssignments.SHOOT_HIGH)
-          .forEach(ShooterTasks.shootHigh(
+          .onHold(OperatorButtonAssignments.SHOOT_SHORT)
+          .forEach(ShooterTasks.shootShort(
               shooterFlywheel,
               shooterSecondary,
               shooterArm,
               intakeArm,
               hardware));
 
-//      controls.operatorStick
-//          .onHold(OperatorButtonAssignments.SHOOT_LONG)
-//          .forEach(ShooterTasks.shootFar(
-//              shooterFlywheel,
-//              shooterSecondary,
-//              shooterArm,
-//              intakeArm,
-//              hardware));
+      controls.driverStick
+          .onHold(DriverButtonAssignments.SHOOT_MID)
+          .forEach(ShooterTasks.shootMid(
+              shooterFlywheel,
+              shooterSecondary,
+              shooterArm,
+              intakeArm,
+              hardware));
 
-      try {
-        controls.operatorStick
-            .onHold(OperatorButtonAssignments.SHOOT_LONG)
-            .forEach(new AimForShot(
-                hardware,
-                drivetrain
-            ));
-      } catch (Throwable e) {
-        e.printStackTrace();
-      }
+      controls.operatorStick
+          .onHold(OperatorButtonAssignments.SHOOT_LONG)
+          .forEach(ShooterTasks.shootFar(
+              shooterFlywheel,
+              shooterSecondary,
+              shooterArm,
+              intakeArm,
+              hardware));
+//
+//      try {
+//        controls.operatorStick
+//            .onHold(OperatorButtonAssignments.SHOOT_LONG)
+//            .forEach(new AimForShot(
+//                hardware,
+//                drivetrain
+//            ));
+//      } catch (Throwable e) {
+//        e.printStackTrace();
+//      }
     }
 
     if (RobotConstants.HAS_INTAKE) {
