@@ -8,12 +8,12 @@ public class VisionConstants {
   public static final double IMAGE_VERTICAL_FOV = 33.6;
   public static final double IMAGE_HORIZONTAL_FOV = 59.7;
 
-  public static final double CAMERA_TILT = 60;
+  public static final double CAMERA_TILT = 41.5;
 
   public static final double TOWER_HEIGHT = 53.251 / 12D;
-  public static final double CAMERA_HEIGHT = 3;
+  public static final double CAMERA_HEIGHT = 9 / 12D;
   public static final double CAMERA_TOWER_HEIGHT = TOWER_HEIGHT - CAMERA_HEIGHT;
 
-  public static final double CAMERA_TO_MIDDLE_LEFT = -8/12D;
-  public static final double MIDDLE_TO_CAMERA_FORWARD = -14/12D;
+  public static final double CAMERA_TO_MIDDLE_HORIZONTAL = 11D/12;
+  public static final double MIDDLE_TO_CAMERA_FORWARD = 10/12D;
 }

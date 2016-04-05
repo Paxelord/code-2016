@@ -258,9 +258,9 @@ public class CoreEvents {
             hardware,
             drivetrain
         );
-//        controls.operatorStick
-//            .onHold(OperatorButtonAssignments.SHOOT_LONG)
-//            .forEach(aim);
+        controls.operatorStick
+            .onHold(OperatorButtonAssignments.CHEVAL)
+            .forEach(aim);
       } catch (Throwable e) {
         e.printStackTrace();
       }
@@ -315,13 +315,13 @@ public class CoreEvents {
     }
 
     if (RobotConstants.HAS_DRIVETRAIN && RobotConstants.HAS_INTAKE && RobotConstants.HAS_SHOOTER) {
-      controls.operatorStick
-          .onPress(OperatorButtonAssignments.CHEVAL)
-          .forEach(DefenseRoutines.crossChevalDeFrise(
-              intakeArm,
-              hardware,
-              drivetrain
-          ));
+//      controls.operatorStick
+//          .onPress(OperatorButtonAssignments.CHEVAL)
+//          .forEach(DefenseRoutines.crossChevalDeFrise(
+//              intakeArm,
+//              hardware,
+//              drivetrain
+//          ));
 
       controls.operatorStick
           .onPress(OperatorButtonAssignments.PORTCULLIS)
