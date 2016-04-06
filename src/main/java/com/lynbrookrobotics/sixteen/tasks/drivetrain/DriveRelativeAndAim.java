@@ -10,7 +10,7 @@ import com.lynbrookrobotics.sixteen.sensors.vision.VisionCalculation;
  * Finite task to drive to some position relative to the position at the time of startTask().
  */
 public class DriveRelativeAndAim extends FiniteTask {
-  private static final double errorThresholdForward = 1D/12;
+  private static final double errorThresholdForward = 1D / 12;
   private static final double errorThresholdTurn = 5;
 
   private double distance;

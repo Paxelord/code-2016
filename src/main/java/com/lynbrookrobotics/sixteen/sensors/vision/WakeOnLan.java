@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 
 /**
  * Implementation of sending Magic Packets.
- *
  * from http://www.jibble.org/wake-on-lan/WakeOnLan.java
  */
 class WakeOnLan {
@@ -56,7 +55,7 @@ class WakeOnLan {
         }
 
         return Optional.of(bytes);
-      } catch (NumberFormatException e) {
+      } catch (NumberFormatException numException) {
         System.out.println("Invalid hex digit in MAC address");
       }
     }

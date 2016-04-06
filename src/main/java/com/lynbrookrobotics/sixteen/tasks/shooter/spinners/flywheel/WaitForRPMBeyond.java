@@ -3,11 +3,9 @@ package com.lynbrookrobotics.sixteen.tasks.shooter.spinners.flywheel;
 import com.lynbrookrobotics.potassium.tasks.FiniteTask;
 import com.lynbrookrobotics.sixteen.config.RobotHardware;
 
-import static com.lynbrookrobotics.sixteen.config.constants.ShooterFlywheelConstants.THRESHOLD_RPM;
-
 public class WaitForRPMBeyond extends FiniteTask {
-  double targetRPM;
-  RobotHardware hardware;
+  private double targetRPM;
+  private RobotHardware hardware;
 
   /**
    * Spins the spinner up to a given RPM and then ends.

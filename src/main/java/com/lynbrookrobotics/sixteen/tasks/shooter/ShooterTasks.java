@@ -49,7 +49,9 @@ public class ShooterTasks {
         hardware
     )).and(new SpinFlywheelAtRPM(
         true,
-        (ShooterFlywheelConstants.SHOOT_SHORT_RPM + ShooterFlywheelConstants.SHOOT_MID_RPM + ShooterFlywheelConstants.SHOOT_FAR_RPM) / 3.0d,
+        (ShooterFlywheelConstants.SHOOT_SHORT_RPM
+            + ShooterFlywheelConstants.SHOOT_MID_RPM
+            + ShooterFlywheelConstants.SHOOT_FAR_RPM) / 3D,
         shooterFlywheel,
         hardware
     )).and(new ForceIntakeBrake(intakeArm));

@@ -28,7 +28,7 @@ public class CollectMinMax extends ContinuousTask {
 
   @Override
   protected void update() {
-    double currentRPM = hardware.shooterSpinnersHardware.hallEffect.rawOutput();
+    double currentRPM = hardware.shooterSpinnersHardware.hallEffect.getRPM();
 
     min = Math.min(min, currentRPM);
     max = Math.max(min, currentRPM);

@@ -426,7 +426,7 @@ public class CoreEvents {
           dashboard.datasetGroup("shooter")
               .addDataset((new TimeSeriesNumeric<>(
                   "Flywheel RPM",
-                  hardware.shooterSpinnersHardware.hallEffect::rawOutput)));
+                  hardware.shooterSpinnersHardware.hallEffect::getRPM)));
 
           dashboard.datasetGroup("shooter")
               .addDataset(new TimeSeriesNumeric<>(

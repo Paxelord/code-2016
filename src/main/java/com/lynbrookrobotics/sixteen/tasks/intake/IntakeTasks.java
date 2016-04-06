@@ -16,16 +16,13 @@ import com.lynbrookrobotics.sixteen.config.constants.ShooterArmConstants;
 import com.lynbrookrobotics.sixteen.config.constants.ShooterFlywheelConstants;
 import com.lynbrookrobotics.sixteen.tasks.FixedTime;
 import com.lynbrookrobotics.sixteen.tasks.intake.arm.DirectIntakeArmSpeed;
-import com.lynbrookrobotics.sixteen.tasks.intake.arm.ForceIntakeBrake;
 import com.lynbrookrobotics.sixteen.tasks.intake.arm.KeepIntakeArmAtAngle;
 import com.lynbrookrobotics.sixteen.tasks.intake.arm.MoveIntakeArmToAngle;
 import com.lynbrookrobotics.sixteen.tasks.intake.roller.DirectIntakeRollerSpeed;
 import com.lynbrookrobotics.sixteen.tasks.lights.DirectLightsColor;
 import com.lynbrookrobotics.sixteen.tasks.shooter.arm.MoveShooterArmToAngle;
 import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.SpinUntilBall;
-import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.flywheel.DirectFlywheelSpeed;
 import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.flywheel.SpinFlywheelAtRPM;
-import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.flywheel.WaitForRPM;
 import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.flywheel.WaitForRPMBeyond;
 import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.secondary.SpinSecondary;
 
@@ -78,7 +75,8 @@ public class IntakeTasks {
                 ))
             )
         )).andUntilDone(new SpinFlywheelAtRPM(false,
-            -IntakeRollerConstants.FLYWHEEL_COLLECT_SPEED * ShooterFlywheelConstants.MAX_RPM, flywheel, hardware
+            -IntakeRollerConstants.FLYWHEEL_COLLECT_SPEED * ShooterFlywheelConstants.MAX_RPM,
+            flywheel, hardware
         ));
 
     return withoutSignal.then(new FixedTime(1000).andUntilDone(new DirectLightsColor(

@@ -4,8 +4,8 @@ import com.lynbrookrobotics.potassium.tasks.FiniteTask;
 import com.lynbrookrobotics.sixteen.components.drivetrain.Drivetrain;
 import com.lynbrookrobotics.sixteen.components.drivetrain.TurnToAngleController;
 import com.lynbrookrobotics.sixteen.config.RobotHardware;
-import com.lynbrookrobotics.sixteen.sensors.vision.VisionCalculation;
 import com.lynbrookrobotics.sixteen.sensors.digitalgyro.DigitalGyro;
+import com.lynbrookrobotics.sixteen.sensors.vision.VisionCalculation;
 
 public class AimForShot extends FiniteTask {
   private final DigitalGyro gyro;
@@ -13,6 +13,9 @@ public class AimForShot extends FiniteTask {
   private final RobotHardware hardware;
   private final Drivetrain drivetrain;
 
+  /**
+   * Constructs a task that aims the robot for a high goal shot.
+   */
   public AimForShot(RobotHardware hardware, Drivetrain drivetrain) {
     VisionCalculation.gyro = hardware.drivetrainHardware.mainGyro;
     this.gyro = hardware.drivetrainHardware.mainGyro;
@@ -21,10 +24,13 @@ public class AimForShot extends FiniteTask {
   }
 
   private TurnToAngleController control;
+  private int countdown = 0;
+
   @Override
   protected void startTask() {
     VisionCalculation.angularError = Double.POSITIVE_INFINITY;
     VisionCalculation.targetAngle = gyro.currentPosition().valueZ();
+    countdown = 100;
     control = new TurnToAngleController(
         () -> VisionCalculation.targetAngle,
         hardware
@@ -35,7 +41,11 @@ public class AimForShot extends FiniteTask {
   @Override
   protected void update() {
     if (Math.abs(VisionCalculation.angularError) <= 1 && Math.abs(control.difference()) <= 1) {
-      finished();
+      countdown--;
+
+      if (countdown <= 0) {
+        finished();
+      }
     }
   }
 

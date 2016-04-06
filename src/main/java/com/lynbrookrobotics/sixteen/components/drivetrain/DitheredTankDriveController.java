@@ -4,11 +4,9 @@ import com.lynbrookrobotics.sixteen.config.RobotHardware;
 import com.lynbrookrobotics.sixteen.config.constants.DrivetrainConstants;
 import com.lynbrookrobotics.sixteen.sensors.encoder.DrivetrainEncoder;
 
-import java.util.Optional;
-
-import javaslang.Tuple;
-import javaslang.Tuple2;
 import javaslang.control.Either;
+
+import java.util.Optional;
 
 public abstract class DitheredTankDriveController extends DrivetrainController {
   private final DrivetrainEncoder leftEncoder;
@@ -63,9 +61,11 @@ public abstract class DitheredTankDriveController extends DrivetrainController {
   }
 
   public abstract double leftTarget();
+
   public abstract double rightTarget();
 
   private int leftTick = 0;
+
   @Override
   public Optional<Double> leftPower() {
     leftTick = (leftTick + 1) % 8;
@@ -84,6 +84,7 @@ public abstract class DitheredTankDriveController extends DrivetrainController {
   }
 
   private int rightTick = 0;
+
   @Override
   public Optional<Double> rightPower() {
     rightTick = (rightTick + 1) % 8;
