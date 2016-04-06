@@ -1,5 +1,6 @@
 package com.lynbrookrobotics.sixteen.tasks;
 
+import com.lynbrookrobotics.potassium.tasks.ContinuousTask;
 import com.lynbrookrobotics.potassium.tasks.FiniteTask;
 import com.lynbrookrobotics.sixteen.components.drivetrain.Drivetrain;
 import com.lynbrookrobotics.sixteen.components.intake.arm.IntakeArm;
@@ -96,9 +97,9 @@ public class DefenseRoutines {
   /**
    * Creates a routine that prepares the robot to cross the low bar.
    */
-  public static FiniteTask crossLowBar(IntakeArm intakeArm,
-                                       ShooterArm shooterArm,
-                                       RobotHardware robotHardware) {
+  public static ContinuousTask prepareCrossLowBar(IntakeArm intakeArm,
+                                                  ShooterArm shooterArm,
+                                                  RobotHardware robotHardware) {
     return new MoveIntakeArmToAngle(
         IntakeArmConstants.LOWBAR_ANGLE,
         intakeArm,
@@ -113,6 +114,6 @@ public class DefenseRoutines {
             intakeArm,
             robotHardware
         )
-    ));
+    )).toContinuous();
   }
 }

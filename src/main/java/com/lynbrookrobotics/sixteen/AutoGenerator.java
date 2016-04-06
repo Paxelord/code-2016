@@ -312,20 +312,7 @@ public class AutoGenerator {
       );
 
       if (defense == Defense.ROCKWALL || defense == Defense.MOAT) {
-        driveUp = new FiniteTask() {
-          @Override
-          protected void startTask() {
-          }
-
-          @Override
-          protected void update() {
-            finished();
-          }
-
-          @Override
-          protected void endTask() {
-          }
-        };
+        driveUp = FiniteTask.empty();
       } else if (defense == Defense.LOWBAR) {
         driveUp = (new MoveIntakeArmToAngle(
             IntakeArmConstants.LOWBAR_ANGLE,
@@ -340,22 +327,31 @@ public class AutoGenerator {
 
       if (defense == Defense.DRAWBRIDGE || defense == Defense.SALLYPORT) {
         return driveUp.then(new DriveRelative(hardware, 0.5, MAX_FORWARD_SPEED, drivetrain));
-      } else {
-        return driveUp.then(cross(defense)).then(driveToShootingPosition(startingPosition).andUntilDone(ShooterTasks.prepareShootHigh(
-            shooterFlywheel,
-            shooterArm,
-            intakeArm,
-            hardware
-        ))).then(
-            new AimForShot(hardware, drivetrain).andUntilDone(ShooterTasks.prepareShootHigh(
+      } else if (defense == Defense.LOWBAR) {
+        return driveUp
+            .then(cross(defense))
+            .then(driveToShootingPosition(startingPosition)
+                .andUntilDone(ShooterTasks.prepareShootHigh(
+                    shooterFlywheel,
+                    shooterArm,
+                    intakeArm,
+                    hardware
+                ))).then(
+                new AimForShot(hardware, drivetrain).andUntilDone(ShooterTasks.prepareShootHigh(
+                    shooterFlywheel,
+                    shooterArm,
+                    intakeArm,
+                    hardware
+                ))
+            ).then(ShooterTasks.shootShort(
                 shooterFlywheel,
+                shooterSecondary,
                 shooterArm,
                 intakeArm,
                 hardware
-            ))
-        ).then(
-            ShooterTasks.shootShort(shooterFlywheel, shooterSecondary, shooterArm, intakeArm, hardware)
-        );
+            ));
+      } else {
+        return driveUp.then(cross(defense));
       }
     }
   }

@@ -116,12 +116,12 @@ public class VisionActor extends UntypedActor {
 
 
     // rotate by 180 b/c camera is upside down >:C
-    AffineTransform tx = new AffineTransform();
-    tx.rotate(Math.toRadians(180), ret.getWidth() / 2, ret.getHeight() / 2);
-
-    AffineTransformOp op = new AffineTransformOp(tx,
-        AffineTransformOp.TYPE_BILINEAR);
-    ret = op.filter(ret, null);
+//    AffineTransform tx = new AffineTransform();
+//    tx.rotate(Math.toRadians(180), ret.getWidth() / 2, ret.getHeight() / 2);
+//
+//    AffineTransformOp op = new AffineTransformOp(tx,
+//        AffineTransformOp.TYPE_BILINEAR);
+//    ret = op.filter(ret, null);
 
     return ret;
   }

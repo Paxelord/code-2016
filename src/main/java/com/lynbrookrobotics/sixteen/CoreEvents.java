@@ -20,7 +20,6 @@ import com.lynbrookrobotics.sixteen.config.constants.OperatorButtonAssignments;
 import com.lynbrookrobotics.sixteen.config.constants.RobotConstants;
 import com.lynbrookrobotics.sixteen.config.constants.ShooterArmConstants;
 import com.lynbrookrobotics.sixteen.sensors.potentiometer.Potentiometer;
-import com.lynbrookrobotics.sixteen.sensors.vision.VisionCalculation;
 import com.lynbrookrobotics.sixteen.tasks.DefenseRoutines;
 import com.lynbrookrobotics.sixteen.tasks.drivetrain.AimForShot;
 import com.lynbrookrobotics.sixteen.tasks.intake.IntakeTasks;
@@ -237,7 +236,7 @@ public class CoreEvents {
               hardware));
 
       controls.driverStick
-          .onHold(DriverButtonAssignments.SHOOT_MID)
+          .onHold(OperatorButtonAssignments.SHOOT_MID)
           .forEach(ShooterTasks.shootMid(
               shooterFlywheel,
               shooterSecondary,
@@ -259,11 +258,12 @@ public class CoreEvents {
             hardware,
             drivetrain
         );
+
         controls.operatorStick
             .onHold(OperatorButtonAssignments.CHEVAL)
             .forEach(aim);
-      } catch (Throwable e) {
-        e.printStackTrace();
+      } catch (Throwable exception) {
+        exception.printStackTrace();
       }
     }
 
@@ -316,16 +316,8 @@ public class CoreEvents {
     }
 
     if (RobotConstants.HAS_DRIVETRAIN && RobotConstants.HAS_INTAKE && RobotConstants.HAS_SHOOTER) {
-//      controls.operatorStick
-//          .onPress(OperatorButtonAssignments.CHEVAL)
-//          .forEach(DefenseRoutines.crossChevalDeFrise(
-//              intakeArm,
-//              hardware,
-//              drivetrain
-//          ));
-
       controls.operatorStick
-          .onPress(OperatorButtonAssignments.PORTCULLIS)
+          .onHold(OperatorButtonAssignments.PORTCULLIS)
           .forEach(DefenseRoutines.preparePortcullis(
               intakeArm,
               shooterArm,
@@ -334,17 +326,12 @@ public class CoreEvents {
 
       controls.operatorStick
           .onHold(OperatorButtonAssignments.LOWBAR)
-          .forEach(DefenseRoutines.crossLowBar(
+          .forEach(DefenseRoutines.prepareCrossLowBar(
               intakeArm,
               shooterArm,
               hardware
           ));
     }
-
-    // Abort on button press
-//    controls.operatorStick
-//        .onPress(OperatorButtonAssignments.ABORT_CURRENT_TASK)
-//        .forEach(Task::abortCurrentTask);
 
     // AUTO
     AutoGenerator generator = new AutoGenerator(
