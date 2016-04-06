@@ -105,14 +105,15 @@ public class CoreEvents {
         InGameState.GameState.ENABLED
     );
 
-    this.transportTask = new MoveIntakeArmToAngle(
+    this.transportTask = new MoveShooterArmToAngle(
+        ShooterArmConstants.TRANSPORT_SETPOINT,
+        hardware,
+        shooterArm)
+      .then(
+        new MoveIntakeArmToAngle(
         IntakeArmConstants.TRANSPORT_SETPOINT,
         intakeArm,
         hardware
-    ).and(new MoveShooterArmToAngle(
-        ShooterArmConstants.TRANSPORT_SETPOINT,
-        hardware,
-        shooterArm
     ));
 
     initEventMappings();
