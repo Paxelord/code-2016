@@ -60,7 +60,7 @@ public class IntakeArm extends Component<IntakeArmController> {
     if (shooterPosition > ShooterArmConstants.LOW_THRESHOLD
         && intakePosition > IntakeArmConstants.SHOOTER_LOW_REVERSE_LIMIT
         && output < 0) {
-      System.out.println("Not allowing reverse because shooter is stowed");
+      System.out.println("Not allowing reverse because shooter is low");
       output = 0;
     }
 
