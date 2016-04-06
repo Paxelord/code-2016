@@ -14,6 +14,6 @@ public class VisionConstants {
   public static final double CAMERA_HEIGHT = 9 / 12D;
   public static final double CAMERA_TOWER_HEIGHT = TOWER_HEIGHT - CAMERA_HEIGHT;
 
-  public static final double CAMERA_TO_MIDDLE_HORIZONTAL = 11D/12;
+  public static final double CAMERA_TO_MIDDLE_HORIZONTAL = -11D/12;
   public static final double MIDDLE_TO_CAMERA_FORWARD = 10/12D;
 }
