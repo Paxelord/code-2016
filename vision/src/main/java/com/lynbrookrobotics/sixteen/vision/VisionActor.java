@@ -7,6 +7,8 @@ import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
@@ -42,7 +44,7 @@ public class VisionActor extends UntypedActor {
     mgr.tell(UdpMessage.simpleSender(), getSelf());
 
     FunkyDashboard dashboard = new FunkyDashboard();
-    dashboard.bindRoute("tarsier.local", 8080, getContext().system());
+    dashboard.bindRoute("0.0.0.0", 8080, getContext().system());
     dashboard.datasetGroup("vision").addDataset(
         new ImageStream(
             "Vision Output",
@@ -90,6 +92,8 @@ public class VisionActor extends UntypedActor {
     };
   }
 
+
+
   private BufferedImage matToBufferedImage(Mat frame) {
     //Mat() to BufferedImage
     int type = 0;
@@ -109,6 +113,15 @@ public class VisionActor extends UntypedActor {
     Graphics2D g2d = ret.createGraphics();
     g2d.drawImage(resize, 0, 0, null);
     g2d.dispose();
+
+
+    // rotate by 180 b/c camera is upside down >:C
+    AffineTransform tx = new AffineTransform();
+    tx.rotate(Math.toRadians(180), ret.getWidth() / 2, ret.getHeight() / 2);
+
+    AffineTransformOp op = new AffineTransformOp(tx,
+        AffineTransformOp.TYPE_BILINEAR);
+    ret = op.filter(ret, null);
 
     return ret;
   }
