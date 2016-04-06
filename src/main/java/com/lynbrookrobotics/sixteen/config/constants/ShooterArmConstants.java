@@ -20,7 +20,7 @@ public class ShooterArmConstants {
 
   @ConfigLoaded public static final double MAX_SPEED = config();
 
-  public static final double P_GAIN = 1.0 / 45D;
+  public static final double P_GAIN = 1.0 / 30D;
 
   public static final double I_GAIN = 0.0d;
   public static final int I_MEMORY = 1;
