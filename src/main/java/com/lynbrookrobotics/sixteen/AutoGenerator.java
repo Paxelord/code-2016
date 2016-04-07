@@ -64,21 +64,6 @@ public class AutoGenerator {
     this.shooterSecondary = shooterSecondary;
   }
 
-  private FiniteTask immediateEnd = new FiniteTask() {
-    @Override
-    protected void startTask() {
-    }
-
-    @Override
-    protected void update() {
-      finished();
-    }
-
-    @Override
-    protected void endTask() {
-    }
-  };
-
   private FiniteTask cross(Defense defense) {
     if (defense == Defense.PORTCULLIS) {
       return DefenseRoutines.crossPortcullis(
@@ -104,9 +89,9 @@ public class AutoGenerator {
           drivetrain
       );
     } else if (defense == Defense.DRAWBRIDGE) {
-      return immediateEnd;
+      return FiniteTask.empty();
     } else if (defense == Defense.SALLYPORT) {
-      return immediateEnd;
+      return FiniteTask.empty();
     } else if (defense == Defense.ROCKWALL) {
       return new DriveRelative(
           hardware,
@@ -311,18 +296,8 @@ public class AutoGenerator {
           drivetrain
       );
 
-      if (defense == Defense.ROCKWALL || defense == Defense.MOAT) {
+      if (defense == Defense.ROCKWALL || defense == Defense.MOAT || defense == Defense.LOWBAR) {
         driveUp = FiniteTask.empty();
-      } else if (defense == Defense.LOWBAR) {
-        driveUp = (new MoveIntakeArmToAngle(
-            IntakeArmConstants.LOWBAR_ANGLE,
-            intakeArm,
-            hardware
-        ).and(new MoveShooterArmToAngle(
-            ShooterArmConstants.FORWARD_LIMIT,
-            hardware,
-            shooterArm
-        )));
       }
 
       if (defense == Defense.DRAWBRIDGE || defense == Defense.SALLYPORT) {

@@ -6,6 +6,7 @@ import com.lynbrookrobotics.sixteen.components.drivetrain.Drivetrain;
 import com.lynbrookrobotics.sixteen.components.intake.arm.IntakeArm;
 import com.lynbrookrobotics.sixteen.components.shooter.arm.ShooterArm;
 import com.lynbrookrobotics.sixteen.config.RobotHardware;
+import com.lynbrookrobotics.sixteen.config.constants.DrivetrainConstants;
 import com.lynbrookrobotics.sixteen.config.constants.IntakeArmConstants;
 import com.lynbrookrobotics.sixteen.config.constants.ShooterArmConstants;
 import com.lynbrookrobotics.sixteen.tasks.drivetrain.DriveRelative;
@@ -47,8 +48,8 @@ public class DefenseRoutines {
                                            RobotHardware robotHardware) {
     return preparePortcullis(intakeArm, shooterArm, robotHardware).then(new DriveRelative(
         robotHardware,
-        IntakeArmConstants.PORTCULLIS_DRIVE_DISTANCE,
-        0.4,
+        DrivetrainConstants.LOWBAR_DISTANCE,
+        0.25,
         drivetrain
     ));
   }
@@ -65,14 +66,10 @@ public class DefenseRoutines {
                                               RobotHardware robotHardware,
                                               Drivetrain drivetrain) {
     return new MoveIntakeArmToAngle(
-        IntakeArmConstants.CHEVAL_HIGH_POSITION,
-        intakeArm,
-        robotHardware
-    ).then(new MoveIntakeArmToAngle(
         IntakeArmConstants.CHEVAL_LOW_POSITION,
         intakeArm,
         robotHardware
-    )).then(new FixedTime(500).andUntilDone(new KeepIntakeArmAtAngle(
+    ).then(new FixedTime(500).andUntilDone(new KeepIntakeArmAtAngle(
         IntakeArmConstants.CHEVAL_LOW_POSITION,
         intakeArm,
         robotHardware

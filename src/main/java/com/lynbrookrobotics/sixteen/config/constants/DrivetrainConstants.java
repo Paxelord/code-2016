@@ -12,7 +12,6 @@ public class DrivetrainConstants {
 
   public static final double WHEEL_DIAMETER = 1D / 2; // 6 in = 0.5 ft
   public static final double GEAR_REDUCTION = 2.13;
-  public static final double FT_TO_ENC = (360D / (Math.PI * WHEEL_DIAMETER)) * GEAR_REDUCTION;
   @ConfigLoaded public static final double MAX_SPEED_FORWARD = config();
 
   @ConfigLoaded public static final double MAX_ROTATIONAL_SPEED = config();
@@ -23,14 +22,10 @@ public class DrivetrainConstants {
       (100 - ShootingPositionConstants.DISTANCE_WHEEL_BOTTOM) / 12D;
   public static final double DEFENSE_RAMP_DISTANCE = 45 / 12D; // 72 inches line to ramp
 
-  public static final double MOAT_FORWARD_DISTANCE =
-      (74 + ShootingPositionConstants.DISTANCE_WHEEL_BOTTOM) / 12D;
-  public static final double RAMPARTS_FORWARD_DISTANCE =
-      (50 + ShootingPositionConstants.DISTANCE_WHEEL_BOTTOM) / 12D;
-  public static final double ROCKWALL_FORWARD_DISTANCE =
-      (51 + ShootingPositionConstants.DISTANCE_WHEEL_BOTTOM) / 12D;
-  public static final double ROUGHTERRAIN_FORWARD_DISTANCE =
-      (51 + ShootingPositionConstants.DISTANCE_WHEEL_BOTTOM) / 12D;
+  public static final double MOAT_FORWARD_DISTANCE = 103 / 12D;
+  public static final double RAMPARTS_FORWARD_DISTANCE = 79 / 12D;
+  public static final double ROCKWALL_FORWARD_DISTANCE = 80 / 12D;
+  public static final double ROUGHTERRAIN_FORWARD_DISTANCE = 80 / 12D;
 
   public static final double LOWBAR_DISTANCE = 70 / 12D;
 
