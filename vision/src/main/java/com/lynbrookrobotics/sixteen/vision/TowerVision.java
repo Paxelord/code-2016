@@ -39,10 +39,10 @@ public class TowerVision {
     for (MatOfPoint matOfPoint: contours) {
       Rect rec = Imgproc.boundingRect(matOfPoint);
 
-      double percent = Imgproc.contourArea(matOfPoint) / rec.area();
+//      double percent = Imgproc.contourArea(matOfPoint) / rec.area();
       boolean isTower = rec.area() < 100000 &&
-          rec.width > rec.height * 0.75 &&
-          percent >= 0.1 && percent <= 0.5;
+          rec.width > rec.height * 0.75/* &&
+          percent >= 0.1 && percent <= 0.5*/;
       if (isTower && (biggest == null || rec.area() > biggest.area())) {
         biggest = rec;
       }

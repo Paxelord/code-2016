@@ -22,7 +22,7 @@ public class DrivetrainPipeline {
     this.wheelDiameter = wheelDiameter;
   }
 
-  private double rotation() {
+  public double rotation() {
     return encoderAngle.get() / gearReduction;
   }
 

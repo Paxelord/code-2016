@@ -235,7 +235,7 @@ public class CoreEvents {
               intakeArm,
               hardware));
 
-      controls.driverStick
+      controls.operatorStick
           .onHold(OperatorButtonAssignments.SHOOT_MID)
           .forEach(ShooterTasks.shootMid(
               shooterFlywheel,
@@ -268,17 +268,6 @@ public class CoreEvents {
     }
 
     if (RobotConstants.HAS_INTAKE) {
-      controls.operatorStick
-          .onHold(OperatorButtonAssignments.COLLECT)
-          .forEach(IntakeTasks.collect(
-              intakeArm,
-              intakeRoller,
-              shooterArm,
-              shooterFlywheel,
-              shooterSecondary,
-              hardware
-          ));
-
       controls.driverStick
           .onHold(DriverButtonAssignments.COLLECT)
           .forEach(IntakeTasks.collect(
@@ -399,8 +388,18 @@ public class CoreEvents {
 
           dashboard.datasetGroup("drivetrain")
               .addDataset(new TimeSeriesNumeric<>(
+                  "Right Wheels Rotation",
+                  hardware.drivetrainHardware.rightEncoder.position::rotation));
+
+          dashboard.datasetGroup("drivetrain")
+              .addDataset(new TimeSeriesNumeric<>(
                   "Right Encoder Position",
                   hardware.drivetrainHardware.rightEncoder.position::ground));
+
+          dashboard.datasetGroup("drivetrain")
+              .addDataset(new TimeSeriesNumeric<>(
+                  "Left Wheels Rotation",
+                  hardware.drivetrainHardware.leftEncoder.position::rotation));
 
           dashboard.datasetGroup("drivetrain")
               .addDataset(new TimeSeriesNumeric<>(

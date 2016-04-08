@@ -32,7 +32,7 @@ public class VisionActor extends UntypedActor {
   private final VideoCapture camera = new VideoCapture(0);
 
   public VisionActor() {
-    this(new InetSocketAddress("roborio-846-frc.local", 8846));
+    this(new InetSocketAddress("10.8.46.2", 8846));
   }
 
   BufferedImage lastImage = null;

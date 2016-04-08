@@ -19,6 +19,7 @@ import com.lynbrookrobotics.sixteen.tasks.intake.arm.KeepIntakeArmAtAngle;
 import com.lynbrookrobotics.sixteen.tasks.intake.arm.MoveIntakeArmToAngle;
 import com.lynbrookrobotics.sixteen.tasks.intake.roller.DirectIntakeRollerSpeed;
 import com.lynbrookrobotics.sixteen.tasks.lights.DirectLightsColor;
+import com.lynbrookrobotics.sixteen.tasks.shooter.arm.KeepShooterArmToAngle;
 import com.lynbrookrobotics.sixteen.tasks.shooter.arm.MoveShooterArmToAngle;
 import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.flywheel.CollectMinMax;
 import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.flywheel.DirectFlywheelSpeed;
@@ -81,9 +82,13 @@ public class ShooterTasks {
           ShooterConstants.BALL_PROXIMITY_THRESHOLD,
           shooterSecondary,
           hardware
-        )).then(new FixedTime(1000).andUntilDone(new SpinSecondary(
+        ).then(new FixedTime(1000).andUntilDone(new SpinSecondary(
             () -> ShooterFlywheelConstants.SHOOT_SECONDARY_POWER,
             shooterSecondary
+        ))).andUntilDone(new KeepShooterArmToAngle(
+            ShooterArmConstants.SHOOT_SHORT_ANGLE,
+            hardware,
+            shooterArm
         )));
 
     return withoutFlywheel.andUntilDone(new SpinFlywheelAtRPM(
@@ -105,7 +110,7 @@ public class ShooterTasks {
    * @param hardware Robot Hardware
    * @return FiniteTask for shooting
    */
-  public static FiniteTask   shootMid(ShooterFlywheel shooterFlywheel,
+  public static FiniteTask shootMid(ShooterFlywheel shooterFlywheel,
                                       ShooterSecondary shooterSecondary,
                                       ShooterArm shooterArm,
                                       IntakeArm intakeArm,
@@ -122,9 +127,13 @@ public class ShooterTasks {
             ShooterConstants.BALL_PROXIMITY_THRESHOLD,
             shooterSecondary,
             hardware
-        )).then(new FixedTime(1000).andUntilDone(new SpinSecondary(
+        ).then(new FixedTime(1000).andUntilDone(new SpinSecondary(
             () -> ShooterFlywheelConstants.SHOOT_SECONDARY_POWER,
             shooterSecondary
+        ))).andUntilDone(new KeepShooterArmToAngle(
+            ShooterArmConstants.SHOOT_MID_ANGLE,
+            hardware,
+            shooterArm
         )));
 
     return withoutFlywheel.andUntilDone(new SpinFlywheelAtRPM(
@@ -166,7 +175,11 @@ public class ShooterTasks {
         ).then(new FixedTime(1000).andUntilDone(new SpinSecondary(
             () -> ShooterFlywheelConstants.SHOOT_SECONDARY_POWER,
             shooterSecondary
-        ))).andUntilDone(new CollectMinMax(hardware)));
+        ))).andUntilDone(new CollectMinMax(hardware).and(new KeepShooterArmToAngle(
+            ShooterArmConstants.SHOOT_FAR_ANGLE,
+            hardware,
+            shooterArm
+        ))));
 
     return withoutFlywheel.andUntilDone(new SpinFlywheelAtRPM(
         true,

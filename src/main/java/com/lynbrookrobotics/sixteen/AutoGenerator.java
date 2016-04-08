@@ -249,20 +249,7 @@ public class AutoGenerator {
    */
   public FiniteTask generateRoutine(Defense defense, int startingPosition) {
     if (startingPosition < 0) {
-      return new FiniteTask() {
-        @Override
-        protected void startTask() {
-        }
-
-        @Override
-        protected void update() {
-          finished();
-        }
-
-        @Override
-        protected void endTask() {
-        }
-      };
+      return FiniteTask.empty();
     } else if (startingPosition == 0) {
       return new DriveRelative(
           hardware,
@@ -301,7 +288,7 @@ public class AutoGenerator {
       }
 
       if (defense == Defense.DRAWBRIDGE || defense == Defense.SALLYPORT) {
-        return driveUp.then(new DriveRelative(hardware, 0.5, MAX_FORWARD_SPEED, drivetrain));
+        return driveUp.then(new DriveRelative(hardware, 0.5, 0.1, drivetrain));
       } else if (defense == Defense.LOWBAR) {
         return driveUp
             .then(cross(defense))
@@ -318,7 +305,7 @@ public class AutoGenerator {
                     intakeArm,
                     hardware
                 ))
-            ).then(ShooterTasks.shootShort(
+            ).then(ShooterTasks.shootMid(
                 shooterFlywheel,
                 shooterSecondary,
                 shooterArm,

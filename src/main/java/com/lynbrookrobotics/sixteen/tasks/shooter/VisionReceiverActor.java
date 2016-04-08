@@ -24,7 +24,7 @@ public class VisionReceiverActor extends UntypedActor {
 
     final ActorRef mgr = Udp.get(getContext().system()).getManager();
     mgr.tell(
-        UdpMessage.bind(getSelf(), new InetSocketAddress("roborio-846-frc.local", 8846)),
+        UdpMessage.bind(getSelf(), new InetSocketAddress("10.8.46.2", 8846)),
         getSelf());
   }
 

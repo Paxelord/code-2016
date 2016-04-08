@@ -3,6 +3,8 @@ enablePlugins(FRCPlugin, TravisCheckStylePlugin)
 organization := "com.lynbrookrobotics"
 teamNumber := 846
 
+offline := true
+
 name := "code-2016"
 
 version := "0.3.0-SNAPSHOT"
