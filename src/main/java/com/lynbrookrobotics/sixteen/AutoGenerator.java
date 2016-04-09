@@ -16,6 +16,7 @@ import com.lynbrookrobotics.sixteen.tasks.DefenseRoutines;
 import com.lynbrookrobotics.sixteen.tasks.FixedTime;
 import com.lynbrookrobotics.sixteen.tasks.drivetrain.AimForShot;
 import com.lynbrookrobotics.sixteen.tasks.drivetrain.ContinuousStraightDrive;
+import com.lynbrookrobotics.sixteen.tasks.drivetrain.DriveAbsolute;
 import com.lynbrookrobotics.sixteen.tasks.drivetrain.DriveRelative;
 import com.lynbrookrobotics.sixteen.tasks.drivetrain.DriveRelativeAndAim;
 import com.lynbrookrobotics.sixteen.tasks.drivetrain.TurnByAngle;
@@ -65,6 +66,7 @@ public class AutoGenerator {
   }
 
   private FiniteTask cross(Defense defense) {
+    double start = hardware.drivetrainHardware.currentDistance();
     if (defense == Defense.PORTCULLIS) {
       return DefenseRoutines.crossPortcullis(
           intakeArm,
@@ -107,18 +109,23 @@ public class AutoGenerator {
           drivetrain
       );
     } else {
-      return (new MoveIntakeArmToAngle(
+      return (new DriveAbsolute(
+          hardware,
+          start - DrivetrainConstants.DEFENSE_RAMP_DISTANCE,
+          0.4,
+          drivetrain
+      ).and(new MoveIntakeArmToAngle(
           IntakeArmConstants.LOWBAR_ANGLE,
           intakeArm,
           hardware
-      ).and(new MoveShooterArmToAngle(
+      ).then(new MoveShooterArmToAngle(
           ShooterArmConstants.FORWARD_LIMIT,
           hardware,
           shooterArm
-      ))).then(new DriveRelative(
+      )))).then(new DriveAbsolute(
           hardware,
-          DrivetrainConstants.DEFENSE_RAMP_DISTANCE + DrivetrainConstants.LOWBAR_DISTANCE,
-          0.25,
+          start - DrivetrainConstants.DEFENSE_RAMP_DISTANCE - DrivetrainConstants.LOWBAR_DISTANCE,
+          0.3,
           drivetrain
       ).andUntilDone(new KeepIntakeArmAtAngle(
           IntakeArmConstants.LOWBAR_ANGLE,
@@ -128,20 +135,22 @@ public class AutoGenerator {
     }
   }
 
-  private double MAX_FORWARD_SPEED = 0.5;
+  private double MAX_FORWARD_SPEED = 0.2;
 
   private FiniteTask driveToShootingPosition(int startingPosition) {
+    double start = hardware.drivetrainHardware.currentDistance();
     if (startingPosition == 1) {
-      return new DriveRelative(
+      return new DriveAbsolute(
           hardware,
-          ShootingPositionConstants.ONE_FORWARD,
+          start - DrivetrainConstants.DEFENSE_RAMP_DISTANCE - DrivetrainConstants.LOWBAR_DISTANCE + ShootingPositionConstants.ONE_FORWARD,
           MAX_FORWARD_SPEED,
+          true,
           drivetrain
       ).then(new TurnByAngle(
           ShootingPositionConstants.ONE_TURN,
           hardware,
           drivetrain
-      ).then(new DriveRelativeAndAim(
+      ).then(new DriveRelative(
           hardware,
           ShootingPositionConstants.ONE_FORWARD_SECOND,
           MAX_FORWARD_SPEED,

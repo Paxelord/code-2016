@@ -12,9 +12,9 @@ import com.lynbrookrobotics.sixteen.sensors.proximitysensor.ProximitySensor;
 
 public class SpinUntilBall extends FiniteTask {
   ProximitySensor sensor;
-  ShooterFlywheelController controllerFlywheel;
+//  ShooterFlywheelController controllerFlywheel;
   ShooterSecondaryController controllerSecondary;
-  ShooterFlywheel shooterFlywheel;
+//  ShooterFlywheel shooterFlywheel;
   ShooterSecondary shooterSecondary;
 
   /**
@@ -27,31 +27,31 @@ public class SpinUntilBall extends FiniteTask {
                        ShooterFlywheel shooterFlywheel,
                        ShooterSecondary shooterSecondary) {
     this.sensor = hardware.shooterSpinnersHardware.proximitySensor;
-    this.controllerFlywheel = ShooterFlywheelController.of(
-        () -> -0.75);
+//    this.controllerFlywheel = ShooterFlywheelController.of(
+//        () -> -0.75);
     this.controllerSecondary = ShooterSecondaryController.of(
         () -> ShooterFlywheelConstants.INTAKE_POWER);
-    this.shooterFlywheel = shooterFlywheel;
+//    this.shooterFlywheel = shooterFlywheel;
     this.shooterSecondary = shooterSecondary;
   }
 
 
   @Override
   protected void startTask() {
-    shooterFlywheel.setController(controllerFlywheel);
+//    shooterFlywheel.setController(controllerFlywheel);
     shooterSecondary.setController(controllerSecondary);
   }
 
   @Override
   protected void update() {
-    if (false && sensor.isWithinDistance(ShooterConstants.BALL_PROXIMITY_THRESHOLD)) {
+    if (sensor.isWithinDistance(ShooterConstants.BALL_PROXIMITY_THRESHOLD)) {
       finished();
     }
   }
 
   @Override
   protected void endTask() {
-    shooterFlywheel.resetToDefault();
+//    shooterFlywheel.resetToDefault();
     shooterSecondary.resetToDefault();
   }
 }

@@ -41,7 +41,7 @@ public class ShooterTasks {
                                                 IntakeArm intakeArm,
                                                 RobotHardware hardware) {
     return new MoveShooterArmToAngle(
-        ShooterArmConstants.SHOOT_SHORT_ANGLE,
+        ShooterArmConstants.SHOOT_MID_ANGLE,
         hardware,
         shooterArm
     ).toContinuous().and(new KeepIntakeArmAtAngle(

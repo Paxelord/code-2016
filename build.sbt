@@ -32,6 +32,8 @@ libraryDependencies += "junit" % "junit" % "4.12"
 
 libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test"
 
+staticIP := true
+
 import com.etsy.sbt.checkstyle._
 Checkstyle.xsltTransformations := {
   Some(Set(XSLTSettings(baseDirectory(_ / "checkstyle-noframes.xsl").value, target(_ / "checkstyle-report.html").value)))

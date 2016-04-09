@@ -27,6 +27,7 @@ public class TurnByAngle extends FiniteTask {
   }
 
   private int goodTicks = 0;
+  private long startTime;
 
   @Override
   protected void startTask() {
@@ -34,14 +35,17 @@ public class TurnByAngle extends FiniteTask {
     drivetrain.setController(controller);
 
     goodTicks = 0;
+    startTime = System.currentTimeMillis();
   }
 
   @Override
   protected void update() {
-    if (Math.abs(controller.difference()) < 3) {
+    if (System.currentTimeMillis() >= startTime + 2000) {
+      finished();
+    } else if (Math.abs(controller.difference()) <= 3) {
       goodTicks++;
 
-      if (goodTicks >= 50) {
+      if (goodTicks >= 25) {
         finished();
       }
     }

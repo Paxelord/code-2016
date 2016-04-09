@@ -101,7 +101,7 @@ public class DefenseRoutines {
         IntakeArmConstants.LOWBAR_ANGLE,
         intakeArm,
         robotHardware
-    ).and(new MoveShooterArmToAngle(
+    ).then(new MoveShooterArmToAngle(
         ShooterArmConstants.FORWARD_LIMIT,
         robotHardware,
         shooterArm

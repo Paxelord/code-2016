@@ -34,7 +34,7 @@ public class WaitForRPM extends FiniteTask {
 
     double error = Math.abs(curRPM - targetRPM);
 
-    if (error <= THRESHOLD_RPM) {
+    if (error <= THRESHOLD_RPM || System.currentTimeMillis() > startTime + 10000) {
       finished();
     }
   }

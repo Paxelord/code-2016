@@ -30,7 +30,7 @@ public class WaitForRPMBeyond extends FiniteTask {
       hardware.shooterSpinnersHardware.hallEffect.markNotWorking();
     }
 
-    if (curRPM > Math.abs(targetRPM)) {
+    if (curRPM > Math.abs(targetRPM) || System.currentTimeMillis() > startTime + 10000) {
       finished();
     }
   }

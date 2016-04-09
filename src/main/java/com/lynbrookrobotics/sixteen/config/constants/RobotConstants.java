@@ -92,7 +92,7 @@ public class RobotConstants {
         boolean onRobot = System.getProperty("user.name").equals("lvuser");
         FunkyDashboard ret = new FunkyDashboard();
         if (onRobot) {
-          ret.bindRoute("roborio-846-frc.local", 8080, system);
+          ret.bindRoute("0.0.0.0", 8080, system);
         } else {
           ret.bindRoute("localhost", 8080, system);
         }

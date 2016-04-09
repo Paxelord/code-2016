@@ -22,7 +22,7 @@ public class Potentiometer {
   }
 
   public double rawVoltage() {
-    return (input.getAverageVoltage() / baseline.getAverageVoltage()) * 5D;
+    return input.getAverageVoltage();
   }
 
   /**

@@ -30,6 +30,8 @@ public class MoveShooterArmToAngle extends FiniteTask {
     this.shooterArm = shooterArm;
   }
 
+  private int goodTicks = 0;
+
   /**
    * Creates a ShooterArmPositionController object with
    * the target angle and robotHardware,
@@ -38,6 +40,7 @@ public class MoveShooterArmToAngle extends FiniteTask {
   @Override
   protected void startTask() {
     shooterArm.setController(controller);
+    goodTicks = 0;
   }
 
   /**
@@ -48,7 +51,11 @@ public class MoveShooterArmToAngle extends FiniteTask {
   @Override
   protected void update() {
     if (Math.abs(pot.getAngle() - angle) < ShooterArmConstants.SHOOTER_ARM_ERROR) {
-      finished();
+      goodTicks++;
+
+      if (goodTicks >= 12) {
+        finished();
+      }
     }
   }
 

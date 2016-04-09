@@ -24,6 +24,11 @@ public class ShooterArmPositionController extends ShooterArmController {
    */
   @Override
   public double armMotorSpeed() {
-    return pid.get();
+    double out = pid.get();
+    if (Math.abs(pid.difference()) < 10) {
+      out = out/2;
+    }
+
+    return out;
   }
 }
