@@ -118,7 +118,7 @@ public class AutoGenerator {
           IntakeArmConstants.LOWBAR_ANGLE,
           intakeArm,
           hardware
-      ).then(new MoveShooterArmToAngle(
+      ).and(new MoveShooterArmToAngle(
           ShooterArmConstants.FORWARD_LIMIT,
           hardware,
           shooterArm
@@ -135,7 +135,7 @@ public class AutoGenerator {
     }
   }
 
-  private double MAX_FORWARD_SPEED = 0.2;
+  private double MAX_FORWARD_SPEED = 0.5;
 
   private FiniteTask driveToShootingPosition(int startingPosition) {
     double start = hardware.drivetrainHardware.currentDistance();
@@ -299,7 +299,7 @@ public class AutoGenerator {
       if (defense == Defense.DRAWBRIDGE || defense == Defense.SALLYPORT) {
         return driveUp.then(new DriveRelative(hardware, 0.5, 0.1, drivetrain));
       } else if (defense == Defense.LOWBAR) {
-        return driveUp
+        return ((driveUp
             .then(cross(defense))
             .then(driveToShootingPosition(startingPosition)
                 .andUntilDone(ShooterTasks.prepareShootHigh(
@@ -314,7 +314,7 @@ public class AutoGenerator {
                     intakeArm,
                     hardware
                 ))
-            ).then(ShooterTasks.shootMid(
+            )).withTimeout(13000)).then(ShooterTasks.shootMid(
                 shooterFlywheel,
                 shooterSecondary,
                 shooterArm,

@@ -36,7 +36,7 @@ public class DriveStraightController extends ClosedArcadeDriveController {
     this.forwardControl = new PID(
         hardware.drivetrainHardware::currentDistance,
         targetDistance)
-        .withP(1D / 1D);
+        .withP(0.5D / 1D);
 
     this.turningControl = new PID(
         () -> hardware.drivetrainHardware.mainGyro.currentPosition().valueZ(),
