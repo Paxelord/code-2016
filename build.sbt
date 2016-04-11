@@ -3,11 +3,9 @@ enablePlugins(FRCPlugin, TravisCheckStylePlugin)
 organization := "com.lynbrookrobotics"
 teamNumber := 846
 
-offline := true
-
 name := "code-2016"
 
-version := "0.3.0-SNAPSHOT"
+version := "0.3.0"
 
 robotClass := "com.lynbrookrobotics.sixteen.LaunchRobot"
 
@@ -31,8 +29,6 @@ libraryDependencies += "org.mockito" % "mockito-core" % "1.10.19" % Test
 libraryDependencies += "junit" % "junit" % "4.12"
 
 libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test"
-
-staticIP := true
 
 import com.etsy.sbt.checkstyle._
 Checkstyle.xsltTransformations := {
