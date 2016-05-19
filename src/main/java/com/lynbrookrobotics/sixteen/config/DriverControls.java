@@ -26,9 +26,9 @@ public class DriverControls {
                         Joystick operatorStick) {
     this.driverStation = driverStation;
 
-    this.driverStick = new PollingJoystick(driverStick);
-    this.driverWheel = new PollingJoystick(driverWheel);
-    this.operatorStick = new PollingJoystick(operatorStick);
+    this.driverStick = new PollingJoystick(driverStick, 0.01);
+    this.driverWheel = new PollingJoystick(driverWheel, 0.01);
+    this.operatorStick = new PollingJoystick(operatorStick, 0.01);
   }
 
   /**

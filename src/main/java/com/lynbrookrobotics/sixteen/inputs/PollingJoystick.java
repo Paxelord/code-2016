@@ -11,11 +11,14 @@ public class PollingJoystick {
   private double z;
 
   private double inputScalingFactor = 1D;
+  private final double deadband;
 
   public final Joystick underlying;
 
-  public PollingJoystick(Joystick underlying) {
+
+  public PollingJoystick(Joystick underlying, double deadband) {
     this.underlying = underlying;
+    this.deadband = deadband;
   }
 
   /**
@@ -28,16 +31,16 @@ public class PollingJoystick {
   }
 
   public synchronized double getX() {
-    return x;
+    return Math.abs(x) <= deadband ? 0.0 : x;
   }
 
 
   public synchronized double getY() {
-    return y;
+    return Math.abs(y) <= deadband ? 0.0 : y;
   }
 
   public synchronized double getZ() {
-    return z;
+    return Math.abs(z) <= deadband ? 0.0 : z;
   }
 
   /**
