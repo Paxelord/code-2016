@@ -2,12 +2,15 @@ package com.lynbrookrobotics.sixteen.sensors.digitalgyro;
 
 import com.lynbrookrobotics.sixteen.config.constants.RobotConstants;
 import com.lynbrookrobotics.sixteen.sensors.Value3D;
+import com.lynbrookrobotics.sixteen.sensors.imu.Value3DLogEntry;
 
 import java.util.ArrayList;
 
 public abstract class DigitalGyro {
   Value3D currentVelocity = new Value3D(0, 0, 0);
   Value3D currentPosition = new Value3D(0, 0, 0);
+
+  ArrayList<Value3DLogEntry> angleLog;
 
   Value3D currentDrift;
 
@@ -56,6 +59,7 @@ public abstract class DigitalGyro {
             trapaziodalIntegration(currentVelocity.valueY(), previousVelocity.valueY()),
             trapaziodalIntegration(currentVelocity.valueZ(), previousVelocity.valueZ())
         ));
+    angleLog.add(new Value3DLogEntry(currentPosition, System.currentTimeMillis()));
   }
 
   public Value3D currentPosition() {
