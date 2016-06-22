@@ -25,7 +25,7 @@ public class IntakeArm extends Component<IntakeArmController> {
     this.robotHardware = robotHardware;
   }
 
-  public boolean forceBrake = false;
+  public boolean forceBrake = true;
 
   @Override
   protected void setOutputs(IntakeArmController intakeArmController) {

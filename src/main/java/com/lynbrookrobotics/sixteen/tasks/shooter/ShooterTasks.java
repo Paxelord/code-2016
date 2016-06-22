@@ -55,7 +55,8 @@ public class ShooterTasks {
             + ShooterFlywheelConstants.SHOOT_FAR_RPM) / 3D,
         shooterFlywheel,
         hardware
-    )).and(new ForceIntakeBrake(intakeArm));
+    ));//.and(new ForceIntakeBrake(intakeArm));
+    // commented out b/c we're forcing it in IntakeArm
   }
 
   /**
@@ -100,7 +101,7 @@ public class ShooterTasks {
         IntakeArmConstants.SHOOT_SETPOINT,
         intakeArm,
         hardware
-    ).and(new ForceIntakeBrake(intakeArm)));
+    ));//.and(new ForceIntakeBrake(intakeArm)));
   }
 
   /**
@@ -145,7 +146,7 @@ public class ShooterTasks {
         IntakeArmConstants.SHOOT_SETPOINT,
         intakeArm,
         hardware
-    ).and(new ForceIntakeBrake(intakeArm)));
+    ));//.and(new ForceIntakeBrake(intakeArm)));
   }
 
   /**
