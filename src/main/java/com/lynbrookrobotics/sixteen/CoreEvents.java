@@ -35,6 +35,7 @@ import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.secondary.SpinSeconda
 import com.ni.vision.NIVision;
 
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.vision.USBCamera;
 
@@ -59,6 +60,8 @@ public class CoreEvents {
   private final ShooterSecondary shooterSecondary;
 
   private final Lights lights;
+
+  private final PowerDistributionPanel pdp;
 
   boolean initialCalibrationDone = false;
 
@@ -114,6 +117,8 @@ public class CoreEvents {
         intakeArm,
         hardware
     ));
+
+    pdp = new PowerDistributionPanel();
 
     initEventMappings();
   }
@@ -452,6 +457,28 @@ public class CoreEvents {
             .addDataset(new TimeSeriesNumeric<>(
                 "Input Voltage",
                 Potentiometer.baseline::getAverageVoltage));
+
+        dashboard.datasetGroup("power")
+            .addDataset(new TimeSeriesNumeric<>(
+                "Voltage",
+                pdp::getVoltage));
+
+        dashboard.datasetGroup("power")
+            .addDataset(new TimeSeriesNumeric<>(
+                "Current",
+                pdp::getTotalCurrent));
+
+        dashboard.datasetGroup("power")
+            .addDataset(new TimeSeriesNumeric<>(
+                "Left Gearbox Current",
+                (() -> hardware.drivetrainHardware.frontLeftMotor.getOutputCurrent() +
+                hardware.drivetrainHardware.backLeftMotor.getOutputCurrent())));
+
+        dashboard.datasetGroup("power")
+            .addDataset(new TimeSeriesNumeric<>(
+                "Right Gearbox Current",
+                (() -> hardware.drivetrainHardware.frontRightMotor.getOutputCurrent() +
+                hardware.drivetrainHardware.backRightMotor.getOutputCurrent())));
 
         System.out.println("FunkyDashboard is up!");
       } catch (Exception exception) {
