@@ -10,55 +10,40 @@ import org.opencv.imgproc.Imgproc;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import akka.japi.tuple.Tuple3;
+import akka.japi.Pair;
 
-// java -Djava.library.path=/usr/local/share/OpenCV/java -jar vision-ly-0.1-SNAPSHOT.jar
 public class TowerVision {
   private static int V_LOW_THRESHOLD = 150;
 
-  private static Mat destination = new Mat();
+  private static Mat hsv = new Mat();
   private static Mat mask = new Mat();
-  private static Mat matHeirarchy = new Mat();
-  private static Mat out = new Mat();
+  private static Mat matHierarchy = new Mat();
 
-  public static Optional<Tuple3<Mat, Double, Double>> detectHighGoal(Mat image) {
+  public static Optional<Pair<Double, Double>> detectHighGoal(Mat image) {
+    Imgproc.cvtColor(image, hsv, Imgproc.COLOR_BGR2HSV);
 
-    Profiler.start("detectHighGoal beginning");
-    Imgproc.cvtColor(image, destination, Imgproc.COLOR_BGR2HSV);
-
-    Core.inRange(destination, new Scalar(0, 0, V_LOW_THRESHOLD), new Scalar(255, 255, 255), mask);
+    Core.inRange(hsv, new Scalar(0, 0, V_LOW_THRESHOLD), new Scalar(255, 255, 255), mask);
 
     ArrayList<MatOfPoint> contours = new ArrayList<>();
 
-    Core.bitwise_and(destination, destination, out, mask);
-    Imgproc.findContours(mask, contours, matHeirarchy, Imgproc.RETR_EXTERNAL,
+    Imgproc.findContours(mask, contours, matHierarchy, Imgproc.RETR_EXTERNAL,
         Imgproc.CHAIN_APPROX_SIMPLE);
-    Profiler.end("detectHighGoal beginning");
 
-    Profiler.start("MatOfPoint iterator");
     Rect biggest = null;
     for (MatOfPoint matOfPoint: contours) {
       Rect rec = Imgproc.boundingRect(matOfPoint);
 
-//      double percent = Imgproc.contourArea(matOfPoint) / rec.area();
       boolean isTower = rec.area() < 100000 &&
-          rec.width > rec.height * 0.75/* &&
-          percent >= 0.1 && percent <= 0.5*/;
+          rec.width > rec.height * 0.75;
       if (isTower && (biggest == null || rec.area() > biggest.area())) {
         biggest = rec;
       }
     }
-    Profiler.end("MatOfPoint iterator");
 
-    Profiler.start("detectHighGoal ending");
     if (biggest != null) {
-      Imgproc.rectangle(out, biggest.br(), biggest.tl(), new Scalar(255, 255, 255));
-      Profiler.end("detectHighGoal ending");
-
-      return Optional.of(new Tuple3<>(out, (biggest.tl().x + biggest.br().x) / 2, biggest.br().y));
+      Imgproc.rectangle(image, biggest.br(), biggest.tl(), new Scalar(255, 255, 255));
+      return Optional.of(new Pair<>((biggest.tl().x + biggest.br().x) / 2, biggest.br().y));
     } else {
-      out.release();
-      Profiler.end("detectHighGoal ending");
       return Optional.empty();
     }
   }

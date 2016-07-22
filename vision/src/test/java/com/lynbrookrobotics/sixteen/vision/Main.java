@@ -8,12 +8,11 @@ import org.opencv.imgcodecs.Imgcodecs;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Optional;
 
 import javax.imageio.ImageIO;
 
-import akka.japi.tuple.Tuple3;
+import akka.japi.Pair;
 
 public class Main {
   public static void main(String[] args) throws Exception {
@@ -31,19 +30,13 @@ public class Main {
         Mat mat = new Mat(image.getHeight(),image.getWidth(), CvType.CV_8UC3);
         mat.put(0, 0, data);
 
-        Optional<Tuple3<Mat, Double, Double>> val = TowerVision.detectHighGoal(mat);
+        Optional<Pair<Double, Double>> val = TowerVision.detectHighGoal(mat);
         val.ifPresent(t -> {
-          ArrayList<Mat> hsvChannel = new ArrayList<>();
-          Core.split(t.t1(), hsvChannel);
-
-          Imgcodecs.imwrite(outFolder + file.getName(), hsvChannel.get(2));
+          Imgcodecs.imwrite(outFolder + file.getName(), mat);
         });
 
         if (!val.isPresent()) {
-          ArrayList<Mat> hsvChannel = new ArrayList<>();
-          Core.split(mat, hsvChannel);
-
-          Imgcodecs.imwrite(outFolder + file.getName(), hsvChannel.get(2));
+          Imgcodecs.imwrite(outFolder + file.getName(), mat);
         }
       }
     }

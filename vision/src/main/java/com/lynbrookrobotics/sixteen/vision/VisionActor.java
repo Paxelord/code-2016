@@ -7,12 +7,6 @@ import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
 
-import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.awt.image.WritableRaster;
 import java.net.InetSocketAddress;
 import java.util.Optional;
 
@@ -21,12 +15,12 @@ import akka.actor.UntypedActor;
 import akka.io.Udp;
 import akka.io.UdpMessage;
 import akka.japi.Procedure;
-import akka.japi.tuple.Tuple3;
+import akka.japi.Pair;
 import akka.util.ByteString;
 
 public class VisionActor extends UntypedActor {
-  private static class ProcessTarget {
-  }
+  private static class ProcessTarget {}
+  private static ProcessTarget processTargetInstance = new ProcessTarget();
 
   final InetSocketAddress roboRIO;
 
@@ -36,7 +30,8 @@ public class VisionActor extends UntypedActor {
     this(new InetSocketAddress("10.8.46.2", 8846));
   }
 
-  BufferedImage lastImage = null;
+  private Mat lastProcessedImage = new Mat();
+
   public VisionActor(InetSocketAddress roboRIO) {
     this.roboRIO = roboRIO;
 
@@ -55,7 +50,7 @@ public class VisionActor extends UntypedActor {
     dashboard.datasetGroup("vision").addDataset(
         new ImageStream(
             "Vision Output",
-            () -> lastImage
+            () -> Utils.matToBufferedImage(lastProcessedImage, 200, 0)
         )
     );
   }
@@ -68,95 +63,30 @@ public class VisionActor extends UntypedActor {
   }
 
   private Procedure<Object> ready(final ActorRef send) {
-    self().tell(new ProcessTarget(), getSelf());
+    self().tell(processTargetInstance, getSelf());
 
     Mat frame = new Mat();
-    System.out.println("init");
 
     return msg -> {
       if (msg instanceof ProcessTarget) {
-        Profiler.start("loop time");
         try {
-
-          Profiler.start("Camera read");
-          boolean result = camera.read(frame);
-          Profiler.end("Camera read");
-
-          if (result) {
-
-            Profiler.start("detectHighGoal total time");
-            Optional<Tuple3<Mat, Double, Double>> detect = TowerVision.detectHighGoal(frame);
-            Profiler.end("detectHighGoal total time");
+          if (camera.read(frame)) {
+            Optional<Pair<Double, Double>> detect = TowerVision.detectHighGoal(frame);
 
             detect.ifPresent(processed -> {
-
-/*              Profiler.start("matToBufferedImage");
-              lastImage = matToBufferedImage(processed.t1());
-              Profiler.end("matToBufferedImage");*/
-
-              //processed.t1().release();
               send.tell(UdpMessage.send(ByteString.fromString(
-                  processed.t2() + " " + processed.t3()
+                  processed.first() + " " + processed.second()
               ), roboRIO), getSelf());
             });
 
-//            if (!detect.isPresent()) {
-//              Profiler.start("!detect.isPresent");
-//              lastImage = matToBufferedImage(frame);
-//              Profiler.end("!detect.isPresent");
-//            }
+            lastProcessedImage = frame.clone();
           }
         } catch (Throwable throwable) {
           throwable.printStackTrace();
         }
 
-        self().tell(new ProcessTarget(), getSelf());
-
-        Profiler.end("loop time");
-
+        self().tell(processTargetInstance, getSelf());
       }
-
-      if (Profiler.accum % 20 == 0) {
-        Profiler.show();
-      } else {
-        Profiler.clear();
-      }
-
-      Profiler.accum++;
     };
-  }
-
-
-
-  private BufferedImage matToBufferedImage(Mat frame) {
-    //Mat() to BufferedImage
-    int type = 0;
-    if (frame.channels() == 1) {
-      type = BufferedImage.TYPE_BYTE_GRAY;
-    } else if (frame.channels() == 3) {
-      type = BufferedImage.TYPE_3BYTE_BGR;
-    }
-    BufferedImage image = new BufferedImage(frame.width(), frame.height(), type);
-    WritableRaster raster = image.getRaster();
-    DataBufferByte dataBuffer = (DataBufferByte) raster.getDataBuffer();
-    byte[] data = dataBuffer.getData();
-    frame.get(0, 0, data);
-
-    Image resize = image.getScaledInstance(200, (int) (frame.height() * (200D / frame.width())), Image.SCALE_SMOOTH);
-    BufferedImage ret = new BufferedImage(200, (int) (frame.height() * (200D / frame.width())), BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2d = ret.createGraphics();
-    g2d.drawImage(resize, 0, 0, null);
-    g2d.dispose();
-
-
-    // rotate by 180 b/c camera is upside down >:C
-//    AffineTransform tx = new AffineTransform();
-//    tx.rotate(Math.toRadians(180), ret.getWidth() / 2, ret.getHeight() / 2);
-//
-//    AffineTransformOp op = new AffineTransformOp(tx,
-//        AffineTransformOp.TYPE_BILINEAR);
-//    ret = op.filter(ret, null);
-
-    return ret;
   }
 }
