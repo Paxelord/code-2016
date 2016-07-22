@@ -5,6 +5,7 @@ import com.lynbrookrobotics.funkydashboard.ImageStream;
 
 import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
+import org.opencv.videoio.Videoio;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -39,6 +40,12 @@ public class VisionActor extends UntypedActor {
   public VisionActor(InetSocketAddress roboRIO) {
     this.roboRIO = roboRIO;
 
+    camera.set(Videoio.CAP_PROP_FRAME_WIDTH, 320);
+    camera.set(Videoio.CAP_PROP_FRAME_HEIGHT, 200);
+
+    camera.set(Videoio.CAP_PROP_AUTO_EXPOSURE, 0);
+    camera.set(Videoio.CAP_PROP_EXPOSURE, 100);
+
     // request creation of a SimpleSender
     final ActorRef mgr = Udp.get(getContext().system()).getManager();
     mgr.tell(UdpMessage.simpleSender(), getSelf());
@@ -63,32 +70,59 @@ public class VisionActor extends UntypedActor {
   private Procedure<Object> ready(final ActorRef send) {
     self().tell(new ProcessTarget(), getSelf());
 
+    Mat frame = new Mat();
+    System.out.println("init");
+
     return msg -> {
       if (msg instanceof ProcessTarget) {
-        Mat frame = new Mat();
+        Profiler.start("loop time");
         try {
-          if (camera.read(frame)) {
+
+          Profiler.start("Camera read");
+          boolean result = camera.read(frame);
+          Profiler.end("Camera read");
+
+          if (result) {
+
+            Profiler.start("detectHighGoal total time");
             Optional<Tuple3<Mat, Double, Double>> detect = TowerVision.detectHighGoal(frame);
+            Profiler.end("detectHighGoal total time");
+
             detect.ifPresent(processed -> {
+
+/*              Profiler.start("matToBufferedImage");
               lastImage = matToBufferedImage(processed.t1());
-              processed.t1().release();
+              Profiler.end("matToBufferedImage");*/
+
+              //processed.t1().release();
               send.tell(UdpMessage.send(ByteString.fromString(
                   processed.t2() + " " + processed.t3()
               ), roboRIO), getSelf());
             });
 
-            if (!detect.isPresent()) {
-              lastImage = matToBufferedImage(frame);
-            }
+//            if (!detect.isPresent()) {
+//              Profiler.start("!detect.isPresent");
+//              lastImage = matToBufferedImage(frame);
+//              Profiler.end("!detect.isPresent");
+//            }
           }
         } catch (Throwable throwable) {
           throwable.printStackTrace();
         }
 
-        frame.release();
-
         self().tell(new ProcessTarget(), getSelf());
+
+        Profiler.end("loop time");
+
       }
+
+      if (Profiler.accum % 20 == 0) {
+        Profiler.show();
+      } else {
+        Profiler.clear();
+      }
+
+      Profiler.accum++;
     };
   }
 

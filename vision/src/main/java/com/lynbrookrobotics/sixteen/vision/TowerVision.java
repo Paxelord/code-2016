@@ -16,25 +16,26 @@ import akka.japi.tuple.Tuple3;
 public class TowerVision {
   private static int V_LOW_THRESHOLD = 150;
 
+  private static Mat destination = new Mat();
+  private static Mat mask = new Mat();
+  private static Mat matHeirarchy = new Mat();
+  private static Mat out = new Mat();
+
   public static Optional<Tuple3<Mat, Double, Double>> detectHighGoal(Mat image) {
-    Mat destination = new Mat();
+
+    Profiler.start("detectHighGoal beginning");
     Imgproc.cvtColor(image, destination, Imgproc.COLOR_BGR2HSV);
 
-    Mat mask = new Mat();
     Core.inRange(destination, new Scalar(0, 0, V_LOW_THRESHOLD), new Scalar(255, 255, 255), mask);
 
     ArrayList<MatOfPoint> contours = new ArrayList<>();
-    Mat matHeirarchy = new Mat();
 
-    Mat out = new Mat();
     Core.bitwise_and(destination, destination, out, mask);
     Imgproc.findContours(mask, contours, matHeirarchy, Imgproc.RETR_EXTERNAL,
         Imgproc.CHAIN_APPROX_SIMPLE);
+    Profiler.end("detectHighGoal beginning");
 
-    destination.release();
-    mask.release();
-    matHeirarchy.release();
-
+    Profiler.start("MatOfPoint iterator");
     Rect biggest = null;
     for (MatOfPoint matOfPoint: contours) {
       Rect rec = Imgproc.boundingRect(matOfPoint);
@@ -47,13 +48,17 @@ public class TowerVision {
         biggest = rec;
       }
     }
+    Profiler.end("MatOfPoint iterator");
 
+    Profiler.start("detectHighGoal ending");
     if (biggest != null) {
       Imgproc.rectangle(out, biggest.br(), biggest.tl(), new Scalar(255, 255, 255));
+      Profiler.end("detectHighGoal ending");
 
       return Optional.of(new Tuple3<>(out, (biggest.tl().x + biggest.br().x) / 2, biggest.br().y));
     } else {
       out.release();
+      Profiler.end("detectHighGoal ending");
       return Optional.empty();
     }
   }
