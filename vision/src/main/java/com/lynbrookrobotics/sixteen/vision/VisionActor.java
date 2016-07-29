@@ -7,6 +7,7 @@ import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.Optional;
 
@@ -38,8 +39,11 @@ public class VisionActor extends UntypedActor {
     camera.set(Videoio.CAP_PROP_FRAME_WIDTH, 320);
     camera.set(Videoio.CAP_PROP_FRAME_HEIGHT, 200);
 
-    camera.set(Videoio.CAP_PROP_AUTO_EXPOSURE, 0);
-    camera.set(Videoio.CAP_PROP_EXPOSURE, 100);
+    try {
+      new ProcessBuilder("/usr/bin/v4l2-ctl", "-c", "exposure_auto=1", "-c", "exposure_absolute=5").start();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
 
     // request creation of a SimpleSender
     final ActorRef mgr = Udp.get(getContext().system()).getManager();
@@ -70,6 +74,7 @@ public class VisionActor extends UntypedActor {
     return msg -> {
       if (msg instanceof ProcessTarget) {
         try {
+          //long start = System.currentTimeMillis();
           if (camera.read(frame)) {
             Optional<Pair<Double, Double>> detect = TowerVision.detectHighGoal(frame);
 
@@ -80,6 +85,7 @@ public class VisionActor extends UntypedActor {
             });
 
             lastProcessedImage = frame.clone();
+            //System.out.println("time: " + (System.currentTimeMillis() - start));
           }
         } catch (Throwable throwable) {
           throwable.printStackTrace();
