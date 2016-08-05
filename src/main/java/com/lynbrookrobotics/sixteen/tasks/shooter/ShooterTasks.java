@@ -29,7 +29,52 @@ import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.flywheel.WaitForRPM;
 import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.secondary.SpinSecondary;
 import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.secondary.SpinSecondaryNoBall;
 
+import java.util.function.Supplier;
+
 public class ShooterTasks {
+  /**
+   *
+   */
+  public static FiniteTask shootAtSpeed(double speed,
+                                               ShooterFlywheel shooterFlywheel,
+                                               ShooterSecondary shooterSecondary,
+                                               ShooterArm shooterArm,
+                                               IntakeArm intakeArm,
+                                               RobotHardware hardware) {
+
+    FiniteTask withoutFlywheel =
+        (new WaitForRPM(speed, hardware)
+            .and(new MoveShooterArmToAngle(
+                ShooterArmConstants.SHOOT_MID_ANGLE,
+                hardware,
+                shooterArm
+            ))
+        ).then(new SpinSecondaryNoBall(
+            ShooterFlywheelConstants.SHOOT_SECONDARY_POWER,
+            ShooterConstants.BALL_PROXIMITY_THRESHOLD,
+            shooterSecondary,
+            hardware
+        ).then(new FixedTime(1000).andUntilDone(new SpinSecondary(
+            () -> ShooterFlywheelConstants.SHOOT_SECONDARY_POWER,
+            shooterSecondary
+        ))).andUntilDone(new KeepShooterArmToAngle(
+            ShooterArmConstants.SHOOT_MID_ANGLE,
+            hardware,
+            shooterArm
+        )));
+
+    return withoutFlywheel.andUntilDone(new SpinFlywheelAtRPM(
+        true,
+        speed,
+        shooterFlywheel,
+        hardware
+    )).andUntilDone(new KeepIntakeArmAtAngle(
+        IntakeArmConstants.SHOOT_SETPOINT,
+        intakeArm,
+        hardware
+    ));//.and(new ForceIntakeBrake(intakeArm)));
+  }
+
   /**
    * Shooting high task.
    * @param shooterFlywheel Flywheel component

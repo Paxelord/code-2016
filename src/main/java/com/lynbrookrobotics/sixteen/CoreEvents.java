@@ -222,14 +222,32 @@ public class CoreEvents {
     }
 
     if (RobotConstants.HAS_SHOOTER) {
+//      controls.operatorStick
+//          .onHold(OperatorButtonAssignments.PREPARE_SHOOT)
+//          .forEach(ShooterTasks.prepareShootHigh(
+//            shooterFlywheel,
+//            shooterArm,
+//            intakeArm,
+//            hardware
+//          ));
+
+      // control RPM using operator joystick - start
+
       controls.operatorStick
           .onHold(OperatorButtonAssignments.PREPARE_SHOOT)
-          .forEach(ShooterTasks.prepareShootHigh(
-            shooterFlywheel,
-            shooterArm,
-            intakeArm,
-            hardware
-          ));
+          .forEach(ShooterTasks.shootAtSpeed(
+              6000 + Math.abs(controls.operatorStick.getY()) * 4000,
+              shooterFlywheel,
+              shooterSecondary,
+              shooterArm,
+              intakeArm,
+              hardware));
+
+      enabledStateEvent.forEach(() -> {
+        System.out.printf("Target RPM: %d\n", (int)(6000 + Math.abs(controls.operatorStick.getY()) * 4000));
+      });
+
+      // control RPM using operator joystick - end
 
       controls.operatorStick
           .onHold(OperatorButtonAssignments.SHOOT_SHORT)
