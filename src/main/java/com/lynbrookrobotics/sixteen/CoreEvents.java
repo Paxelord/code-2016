@@ -235,17 +235,16 @@ public class CoreEvents {
 
       controls.operatorStick
           .onHold(OperatorButtonAssignments.PREPARE_SHOOT)
-          .forEach(ShooterTasks.shootAtSpeed(
-              6000 + Math.abs(controls.operatorStick.getY()) * 4000,
-              shooterFlywheel,
-              shooterSecondary,
-              shooterArm,
-              intakeArm,
-              hardware));
-
-      enabledStateEvent.forEach(() -> {
-        System.out.printf("Target RPM: %d\n", (int)(6000 + Math.abs(controls.operatorStick.getY()) * 4000));
-      });
+          .forEach(() -> {
+            System.out.printf("Target RPM: %d\n", (int)(6000 + Math.abs(controls.operatorStick.getY()) * 5000));
+            return ShooterTasks.shootAtSpeed(
+                    6000 + Math.abs(controls.operatorStick.getY()) * 5000,
+                    shooterFlywheel,
+                    shooterSecondary,
+                    shooterArm,
+                    intakeArm,
+                    hardware);
+          });
 
       // control RPM using operator joystick - end
 

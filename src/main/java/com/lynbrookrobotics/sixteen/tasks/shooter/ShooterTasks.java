@@ -61,7 +61,7 @@ public class ShooterTasks {
             ShooterArmConstants.SHOOT_MID_ANGLE,
             hardware,
             shooterArm
-        )));
+        )).andUntilDone(new CollectMinMax(hardware)));
 
     return withoutFlywheel.andUntilDone(new SpinFlywheelAtRPM(
         true,
