@@ -40,7 +40,7 @@ public class VisionActor extends UntypedActor {
     camera.set(Videoio.CAP_PROP_FRAME_HEIGHT, 200);
 
     try {
-      new ProcessBuilder("/usr/bin/v4l2-ctl", "-c", "exposure_auto=1", "-c", "exposure_absolute=5").start();
+      new ProcessBuilder("/usr/bin/v4l2-ctl", "-c", "exposure_auto=1", "-c", "exposure_absolute=400", "-c", "gain=200").start();
     } catch (IOException e) {
       e.printStackTrace();
     }

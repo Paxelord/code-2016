@@ -53,7 +53,7 @@ public class Utils {
 
     if (rotation != 0) {
       AffineTransform tx = new AffineTransform();
-      tx.rotate(Math.toRadians(rotation), ret.getWidth() / 2, ret.getHeight() / 2);
+      tx.rotate(Math.toRadians(rotation), ret.getWidth(), ret.getHeight());
 
       AffineTransformOp op = new AffineTransformOp(tx,
           AffineTransformOp.TYPE_BILINEAR);
