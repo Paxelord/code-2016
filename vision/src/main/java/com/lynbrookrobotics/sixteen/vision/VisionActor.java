@@ -54,7 +54,7 @@ public class VisionActor extends UntypedActor {
     dashboard.datasetGroup("vision").addDataset(
         new ImageStream(
             "Vision Output",
-            () -> Utils.matToBufferedImage(lastProcessedImage, 200, 0)
+            () -> Utils.matToBufferedImage(lastProcessedImage, 500, 0)
         )
     );
   }

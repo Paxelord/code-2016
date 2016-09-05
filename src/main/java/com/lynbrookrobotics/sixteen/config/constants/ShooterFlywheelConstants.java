@@ -12,7 +12,7 @@ public class ShooterFlywheelConstants {
 
   public static final double P_GAIN = 1D / 6000;
 
-  public static final double I_GAIN = 8D / 125;
+  public static final double I_GAIN = 0D / 125;
   public static final double I_MEMORY = 0.9;
 
   public static final double MAX_RPM = 11650;
