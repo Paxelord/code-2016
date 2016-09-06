@@ -12,6 +12,7 @@ robotClass := "com.lynbrookrobotics.sixteen.LaunchRobot"
 scalaVersion := "2.11.7"
 
 lazy val vision = project
+lazy val rpivision = project
 
 resolvers += "WPILib-Maven" at "http://team846.github.io/wpilib-maven"
 resolvers += "Funky-Repo" at "http://team846.github.io/repo"
