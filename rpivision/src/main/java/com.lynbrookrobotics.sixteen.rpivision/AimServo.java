@@ -26,16 +26,13 @@ public class AimServo {
 
   private static final int IMAGE_WIDTH = 320;
 
-  private static int cycle;
-  private static final int cycleLength = 20;
-
   private static final int HERTZ = 60;
 
   private static double speed = 0.0;
   private static double timeout = 0.0;
 
   private static final int goal = IMAGE_WIDTH / 2;
-  private static final double DEADBAND = 0.005;
+  private static final double DEADBAND = 0.007;
   private static final double kP = (1.0/(double) IMAGE_WIDTH / 2.0) * 0.1;
 
   private static double targetHorizontal = goal;
@@ -51,11 +48,6 @@ public class AimServo {
 
   private static class UpdateLoop extends TimerTask {
     public void run() {
-      cycle++;
-      if (cycle > cycleLength) {
-        cycle = 0;
-      }
-
       controlLoopStep();
 
       timeout -= (1/HERTZ);
@@ -66,9 +58,9 @@ public class AimServo {
       }
 
       if (speed > DEADBAND) {
-        setServoPulsewidth((int)(1270 - 150 * Math.abs(speed)));
-      } else if (speed < -1 * DEADBAND) {
-        setServoPulsewidth((int)(1730 + 150 * Math.abs(speed)));
+        setServoPulsewidth((int)(1220 - 200 * Math.abs(speed)));
+      } else if (speed < -DEADBAND) {
+        setServoPulsewidth((int)(1780 + 200 * Math.abs(speed)));
       } else {
         setServoPulsewidth(1500);
       }
