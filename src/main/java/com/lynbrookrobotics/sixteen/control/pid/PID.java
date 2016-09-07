@@ -1,7 +1,5 @@
 package com.lynbrookrobotics.sixteen.control.pid;
 
-import com.lynbrookrobotics.sixteen.config.constants.RobotConstants;
-
 import java.util.function.Supplier;
 
 public class PID {
@@ -10,14 +8,10 @@ public class PID {
   private Supplier<Double> target;
 
   private double pGain = 0;
-  private double iGain = 0;
   private double dGain = 0;
   private double deadband = 0;
 
-  private double iMemory;
   private double lastError = 0;
-
-  private double runningIntegral;
 
   /**
    * Constructs a new PID controller.
@@ -47,18 +41,6 @@ public class PID {
    */
   public PID withP(double gain) {
     pGain = gain;
-
-    return this;
-  }
-
-  /**
-   * Adds an integration component to the controller.
-   * @param gain the gain to apply to integrated error
-   * @param memory the memory of the integration
-   */
-  public PID withI(double gain, double memory) {
-    iGain = gain;
-    iMemory = memory;
 
     return this;
   }
@@ -101,15 +83,11 @@ public class PID {
       return 0;
     }
 
-    runningIntegral = (runningIntegral * iMemory)
-        + ((1 - iMemory) * error * RobotConstants.TICK_PERIOD);
-
     double propOut = error * pGain;
-    double intOut = runningIntegral * iGain;
     double derOut = (error - lastError) * dGain;
 
     lastError = error;
 
-    return propOut + intOut + derOut;
+    return propOut + derOut;
   }
 }

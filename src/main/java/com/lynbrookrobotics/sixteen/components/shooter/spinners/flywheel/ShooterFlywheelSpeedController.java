@@ -19,8 +19,7 @@ public class ShooterFlywheelSpeedController extends ShooterFlywheelController {
     this.flywheelPID = new PID(
         hardware.shooterSpinnersHardware.hallEffect::getRPM,
         Math.abs(targetRPM)
-    ).withP(ShooterFlywheelConstants.P_GAIN)
-        .withI(ShooterFlywheelConstants.I_GAIN, ShooterFlywheelConstants.I_MEMORY);
+    ).withP(ShooterFlywheelConstants.P_GAIN);
 
     this.targetRPM = targetRPM;
   }

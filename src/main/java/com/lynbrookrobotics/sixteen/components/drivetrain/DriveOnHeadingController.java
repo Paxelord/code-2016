@@ -31,7 +31,7 @@ public class DriveOnHeadingController extends ClosedArcadeDriveController {
     this.angleControl = new PID(
         () -> hardware.drivetrainHardware.mainGyro.currentPosition().valueZ(),
         angle
-    ).withP(1D / 90).withI(3D / (90), 0.4);
+    ).withP(1D / 90);
   }
 
   @Override
