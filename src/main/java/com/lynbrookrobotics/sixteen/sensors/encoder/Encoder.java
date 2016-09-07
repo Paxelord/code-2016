@@ -23,13 +23,19 @@ public abstract class Encoder {
         return ((reversed ? -1 : 1) * talon.getSpeed() * conversionFactor) * 10;
       }
 
+      private double getAngleRaw() {
+        return (reversed ? -1 : 1) * talon.getPosition() * conversionFactor;
+      }
+
+      private double initialAngle = getAngleRaw();
+
       /**
        *  Returns the position of the encoder in degrees.
        * @return The position of the encoder in degrees
        */
       @Override
       public double getAngle() {
-        return (reversed ? -1 : 1) * talon.getPosition() * conversionFactor;
+        return getAngleRaw() - initialAngle;
       }
     };
   }

@@ -80,4 +80,18 @@ public class DrivetrainHardware {
   public double currentForwardSpeed() {
     return (leftEncoder.velocity.ground() + rightEncoder.velocity.ground()) / 2;
   }
+
+  public double currentRotation() {
+    double left = leftEncoder.position.rotation();
+    double right = rightEncoder.position.rotation();
+
+    return (left - right) / (2 /* for cancelling out double factor */ * (22.0 / 6));
+  }
+
+  public double currentRotationVelocity() {
+    double left = leftEncoder.velocity.rotation();
+    double right = rightEncoder.velocity.rotation();
+
+    return (left - right) / (2 /* for cancelling out double factor */ * (22.0 / 6));
+  }
 }

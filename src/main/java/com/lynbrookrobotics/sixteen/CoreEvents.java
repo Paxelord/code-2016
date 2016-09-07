@@ -22,6 +22,8 @@ import com.lynbrookrobotics.sixteen.config.constants.ShooterArmConstants;
 import com.lynbrookrobotics.sixteen.sensors.potentiometer.Potentiometer;
 import com.lynbrookrobotics.sixteen.tasks.DefenseRoutines;
 import com.lynbrookrobotics.sixteen.tasks.drivetrain.AimForShot;
+import com.lynbrookrobotics.sixteen.tasks.drivetrain.TurnByAngle;
+import com.lynbrookrobotics.sixteen.tasks.drivetrain.TurnByAngleEncoders;
 import com.lynbrookrobotics.sixteen.tasks.intake.IntakeTasks;
 import com.lynbrookrobotics.sixteen.tasks.intake.arm.DirectIntakeArmSpeed;
 import com.lynbrookrobotics.sixteen.tasks.intake.arm.MoveIntakeArmToAngle;
@@ -371,14 +373,16 @@ public class CoreEvents {
         && RobotConstants.HAS_INTAKE
         && RobotConstants.HAS_SHOOTER) {
       autonomousStateEvent.forEach(() -> {
-        long defenseID = Math.round(SmartDashboard.getNumber("DB/Slider 0") * 2);
-        AutoGenerator.Defense defense = AutoGenerator.Defense.values()[(int) defenseID];
+//        long defenseID = Math.round(SmartDashboard.getNumber("DB/Slider 0") * 2);
+//        AutoGenerator.Defense defense = AutoGenerator.Defense.values()[(int) defenseID];
 
-        long position = Math.round(SmartDashboard.getNumber("DB/Slider 1"));
-        return generator.generateRoutine(
-            defense,
-            (int) position
-        );
+//        long position = Math.round(SmartDashboard.getNumber("DB/Slider 1"));
+//        return generator.generateRoutine(
+//            defense,
+//            (int) position
+//        );
+
+        return new TurnByAngleEncoders(180, hardware, drivetrain);
       });
     }
 
@@ -398,35 +402,31 @@ public class CoreEvents {
 
           dashboard.datasetGroup("drivetrain")
               .addDataset(new TimeSeriesNumeric<>(
+                  "Encoder-Measured Angle",
+                  hardware.drivetrainHardware::currentRotation
+              ));
+
+          dashboard.datasetGroup("encoders")
+              .addDataset(new TimeSeriesNumeric<>(
                   "Right Encoder Speed (% of max)",
                   () -> hardware.drivetrainHardware.rightEncoder.velocity.ground()
                       / DrivetrainConstants.MAX_SPEED_FORWARD));
 
-          dashboard.datasetGroup("drivetrain")
+          dashboard.datasetGroup("encoders")
               .addDataset(new TimeSeriesNumeric<>(
                   "Left Encoder Speed (% of max)",
                   () -> hardware.drivetrainHardware.leftEncoder.velocity.ground()
                       / DrivetrainConstants.MAX_SPEED_FORWARD));
 
-          dashboard.datasetGroup("drivetrain")
+          dashboard.datasetGroup("encoders")
               .addDataset(new TimeSeriesNumeric<>(
                   "Right Wheels Rotation",
                   hardware.drivetrainHardware.rightEncoder.position::rotation));
 
-          dashboard.datasetGroup("drivetrain")
-              .addDataset(new TimeSeriesNumeric<>(
-                  "Right Encoder Position",
-                  hardware.drivetrainHardware.rightEncoder.position::ground));
-
-          dashboard.datasetGroup("drivetrain")
+          dashboard.datasetGroup("encoders")
               .addDataset(new TimeSeriesNumeric<>(
                   "Left Wheels Rotation",
                   hardware.drivetrainHardware.leftEncoder.position::rotation));
-
-          dashboard.datasetGroup("drivetrain")
-              .addDataset(new TimeSeriesNumeric<>(
-                  "Left Encoder Position",
-                  hardware.drivetrainHardware.leftEncoder.position::ground));
         }
 
         if (RobotConstants.HAS_INTAKE) {

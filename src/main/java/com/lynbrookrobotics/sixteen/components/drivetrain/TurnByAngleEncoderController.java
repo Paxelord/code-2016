@@ -6,7 +6,7 @@ import com.lynbrookrobotics.sixteen.control.pid.PID;
 /**
  * A controller that turns a specific number of degrees.
  */
-public class TurnByAngleController extends ClosedArcadeDriveController {
+public class TurnByAngleEncoderController extends ClosedArcadeDriveController {
   private PID angleControl;
 
   /**
@@ -14,12 +14,12 @@ public class TurnByAngleController extends ClosedArcadeDriveController {
    * @param angle the relative angle to turn by
    * @param hardware the robot hardware to use
    */
-  public TurnByAngleController(double angle, RobotHardware hardware) {
+  public TurnByAngleEncoderController(double angle, RobotHardware hardware) {
     super(hardware);
 
     this.angleControl = new PID(
-        () -> hardware.drivetrainHardware.mainGyro.currentPosition().valueZ(),
-        hardware.drivetrainHardware.mainGyro.currentPosition().valueZ() + angle
+        hardware.drivetrainHardware::currentRotation,
+        hardware.drivetrainHardware.currentRotation() + angle
     ).withP(1D / 45);
   }
 
