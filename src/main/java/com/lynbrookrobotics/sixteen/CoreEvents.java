@@ -224,29 +224,29 @@ public class CoreEvents {
     }
 
     if (RobotConstants.HAS_SHOOTER) {
-//      controls.operatorStick
-//          .onHold(OperatorButtonAssignments.PREPARE_SHOOT)
-//          .forEach(ShooterTasks.prepareShootHigh(
-//            shooterFlywheel,
-//            shooterArm,
-//            intakeArm,
-//            hardware
-//          ));
+      controls.operatorStick
+          .onHold(OperatorButtonAssignments.PREPARE_SHOOT)
+          .forEach(ShooterTasks.prepareShootHigh(
+            shooterFlywheel,
+            shooterArm,
+            intakeArm,
+            hardware
+          ));
 
       // control RPM using operator joystick - start
 
-      controls.operatorStick
-          .onHold(OperatorButtonAssignments.PREPARE_SHOOT)
-          .forEach(() -> {
-            System.out.printf("Target RPM: %d\n", (int)(6000 + Math.abs(controls.operatorStick.getY()) * 5000));
-            return ShooterTasks.shootAtSpeed(
-                    6000 + Math.abs(controls.operatorStick.getY()) * 5000,
-                    shooterFlywheel,
-                    shooterSecondary,
-                    shooterArm,
-                    intakeArm,
-                    hardware);
-          });
+//      controls.operatorStick
+//          .onHold(OperatorButtonAssignments.PREPARE_SHOOT)
+//          .forEach(() -> {
+//            System.out.printf("Target RPM: %d\n", (int)(6000 + Math.abs(controls.operatorStick.getY()) * 5000));
+//            return ShooterTasks.shootAtSpeed(
+//                    6000 + Math.abs(controls.operatorStick.getY()) * 5000,
+//                    shooterFlywheel,
+//                    shooterSecondary,
+//                    shooterArm,
+//                    intakeArm,
+//                    hardware);
+//          });
 
       // control RPM using operator joystick - end
 
