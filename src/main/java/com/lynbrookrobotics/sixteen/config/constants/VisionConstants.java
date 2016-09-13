@@ -2,11 +2,12 @@ package com.lynbrookrobotics.sixteen.config.constants;
 
 public class VisionConstants {
   public static final String NUC_MAC_ADDRESS = "B8:AE:ED:7E:78:E1";
-  public static final int IMAGE_HEIGHT = 720;
-  public static final int IMAGE_WIDTH = 1280;
+  public static final int IMAGE_HEIGHT = 240;
+  public static final int IMAGE_WIDTH = 320;
 
-  public static final double IMAGE_VERTICAL_FOV = 33.6;
-  public static final double IMAGE_HORIZONTAL_FOV = 59.7;
+  public static final double IMAGE_VERTICAL_FOV = 33.6; // TODO find out for logitech cam
+//  public static final double IMAGE_HORIZONTAL_FOV = 59.7;
+  public static final double IMAGE_HORIZONTAL_FOV = 120;
 
   public static final double CAMERA_TILT = 58;
 

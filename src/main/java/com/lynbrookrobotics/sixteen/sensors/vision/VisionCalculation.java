@@ -51,6 +51,8 @@ public class VisionCalculation {
         public Actor create() throws Exception {
           return new VisionReceiverActor(
               target -> {
+                System.out.println("target._1 = " + target._1);
+
                 if (gyro != null) {
                   double vertDegreesFromCenter =
                       (VisionConstants.IMAGE_HEIGHT / 2 - target._2)
@@ -75,7 +77,9 @@ public class VisionCalculation {
                   double horizRobotOffset =
                       horizCameraOffset + VisionConstants.CAMERA_TO_MIDDLE_HORIZONTAL;
 
-                  angularError = RobotConstants.clamp((Math.atan(horizRobotOffset / robotToGoal) / DEG_TO_RAD) + 13.9 + 5.8, -5, 5);
+                  System.out.println("horizDegreesFromCenter = " + horizDegreesFromCenter);
+
+                  angularError = Math.atan(horizRobotOffset / robotToGoal) / DEG_TO_RAD;
                   System.out.println("xAngularOffset = " + angularError);
 
                   targetAngle = gyro.currentPosition().valueZ() + angularError;

@@ -13,7 +13,7 @@ import java.util.Optional;
 import akka.japi.Pair;
 
 public class TowerVision {
-  private static int V_LOW_THRESHOLD = 150;
+  private static int V_LOW_THRESHOLD = 67;
 
   private static Mat hsv = new Mat();
   private static Mat mask = new Mat();
@@ -22,7 +22,7 @@ public class TowerVision {
   public static Optional<Pair<Double, Double>> detectHighGoal(Mat image) {
     Imgproc.cvtColor(image, hsv, Imgproc.COLOR_BGR2HSV);
 
-    Core.inRange(hsv, new Scalar(0, 0, V_LOW_THRESHOLD), new Scalar(255, 255, 255), mask);
+    Core.inRange(hsv, new Scalar(60, 99, V_LOW_THRESHOLD), new Scalar(87, 255, 255), mask);
 
     ArrayList<MatOfPoint> contours = new ArrayList<>();
 
