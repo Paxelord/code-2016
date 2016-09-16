@@ -17,7 +17,7 @@ public class OperatorButtonAssignments {
   public static final int OVERRIDE_SHOOTER_FLYWHEEL = 16;
   public static final int OVERRIDE_SHOOTER_SECONDARY = 11;
 
-  public static final int CHEVAL = 6; // left of joystick
+  public static final int AIM = 6; // left of joystick
   public static final int PORTCULLIS = 9;
   public static final int LOWBAR = 10;
 

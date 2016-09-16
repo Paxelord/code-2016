@@ -6,8 +6,7 @@ public class VisionConstants {
   public static final int IMAGE_WIDTH = 320;
 
   public static final double IMAGE_VERTICAL_FOV = 33.6; // TODO find out for logitech cam
-//  public static final double IMAGE_HORIZONTAL_FOV = 59.7;
-  public static final double IMAGE_HORIZONTAL_FOV = 120;
+  public static final double IMAGE_HORIZONTAL_FOV = 60;
 
   public static final double CAMERA_TILT = 58;
 

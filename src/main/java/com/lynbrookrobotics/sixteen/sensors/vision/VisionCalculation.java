@@ -5,17 +5,21 @@ import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.japi.Creator;
 
+import com.lynbrookrobotics.funkydashboard.FunkyDashboard;
 import com.lynbrookrobotics.funkydashboard.TimeSeriesNumeric;
 import com.lynbrookrobotics.sixteen.config.constants.RobotConstants;
 import com.lynbrookrobotics.sixteen.config.constants.VisionConstants;
 import com.lynbrookrobotics.sixteen.sensors.digitalgyro.DigitalGyro;
 import com.lynbrookrobotics.sixteen.tasks.shooter.VisionReceiverActor;
+import com.sun.glass.ui.Robot;
+
+import java.util.concurrent.ExecutionException;
 
 public class VisionCalculation {
-  public static DigitalGyro gyro = null;
   public static double targetAngle;
   public static double angularError;
 
+  private static double horizDegreesFromCenter = 0;
   private static double vertAbsoluteDegrees = 0;
   private static double robotToTower = 0;
   private static double DEG_TO_RAD = (Math.PI * 2) / 360;
@@ -34,8 +38,8 @@ public class VisionCalculation {
       ));
 
       dashboard.datasetGroup("vision").addDataset(new TimeSeriesNumeric<>(
-          "Y Absolute Degrees",
-          () -> vertAbsoluteDegrees
+          "Horiz Degrees from camera center",
+          () -> horizDegreesFromCenter
       ));
 
       dashboard.datasetGroup("vision").addDataset(new TimeSeriesNumeric<>(
@@ -51,9 +55,6 @@ public class VisionCalculation {
         public Actor create() throws Exception {
           return new VisionReceiverActor(
               target -> {
-                System.out.println("target._1 = " + target._1);
-
-                if (gyro != null) {
                   double vertDegreesFromCenter =
                       (VisionConstants.IMAGE_HEIGHT / 2 - target._2)
                           * (VisionConstants.IMAGE_VERTICAL_FOV / VisionConstants.IMAGE_HEIGHT);
@@ -69,7 +70,7 @@ public class VisionCalculation {
                   double cameraToGoal = VisionConstants.CAMERA_TOWER_HEIGHT
                       / Math.sin(vertAbsoluteDegrees * DEG_TO_RAD);
 
-                  double horizDegreesFromCenter =
+                  horizDegreesFromCenter =
                       (target._1 - VisionConstants.IMAGE_WIDTH / 2)
                           * (VisionConstants.IMAGE_HORIZONTAL_FOV / VisionConstants.IMAGE_WIDTH);
                   double horizCameraOffset =
@@ -77,13 +78,11 @@ public class VisionCalculation {
                   double horizRobotOffset =
                       horizCameraOffset + VisionConstants.CAMERA_TO_MIDDLE_HORIZONTAL;
 
-                  System.out.println("horizDegreesFromCenter = " + horizDegreesFromCenter);
+                  angularError = horizDegreesFromCenter;
+//                  angularError = Math.atan(horizRobotOffset / robotToGoal) / DEG_TO_RAD;
 
-                  angularError = Math.atan(horizRobotOffset / robotToGoal) / DEG_TO_RAD;
-                  System.out.println("xAngularOffset = " + angularError);
-
-                  targetAngle = gyro.currentPosition().valueZ() + angularError;
-                }
+//                  System.out.println(angularError);
+//                  targetAngle = gyro.currentPosition().valueZ() + angularError;
               }
           );
         }

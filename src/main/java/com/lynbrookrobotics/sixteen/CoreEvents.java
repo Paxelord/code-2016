@@ -22,7 +22,6 @@ import com.lynbrookrobotics.sixteen.config.constants.ShooterArmConstants;
 import com.lynbrookrobotics.sixteen.sensors.potentiometer.Potentiometer;
 import com.lynbrookrobotics.sixteen.tasks.DefenseRoutines;
 import com.lynbrookrobotics.sixteen.tasks.drivetrain.AimForShot;
-import com.lynbrookrobotics.sixteen.tasks.drivetrain.TurnByAngle;
 import com.lynbrookrobotics.sixteen.tasks.drivetrain.TurnByAngleEncoders;
 import com.lynbrookrobotics.sixteen.tasks.intake.IntakeTasks;
 import com.lynbrookrobotics.sixteen.tasks.intake.arm.DirectIntakeArmSpeed;
@@ -284,7 +283,7 @@ public class CoreEvents {
         );
 
         controls.operatorStick
-            .onHold(OperatorButtonAssignments.CHEVAL)
+            .onHold(OperatorButtonAssignments.AIM)
             .forEach(aim);
       } catch (Throwable exception) {
         exception.printStackTrace();
