@@ -33,7 +33,7 @@ public class AimForShot extends FiniteTask {
           if (Math.abs(VisionCalculation.angularError) > 60) {
             return 0.0;
           } else {
-            return VisionCalculation.angularError * (1D / 45);
+            return VisionCalculation.angularError * (1D / 20);
           }
         }
     ));
@@ -41,7 +41,8 @@ public class AimForShot extends FiniteTask {
 
   @Override
   protected void update() {
-    if (Math.abs(VisionCalculation.angularError) <= 1) {
+    double vel = hardware.drivetrainHardware.currentRotationVelocity();
+    if (Math.abs(VisionCalculation.angularError) <= 1  && Math.abs(vel) <= 1.0) {
       finished();
     }
   }

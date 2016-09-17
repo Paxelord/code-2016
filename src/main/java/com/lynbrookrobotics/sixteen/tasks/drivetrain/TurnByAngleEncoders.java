@@ -36,7 +36,7 @@ public class TurnByAngleEncoders extends FiniteTask {
   @Override
   protected void update() {
     double vel = hardware.drivetrainHardware.currentRotationVelocity();
-    if (Math.abs(controller.difference()) <= 0.5 && Math.abs(vel) <= 1.0) {
+    if (Math.abs(controller.difference()) <= 1 && Math.abs(vel) <= 1.0) {
       finished();
     }
   }

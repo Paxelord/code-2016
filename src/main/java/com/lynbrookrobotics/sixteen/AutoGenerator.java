@@ -19,6 +19,7 @@ import com.lynbrookrobotics.sixteen.tasks.drivetrain.ContinuousStraightDrive;
 import com.lynbrookrobotics.sixteen.tasks.drivetrain.DriveAbsolute;
 import com.lynbrookrobotics.sixteen.tasks.drivetrain.DriveRelative;
 import com.lynbrookrobotics.sixteen.tasks.drivetrain.TurnByAngle;
+import com.lynbrookrobotics.sixteen.tasks.drivetrain.TurnByAngleEncoders;
 import com.lynbrookrobotics.sixteen.tasks.intake.arm.KeepIntakeArmAtAngle;
 import com.lynbrookrobotics.sixteen.tasks.intake.arm.MoveIntakeArmToAngle;
 import com.lynbrookrobotics.sixteen.tasks.shooter.ShooterTasks;
@@ -108,9 +109,9 @@ public class AutoGenerator {
           drivetrain
       );
     } else {
-      return (new DriveAbsolute(
+      return (new DriveRelative(
           hardware,
-          start - DrivetrainConstants.DEFENSE_RAMP_DISTANCE,
+          -DrivetrainConstants.DEFENSE_RAMP_DISTANCE,
           0.4,
           drivetrain
       ).and(new MoveIntakeArmToAngle(
@@ -121,9 +122,9 @@ public class AutoGenerator {
           ShooterArmConstants.FORWARD_LIMIT,
           hardware,
           shooterArm
-      )))).then(new DriveAbsolute(
+      )))).then(new DriveRelative(
           hardware,
-          start - DrivetrainConstants.DEFENSE_RAMP_DISTANCE - DrivetrainConstants.LOWBAR_DISTANCE,
+          -DrivetrainConstants.LOWBAR_DISTANCE,
           0.3,
           drivetrain
       ).andUntilDone(new KeepIntakeArmAtAngle(
@@ -135,6 +136,7 @@ public class AutoGenerator {
   }
 
   private double MAX_FORWARD_SPEED = 0.5;
+  private double VISION_AIM_DISTANCE = 4;
 
   private FiniteTask driveToShootingPosition(int startingPosition) {
     double start = hardware.drivetrainHardware.currentDistance();
@@ -145,16 +147,16 @@ public class AutoGenerator {
           MAX_FORWARD_SPEED,
           true,
           drivetrain
-      ).then(new TurnByAngle(
+      ).then(new TurnByAngleEncoders(
           ShootingPositionConstants.ONE_TURN,
           hardware,
           drivetrain
-      ).then(new DriveRelative(
+      )).then(new DriveRelative(
           hardware,
-          ShootingPositionConstants.ONE_FORWARD_SECOND,
+          ShootingPositionConstants.ONE_FORWARD_SECOND - VISION_AIM_DISTANCE,
           MAX_FORWARD_SPEED,
           drivetrain
-      )));
+      ));
     } else if (startingPosition == 2) {
       return new DriveRelative(
           hardware,
@@ -259,6 +261,7 @@ public class AutoGenerator {
     if (startingPosition < 0) {
       return FiniteTask.empty();
     } else if (startingPosition == 0) {
+      // Spy Box
       return new DriveRelative(
           hardware,
           DrivetrainConstants.SPY_TO_SHOOT,
@@ -270,18 +273,6 @@ public class AutoGenerator {
           shooterArm,
           intakeArm,
           hardware
-      ));
-    } else if (startingPosition == 6) {
-      return new FixedTime(3000).andUntilDone(new ContinuousStraightDrive(
-          () -> 0.75,
-          hardware,
-          drivetrain
-      ));
-    } else if (startingPosition == 7) {
-      return new FixedTime(3000).andUntilDone(new ContinuousStraightDrive(
-          () -> -0.75,
-          hardware,
-          drivetrain
       ));
     } else {
       FiniteTask driveUp = new DriveRelative(
@@ -298,22 +289,24 @@ public class AutoGenerator {
       if (defense == Defense.DRAWBRIDGE || defense == Defense.SALLYPORT) {
         return driveUp.then(new DriveRelative(hardware, 0.5, 0.1, drivetrain));
       } else if (defense == Defense.LOWBAR) {
-        return ((driveUp
+        FiniteTask drivingToGoal = driveToShootingPosition(startingPosition)
+            .then(new AimForShot(hardware, drivetrain))
+            .then(new DriveRelative(
+                hardware,
+                VISION_AIM_DISTANCE,
+                MAX_FORWARD_SPEED,
+                drivetrain
+            )).andUntilDone(ShooterTasks.prepareShootHigh(
+                shooterFlywheel,
+                shooterArm,
+                intakeArm,
+                hardware
+            ));
+
+        return driveUp
             .then(cross(defense))
-            .then(driveToShootingPosition(startingPosition)
-                .andUntilDone(ShooterTasks.prepareShootHigh(
-                    shooterFlywheel,
-                    shooterArm,
-                    intakeArm,
-                    hardware
-                ))).then(
-                new AimForShot(hardware, drivetrain).andUntilDone(ShooterTasks.prepareShootHigh(
-                    shooterFlywheel,
-                    shooterArm,
-                    intakeArm,
-                    hardware
-                ))
-            )).withTimeout(13000)).then(ShooterTasks.shootMid(
+            .then(drivingToGoal)
+            .then(ShooterTasks.shootShort(
                 shooterFlywheel,
                 shooterSecondary,
                 shooterArm,

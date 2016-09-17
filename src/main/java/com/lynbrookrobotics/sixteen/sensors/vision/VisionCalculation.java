@@ -78,7 +78,7 @@ public class VisionCalculation {
                   double horizRobotOffset =
                       horizCameraOffset + VisionConstants.CAMERA_TO_MIDDLE_HORIZONTAL;
 
-                  angularError = horizDegreesFromCenter;
+                  angularError = horizDegreesFromCenter + 8;
 //                  angularError = Math.atan(horizRobotOffset / robotToGoal) / DEG_TO_RAD;
 
 //                  System.out.println(angularError);

@@ -372,16 +372,14 @@ public class CoreEvents {
         && RobotConstants.HAS_INTAKE
         && RobotConstants.HAS_SHOOTER) {
       autonomousStateEvent.forEach(() -> {
-//        long defenseID = Math.round(SmartDashboard.getNumber("DB/Slider 0") * 2);
-//        AutoGenerator.Defense defense = AutoGenerator.Defense.values()[(int) defenseID];
+        long defenseID = Math.round(SmartDashboard.getNumber("DB/Slider 0") * 2);
+        AutoGenerator.Defense defense = AutoGenerator.Defense.values()[(int) defenseID];
 
-//        long position = Math.round(SmartDashboard.getNumber("DB/Slider 1"));
-//        return generator.generateRoutine(
-//            defense,
-//            (int) position
-//        );
-
-        return new TurnByAngleEncoders(180, hardware, drivetrain);
+        long position = Math.round(SmartDashboard.getNumber("DB/Slider 1"));
+        return generator.generateRoutine(
+            defense,
+            (int) position
+        );
       });
     }
 
