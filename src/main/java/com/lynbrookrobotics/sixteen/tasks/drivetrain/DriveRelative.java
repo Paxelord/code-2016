@@ -44,29 +44,25 @@ public class DriveRelative extends FiniteTask {
     this(hardware, forwardDistance, 1.0, drivetrain);
   }
 
-  private int goodTicks = 0;
-
   @Override
   public void startTask() {
-    double currentAverage = hardware.drivetrainHardware.currentDistance();
-    driveDistanceController = new DriveStraightController(hardware,
-        currentAverage + distance,
-        hardware.drivetrainHardware.mainGyro.currentPosition().valueZ(),
-        maxSpeed);
-    drivetrain.setController(driveDistanceController);
-
-    goodTicks = 0;
+    if (Math.abs(distance) <= 0.1) {
+      finished();
+    } else {
+      double currentAverage = hardware.drivetrainHardware.currentDistance();
+      driveDistanceController = new DriveStraightController(hardware,
+          currentAverage + distance,
+          hardware.drivetrainHardware.mainGyro.currentPosition().valueZ(),
+          maxSpeed);
+      drivetrain.setController(driveDistanceController);
+    }
   }
 
   @Override
   public void update() {
     if (driveDistanceController.forwardError() < errorThresholdForward
         && driveDistanceController.angularError() < errorThresholdTurn) {
-      goodTicks++;
-
-      if (goodTicks >= 25) {
-        finished();
-      }
+      finished();
     }
   }
 
