@@ -78,8 +78,8 @@ public class VisionCalculation {
                   double horizRobotOffset =
                       horizCameraOffset + VisionConstants.CAMERA_TO_MIDDLE_HORIZONTAL;
 
-                  angularError = horizDegreesFromCenter + 8;
-//                  angularError = Math.atan(horizRobotOffset / robotToGoal) / DEG_TO_RAD;
+//                  angularError = horizDegreesFromCenter + 8;
+                  angularError = Math.atan(horizRobotOffset / robotToGoal) / DEG_TO_RAD;
 
 //                  System.out.println(angularError);
 //                  targetAngle = gyro.currentPosition().valueZ() + angularError;

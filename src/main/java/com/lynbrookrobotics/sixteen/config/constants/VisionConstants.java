@@ -9,7 +9,7 @@ public class VisionConstants {
 //  public static final double IMAGE_HORIZONTAL_FOV = 59.7D;
   public static final double IMAGE_HORIZONTAL_FOV = 70.0D;
 
-  public static final double CAMERA_TILT = 20D; // degrees camera is offset from vertical
+  public static final double CAMERA_TILT = 45D; // degrees camera is offset from vertical
 
   public static final double TOWER_HEIGHT = 53.251D / 12D; // tower height from ground
   public static final double CAMERA_HEIGHT = 10.5D / 12D; // camera height from ground

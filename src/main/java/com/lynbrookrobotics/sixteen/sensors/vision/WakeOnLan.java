@@ -10,10 +10,10 @@ import java.util.regex.Pattern;
  * Implementation of sending Magic Packets.
  * from http://www.jibble.org/wake-on-lan/WakeOnLan.java
  */
-class WakeOnLan {
+public class WakeOnLan {
   private static final int PORT = 9;
 
-  static void awaken(String mac) {
+  public static void awaken(String mac) {
     getMacBytes(mac).ifPresent(macBytes -> {
       byte[] bytes = new byte[6 + 16 * macBytes.length];
       for (int i = 0; i < 6; i++) {

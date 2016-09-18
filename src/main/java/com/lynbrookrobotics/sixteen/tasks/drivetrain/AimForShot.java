@@ -7,8 +7,10 @@ import com.lynbrookrobotics.sixteen.components.drivetrain.Drivetrain;
 import com.lynbrookrobotics.sixteen.components.drivetrain.TurnToAngleController;
 import com.lynbrookrobotics.sixteen.config.RobotHardware;
 import com.lynbrookrobotics.sixteen.config.constants.RobotConstants;
+import com.lynbrookrobotics.sixteen.config.constants.VisionConstants;
 import com.lynbrookrobotics.sixteen.sensors.digitalgyro.DigitalGyro;
 import com.lynbrookrobotics.sixteen.sensors.vision.VisionCalculation;
+import com.lynbrookrobotics.sixteen.sensors.vision.WakeOnLan;
 
 public class AimForShot extends FiniteTask {
   private final RobotHardware hardware;
@@ -18,6 +20,9 @@ public class AimForShot extends FiniteTask {
    * Constructs a task that aims the robot for a high goal shot.
    */
   public AimForShot(RobotHardware hardware, Drivetrain drivetrain) {
+    WakeOnLan.awaken(VisionConstants.NUC_MAC_ADDRESS);
+    System.out.println(VisionCalculation.angularError);
+
     this.hardware = hardware;
     this.drivetrain = drivetrain;
   }
@@ -33,7 +38,7 @@ public class AimForShot extends FiniteTask {
           if (Math.abs(VisionCalculation.angularError) > 60) {
             return 0.0;
           } else {
-            return VisionCalculation.angularError * (1D / 20);
+            return VisionCalculation.angularError * (1D / 60);
           }
         }
     ));
