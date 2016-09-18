@@ -23,8 +23,6 @@ libraryDependencies += "com.lynbrookrobotics" % "funky-dashboard_2.11" % "0.1.0-
 
 libraryDependencies += "com.typesafe" % "config" % "1.3.0"
 
-libraryDependencies += "org.mozilla" % "rhino" % "1.7R4"
-
 libraryDependencies += "org.mockito" % "mockito-core" % "1.10.19" % Test
 
 libraryDependencies += "junit" % "junit" % "4.12"

@@ -49,40 +49,6 @@ public class RobotConstants {
   public static final Config config =
       ConfigFactory.parseFile(new File("/home/lvuser/constants.conf"));
 
-  public static final Class[] taskList = {
-      DefenseRoutines.class,
-
-      AbsoluteHeadingTimedDrive.class,
-      ContinuousDrive.class,
-      DriveAbsolute.class,
-      DriveRelative.class,
-      RelativeHeadingTimedDrive.class,
-      TurnByAngle.class,
-
-      DirectIntakeArmSpeed.class,
-      MoveIntakeArmToAngle.class,
-
-      DirectIntakeRollerSpeed.class,
-
-      IntakeTasks.class,
-
-      DirectShooterArmSpeed.class,
-      MoveShooterArmToAngle.class,
-
-      DirectFlywheelSpeed.class,
-      SpinFlywheelAtRPM.class,
-      SpinFlywheelToRPM.class,
-
-      SpinSecondary.class,
-      SpinSecondaryNoBall.class,
-
-      SpinUntilBall.class,
-
-      ShooterTasks.class, // not a task, list of tasks
-
-      FixedTime.class
-  };
-
   public static Lights lights;
 
   public static final Executor executor = Executors.newFixedThreadPool(2);
