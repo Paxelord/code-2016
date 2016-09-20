@@ -108,21 +108,25 @@ public class AutoGenerator {
           drivetrain
       );
     } else {
-      return new DriveRelative(
+      return (new DriveRelative(
           hardware,
-          -(DrivetrainConstants.DEFENSE_RAMP_DISTANCE +
-              DrivetrainConstants.LOWBAR_DISTANCE),
-          0.3,
+          -DrivetrainConstants.DEFENSE_RAMP_DISTANCE,
+          0.4,
           drivetrain
       ).and(new MoveShooterArmToAngle(
           ShooterArmConstants.FORWARD_LIMIT,
           hardware,
           shooterArm
-      )).andUntilDone(new KeepIntakeArmAtAngle(
+      ))).then(new DriveRelative(
+          hardware,
+          -DrivetrainConstants.LOWBAR_DISTANCE,
+          0.3,
+          drivetrain
+      ).andUntilDone(new KeepIntakeArmAtAngle(
           IntakeArmConstants.LOWBAR_ANGLE,
           intakeArm,
           hardware
-      ));
+      )));
     }
   }
 
