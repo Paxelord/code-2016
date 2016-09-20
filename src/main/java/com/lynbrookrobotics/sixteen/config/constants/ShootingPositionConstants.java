@@ -2,14 +2,13 @@ package com.lynbrookrobotics.sixteen.config.constants;
 
 public class ShootingPositionConstants {
   public static final double DISTANCE_WHEEL_BOTTOM = 29; // inches
-  public static final double UP_BATTER_SHOOT = 0; // inches
 
   public static final double LEFT_BATTER_TURN = 180 - 119;
 
   // tower 170 fd 120 side
-  public static final double ONE_FORWARD = -(85 + (DISTANCE_WHEEL_BOTTOM / 2)) / 12;
+  public static final double ONE_FORWARD = (85 + (DISTANCE_WHEEL_BOTTOM / 2)) / 12;
   public static final double ONE_TURN = -(180D - LEFT_BATTER_TURN);
-  public static final double ONE_FORWARD_SECOND = (67 + UP_BATTER_SHOOT) / 12;
+  public static final double ONE_FORWARD_SECOND = 67D / 12;
 
   public static final double TWO_FORWARD = (104 + (DISTANCE_WHEEL_BOTTOM / 2)) / 12;
   public static final double TWO_TURN = LEFT_BATTER_TURN;

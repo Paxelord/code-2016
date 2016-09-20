@@ -16,7 +16,6 @@ import com.lynbrookrobotics.sixteen.tasks.DefenseRoutines;
 import com.lynbrookrobotics.sixteen.tasks.FixedTime;
 import com.lynbrookrobotics.sixteen.tasks.drivetrain.AimForShot;
 import com.lynbrookrobotics.sixteen.tasks.drivetrain.ContinuousStraightDrive;
-import com.lynbrookrobotics.sixteen.tasks.drivetrain.DriveAbsolute;
 import com.lynbrookrobotics.sixteen.tasks.drivetrain.DriveRelative;
 import com.lynbrookrobotics.sixteen.tasks.drivetrain.TurnByAngle;
 import com.lynbrookrobotics.sixteen.tasks.drivetrain.TurnByAngleEncoders;
@@ -65,8 +64,9 @@ public class AutoGenerator {
     this.shooterSecondary = shooterSecondary;
   }
 
+  private double MAX_FORWARD_SPEED = 0.5;
+
   private FiniteTask cross(Defense defense) {
-    double start = hardware.drivetrainHardware.currentDistance();
     if (defense == Defense.PORTCULLIS) {
       return DefenseRoutines.crossPortcullis(
           intakeArm,
@@ -79,14 +79,16 @@ public class AutoGenerator {
     } else if (defense == Defense.MOAT) {
       return new DriveRelative(
           hardware,
-          DrivetrainConstants.DEFENSE_RAMP_DISTANCE + DrivetrainConstants.MOAT_FORWARD_DISTANCE,
+          DrivetrainConstants.DEFENSE_RAMP_DISTANCE +
+              DrivetrainConstants.MOAT_FORWARD_DISTANCE,
           0.75,
           drivetrain
       );
     } else if (defense == Defense.RAMPARTS) {
       return new DriveRelative(
           hardware,
-          DrivetrainConstants.RAMPARTS_FORWARD_DISTANCE,
+          DrivetrainConstants.DEFENSE_RAMP_DISTANCE +
+              DrivetrainConstants.RAMPARTS_FORWARD_DISTANCE,
           MAX_FORWARD_SPEED,
           drivetrain
       );
@@ -97,7 +99,8 @@ public class AutoGenerator {
     } else if (defense == Defense.ROCKWALL) {
       return new DriveRelative(
           hardware,
-          DrivetrainConstants.DEFENSE_RAMP_DISTANCE + DrivetrainConstants.ROCKWALL_FORWARD_DISTANCE,
+          DrivetrainConstants.DEFENSE_RAMP_DISTANCE +
+              DrivetrainConstants.ROCKWALL_FORWARD_DISTANCE,
           0.75,
           drivetrain
       );
@@ -109,43 +112,30 @@ public class AutoGenerator {
           drivetrain
       );
     } else {
-      return (new DriveRelative(
+      return new DriveRelative(
           hardware,
-          -DrivetrainConstants.DEFENSE_RAMP_DISTANCE,
-          0.4,
+          -(DrivetrainConstants.DEFENSE_RAMP_DISTANCE +
+              DrivetrainConstants.LOWBAR_DISTANCE),
+          0.3,
           drivetrain
-      ).and(new MoveIntakeArmToAngle(
-          IntakeArmConstants.LOWBAR_ANGLE,
-          intakeArm,
-          hardware
       ).and(new MoveShooterArmToAngle(
           ShooterArmConstants.FORWARD_LIMIT,
           hardware,
           shooterArm
-      )))).then(new DriveRelative(
-          hardware,
-          -DrivetrainConstants.LOWBAR_DISTANCE,
-          0.3,
-          drivetrain
-      ).andUntilDone(new KeepIntakeArmAtAngle(
+      )).andUntilDone(new KeepIntakeArmAtAngle(
           IntakeArmConstants.LOWBAR_ANGLE,
           intakeArm,
           hardware
-      )));
+      ));
     }
   }
 
-  private double MAX_FORWARD_SPEED = 0.5;
-  private double VISION_AIM_DISTANCE = 4;
-
   private FiniteTask driveToShootingPosition(int startingPosition) {
-    double start = hardware.drivetrainHardware.currentDistance();
     if (startingPosition == 1) {
-      return new DriveAbsolute(
+      return new DriveRelative(
           hardware,
-          start - DrivetrainConstants.DEFENSE_RAMP_DISTANCE - DrivetrainConstants.LOWBAR_DISTANCE + ShootingPositionConstants.ONE_FORWARD,
+          -ShootingPositionConstants.ONE_FORWARD,
           MAX_FORWARD_SPEED,
-          true,
           drivetrain
       ).then(new TurnByAngleEncoders(
           ShootingPositionConstants.ONE_TURN,
@@ -153,7 +143,7 @@ public class AutoGenerator {
           drivetrain
       )).then(new DriveRelative(
           hardware,
-          ShootingPositionConstants.ONE_FORWARD_SECOND - VISION_AIM_DISTANCE,
+          ShootingPositionConstants.ONE_FORWARD_SECOND,
           MAX_FORWARD_SPEED,
           drivetrain
       ));
@@ -163,7 +153,7 @@ public class AutoGenerator {
           ShootingPositionConstants.TWO_FORWARD,
           MAX_FORWARD_SPEED,
           drivetrain
-      ).then(new TurnByAngle(
+      ).then(new TurnByAngleEncoders(
           ShootingPositionConstants.TWO_TURN,
           hardware,
           drivetrain
@@ -179,7 +169,7 @@ public class AutoGenerator {
           ShootingPositionConstants.THREE_FORWARD_FIRST,
           MAX_FORWARD_SPEED,
           drivetrain
-      ).then(new TurnByAngle(
+      ).then(new TurnByAngleEncoders(
           ShootingPositionConstants.THREE_TURN_FIRST,
           hardware,
           drivetrain
@@ -188,7 +178,7 @@ public class AutoGenerator {
           ShootingPositionConstants.THREE_FORWARD_SECOND,
           MAX_FORWARD_SPEED,
           drivetrain
-      )).then(new TurnByAngle(
+      )).then(new TurnByAngleEncoders(
           ShootingPositionConstants.THREE_TURN_SECOND,
           hardware,
           drivetrain
@@ -204,7 +194,7 @@ public class AutoGenerator {
           ShootingPositionConstants.FOUR_FORWARD_FIRST,
           MAX_FORWARD_SPEED,
           drivetrain
-      ).then(new TurnByAngle(
+      ).then(new TurnByAngleEncoders(
           ShootingPositionConstants.FOUR_TURN_FIRST,
           hardware,
           drivetrain
@@ -213,7 +203,7 @@ public class AutoGenerator {
           ShootingPositionConstants.FOUR_FORWARD_SECOND,
           MAX_FORWARD_SPEED,
           drivetrain
-      )).then(new TurnByAngle(
+      )).then(new TurnByAngleEncoders(
           ShootingPositionConstants.FOUR_TURN_SECOND,
           hardware,
           drivetrain
@@ -229,7 +219,7 @@ public class AutoGenerator {
           ShootingPositionConstants.FIVE_FORWARD_FIRST,
           MAX_FORWARD_SPEED,
           drivetrain
-      ).then(new TurnByAngle(
+      ).then(new TurnByAngleEncoders(
           ShootingPositionConstants.FIVE_TURN_FIRST,
           hardware,
           drivetrain
@@ -238,7 +228,7 @@ public class AutoGenerator {
           ShootingPositionConstants.FIVE_FORWARD_SECOND,
           MAX_FORWARD_SPEED,
           drivetrain
-      )).then(new TurnByAngle(
+      )).then(new TurnByAngleEncoders(
           ShootingPositionConstants.FIVE_TURN_SECOND,
           hardware,
           drivetrain
@@ -267,7 +257,7 @@ public class AutoGenerator {
           DrivetrainConstants.SPY_TO_SHOOT,
           MAX_FORWARD_SPEED,
           drivetrain
-      ).then(ShooterTasks.shootShort(
+      ).then(new AimForShot(hardware, drivetrain)).then(ShooterTasks.shootShort(
           shooterFlywheel,
           shooterSecondary,
           shooterArm,
@@ -282,7 +272,10 @@ public class AutoGenerator {
           drivetrain
       );
 
-      if (defense == Defense.ROCKWALL || defense == Defense.MOAT || defense == Defense.LOWBAR) {
+      if (defense == Defense.ROCKWALL ||
+          defense == Defense.MOAT ||
+          defense == Defense.RAMPARTS ||
+          defense == Defense.LOWBAR) {
         driveUp = FiniteTask.empty();
       }
 
@@ -291,28 +284,25 @@ public class AutoGenerator {
       } else if (defense == Defense.LOWBAR) {
         FiniteTask drivingToGoal = driveToShootingPosition(startingPosition)
             .then(new AimForShot(hardware, drivetrain))
-            .then(new DriveRelative(
-                hardware,
-                VISION_AIM_DISTANCE,
-                MAX_FORWARD_SPEED,
-                drivetrain
-            )).andUntilDone(ShooterTasks.prepareShootHigh(
+            .andUntilDone(ShooterTasks.prepareShootHigh(
                 shooterFlywheel,
                 shooterArm,
                 intakeArm,
                 hardware
             ));
 
-        return driveUp
+        FiniteTask beforeShot = driveUp
             .then(cross(defense))
             .then(drivingToGoal)
-            .then(ShooterTasks.shootShort(
-                shooterFlywheel,
-                shooterSecondary,
-                shooterArm,
-                intakeArm,
-                hardware
-            ));
+            .withTimeout(12000);
+
+        return beforeShot.then(ShooterTasks.shootShort(
+            shooterFlywheel,
+            shooterSecondary,
+            shooterArm,
+            intakeArm,
+            hardware
+        ));
       } else {
         return driveUp.then(cross(defense));
       }

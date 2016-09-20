@@ -69,11 +69,7 @@ public class DefenseRoutines {
         IntakeArmConstants.CHEVAL_LOW_POSITION,
         intakeArm,
         robotHardware
-    ).then(new FixedTime(500).andUntilDone(new KeepIntakeArmAtAngle(
-        IntakeArmConstants.CHEVAL_LOW_POSITION,
-        intakeArm,
-        robotHardware
-    ))).then(new DriveRelative(
+    ).then(new DriveRelative(
         robotHardware,
         IntakeArmConstants.CHEVAL_DE_FRISE_DRIVE_DISTANCE,
         0.4,
