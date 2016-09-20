@@ -1,19 +1,14 @@
 package com.lynbrookrobotics.sixteen.sensors.vision;
 
+import com.lynbrookrobotics.funkydashboard.TimeSeriesNumeric;
+import com.lynbrookrobotics.sixteen.config.constants.RobotConstants;
+import com.lynbrookrobotics.sixteen.config.constants.VisionConstants;
+import com.lynbrookrobotics.sixteen.tasks.shooter.VisionReceiverActor;
+
 import akka.actor.Actor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.japi.Creator;
-
-import com.lynbrookrobotics.funkydashboard.FunkyDashboard;
-import com.lynbrookrobotics.funkydashboard.TimeSeriesNumeric;
-import com.lynbrookrobotics.sixteen.config.constants.RobotConstants;
-import com.lynbrookrobotics.sixteen.config.constants.VisionConstants;
-import com.lynbrookrobotics.sixteen.sensors.digitalgyro.DigitalGyro;
-import com.lynbrookrobotics.sixteen.tasks.shooter.VisionReceiverActor;
-import com.sun.glass.ui.Robot;
-
-import java.util.concurrent.ExecutionException;
 
 public class VisionCalculation {
   public static double targetAngle;

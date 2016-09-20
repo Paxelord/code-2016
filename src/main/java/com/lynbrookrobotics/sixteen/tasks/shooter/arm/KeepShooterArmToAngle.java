@@ -1,12 +1,10 @@
 package com.lynbrookrobotics.sixteen.tasks.shooter.arm;
 
 import com.lynbrookrobotics.potassium.tasks.ContinuousTask;
-import com.lynbrookrobotics.potassium.tasks.FiniteTask;
 import com.lynbrookrobotics.sixteen.components.shooter.arm.ShooterArm;
 import com.lynbrookrobotics.sixteen.components.shooter.arm.ShooterArmController;
 import com.lynbrookrobotics.sixteen.components.shooter.arm.ShooterArmPositionController;
 import com.lynbrookrobotics.sixteen.config.RobotHardware;
-import com.lynbrookrobotics.sixteen.config.constants.ShooterArmConstants;
 import com.lynbrookrobotics.sixteen.sensors.potentiometer.Potentiometer;
 
 /**

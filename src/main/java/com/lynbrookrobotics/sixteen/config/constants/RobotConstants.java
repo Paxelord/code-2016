@@ -1,29 +1,7 @@
 package com.lynbrookrobotics.sixteen.config.constants;
 
-import akka.actor.ActorSystem;
-
 import com.lynbrookrobotics.funkydashboard.FunkyDashboard;
 import com.lynbrookrobotics.sixteen.components.lights.Lights;
-import com.lynbrookrobotics.sixteen.tasks.DefenseRoutines;
-import com.lynbrookrobotics.sixteen.tasks.FixedTime;
-import com.lynbrookrobotics.sixteen.tasks.drivetrain.AbsoluteHeadingTimedDrive;
-import com.lynbrookrobotics.sixteen.tasks.drivetrain.ContinuousDrive;
-import com.lynbrookrobotics.sixteen.tasks.drivetrain.DriveRelative;
-import com.lynbrookrobotics.sixteen.tasks.drivetrain.RelativeHeadingTimedDrive;
-import com.lynbrookrobotics.sixteen.tasks.drivetrain.TurnByAngle;
-import com.lynbrookrobotics.sixteen.tasks.intake.IntakeTasks;
-import com.lynbrookrobotics.sixteen.tasks.intake.arm.DirectIntakeArmSpeed;
-import com.lynbrookrobotics.sixteen.tasks.intake.arm.MoveIntakeArmToAngle;
-import com.lynbrookrobotics.sixteen.tasks.intake.roller.DirectIntakeRollerSpeed;
-import com.lynbrookrobotics.sixteen.tasks.shooter.ShooterTasks;
-import com.lynbrookrobotics.sixteen.tasks.shooter.arm.DirectShooterArmSpeed;
-import com.lynbrookrobotics.sixteen.tasks.shooter.arm.MoveShooterArmToAngle;
-import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.SpinUntilBall;
-import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.flywheel.DirectFlywheelSpeed;
-import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.flywheel.SpinFlywheelAtRPM;
-import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.flywheel.SpinFlywheelToRPM;
-import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.secondary.SpinSecondary;
-import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.secondary.SpinSecondaryNoBall;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 
@@ -31,6 +9,8 @@ import java.io.File;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
+import akka.actor.ActorSystem;
 
 public class RobotConstants {
   public static final boolean HAS_CAMERA = true;

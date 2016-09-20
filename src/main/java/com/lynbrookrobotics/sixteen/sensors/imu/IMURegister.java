@@ -1,9 +1,9 @@
 package com.lynbrookrobotics.sixteen.sensors.imu;
 
-import edu.wpi.first.wpilibj.SPI;
-
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+
+import edu.wpi.first.wpilibj.SPI;
 
 /**
  * Represents a register on the ADIS16448 IMU.

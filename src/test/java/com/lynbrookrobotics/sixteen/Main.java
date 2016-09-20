@@ -4,16 +4,18 @@ import com.lynbrookrobotics.potassium.Potassium;
 import com.lynbrookrobotics.sixteen.components.drivetrain.Drivetrain;
 import com.lynbrookrobotics.sixteen.config.DriverControls;
 import com.lynbrookrobotics.sixteen.config.DrivetrainHardware;
-import com.lynbrookrobotics.sixteen.config.constants.RobotConstants;
 import com.lynbrookrobotics.sixteen.config.RobotHardware;
+import com.lynbrookrobotics.sixteen.config.constants.RobotConstants;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DriverStation;
 
-import static org.mockito.Mockito.*;
-
-import java.util.Timer;
-import java.util.TimerTask;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.withSettings;
 
 public class Main {
   static CANTalon frontLeftMotor = mock(CANTalon.class, withSettings().verboseLogging());

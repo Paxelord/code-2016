@@ -1,11 +1,7 @@
 package com.lynbrookrobotics.sixteen.tasks.shooter.spinners.flywheel;
 
 import com.lynbrookrobotics.potassium.tasks.ContinuousTask;
-import com.lynbrookrobotics.sixteen.components.lights.LightsController;
-import com.lynbrookrobotics.sixteen.components.shooter.spinners.flywheel.ShooterFlywheel;
-import com.lynbrookrobotics.sixteen.components.shooter.spinners.flywheel.ShooterFlywheelSpeedController;
 import com.lynbrookrobotics.sixteen.config.RobotHardware;
-import com.lynbrookrobotics.sixteen.config.constants.RobotConstants;
 
 public class CollectMinMax extends ContinuousTask {
   RobotHardware hardware;

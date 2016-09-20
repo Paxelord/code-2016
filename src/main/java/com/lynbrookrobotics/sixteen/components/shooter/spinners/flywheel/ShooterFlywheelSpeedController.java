@@ -2,7 +2,6 @@ package com.lynbrookrobotics.sixteen.components.shooter.spinners.flywheel;
 
 import com.lynbrookrobotics.sixteen.config.RobotHardware;
 import com.lynbrookrobotics.sixteen.config.constants.ShooterFlywheelConstants;
-
 import com.lynbrookrobotics.sixteen.control.pid.PID;
 
 public class ShooterFlywheelSpeedController extends ShooterFlywheelController {

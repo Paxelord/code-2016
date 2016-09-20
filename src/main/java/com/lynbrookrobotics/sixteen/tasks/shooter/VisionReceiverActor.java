@@ -1,17 +1,16 @@
 package com.lynbrookrobotics.sixteen.tasks.shooter;
 
+import java.net.InetSocketAddress;
+import java.util.function.Consumer;
+import java.util.regex.Pattern;
+
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
 import akka.io.Udp;
 import akka.io.UdpMessage;
 import akka.japi.Procedure;
-
 import javaslang.Tuple;
 import javaslang.Tuple2;
-
-import java.net.InetSocketAddress;
-import java.util.function.Consumer;
-import java.util.regex.Pattern;
 
 public class VisionReceiverActor extends UntypedActor {
   private final Consumer<Tuple2<Double, Double>> onTarget;

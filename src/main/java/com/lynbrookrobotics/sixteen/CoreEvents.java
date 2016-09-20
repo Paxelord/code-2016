@@ -22,7 +22,6 @@ import com.lynbrookrobotics.sixteen.config.constants.ShooterArmConstants;
 import com.lynbrookrobotics.sixteen.sensors.potentiometer.Potentiometer;
 import com.lynbrookrobotics.sixteen.tasks.DefenseRoutines;
 import com.lynbrookrobotics.sixteen.tasks.drivetrain.AimForShot;
-import com.lynbrookrobotics.sixteen.tasks.drivetrain.TurnByAngleEncoders;
 import com.lynbrookrobotics.sixteen.tasks.intake.IntakeTasks;
 import com.lynbrookrobotics.sixteen.tasks.intake.arm.DirectIntakeArmSpeed;
 import com.lynbrookrobotics.sixteen.tasks.intake.arm.MoveIntakeArmToAngle;
@@ -35,14 +34,14 @@ import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.flywheel.DirectFlywhe
 import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.secondary.SpinSecondary;
 import com.ni.vision.NIVision;
 
+import java.util.Optional;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.vision.USBCamera;
-
-import java.util.Optional;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * CoreEvents class creates events and maps these to handlers.

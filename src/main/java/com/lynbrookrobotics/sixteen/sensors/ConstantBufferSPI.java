@@ -1,9 +1,9 @@
 package com.lynbrookrobotics.sixteen.sensors;
 
+import java.nio.ByteBuffer;
+
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.hal.SPIJNI;
-
-import java.nio.ByteBuffer;
 
 public class ConstantBufferSPI extends SPI {
   private byte port;

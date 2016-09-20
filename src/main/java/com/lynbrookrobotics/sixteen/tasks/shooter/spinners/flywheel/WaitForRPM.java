@@ -1,9 +1,9 @@
 package com.lynbrookrobotics.sixteen.tasks.shooter.spinners.flywheel;
 
-import static com.lynbrookrobotics.sixteen.config.constants.ShooterFlywheelConstants.THRESHOLD_RPM;
-
 import com.lynbrookrobotics.potassium.tasks.FiniteTask;
 import com.lynbrookrobotics.sixteen.config.RobotHardware;
+
+import static com.lynbrookrobotics.sixteen.config.constants.ShooterFlywheelConstants.THRESHOLD_RPM;
 
 public class WaitForRPM extends FiniteTask {
   double targetRPM;

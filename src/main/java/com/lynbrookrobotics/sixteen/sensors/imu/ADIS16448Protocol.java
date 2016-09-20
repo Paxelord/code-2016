@@ -2,11 +2,10 @@ package com.lynbrookrobotics.sixteen.sensors.imu;
 
 import com.lynbrookrobotics.sixteen.sensors.ConstantBufferSPI;
 import com.lynbrookrobotics.sixteen.sensors.Value3D;
-import com.lynbrookrobotics.sixteen.sensors.imu.IMURegister;
-
-import edu.wpi.first.wpilibj.SPI;
 
 import java.nio.ByteBuffer;
+
+import edu.wpi.first.wpilibj.SPI;
 
 /**
  * Implements the SPI protocol for the ADIS16448 IMU.

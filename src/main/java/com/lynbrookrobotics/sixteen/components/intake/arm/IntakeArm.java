@@ -6,8 +6,6 @@ import com.lynbrookrobotics.sixteen.config.constants.IntakeArmConstants;
 import com.lynbrookrobotics.sixteen.config.constants.RobotConstants;
 import com.lynbrookrobotics.sixteen.config.constants.ShooterArmConstants;
 
-import edu.wpi.first.wpilibj.DriverStation;
-
 /**
  * Intake Component that sets the arms speed.
  */

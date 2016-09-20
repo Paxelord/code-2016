@@ -14,7 +14,6 @@ import com.lynbrookrobotics.sixteen.config.constants.ShooterArmConstants;
 import com.lynbrookrobotics.sixteen.config.constants.ShooterConstants;
 import com.lynbrookrobotics.sixteen.config.constants.ShooterFlywheelConstants;
 import com.lynbrookrobotics.sixteen.tasks.FixedTime;
-import com.lynbrookrobotics.sixteen.tasks.intake.arm.ForceIntakeBrake;
 import com.lynbrookrobotics.sixteen.tasks.intake.arm.KeepIntakeArmAtAngle;
 import com.lynbrookrobotics.sixteen.tasks.intake.arm.MoveIntakeArmToAngle;
 import com.lynbrookrobotics.sixteen.tasks.intake.roller.DirectIntakeRollerSpeed;
@@ -28,8 +27,6 @@ import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.flywheel.SpinFlywheel
 import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.flywheel.WaitForRPM;
 import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.secondary.SpinSecondary;
 import com.lynbrookrobotics.sixteen.tasks.shooter.spinners.secondary.SpinSecondaryNoBall;
-
-import java.util.function.Supplier;
 
 public class ShooterTasks {
   /**

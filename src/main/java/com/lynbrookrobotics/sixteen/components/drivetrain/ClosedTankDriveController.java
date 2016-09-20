@@ -4,8 +4,6 @@ import com.lynbrookrobotics.sixteen.config.RobotHardware;
 import com.lynbrookrobotics.sixteen.config.constants.DrivetrainConstants;
 import com.lynbrookrobotics.sixteen.control.pid.PID;
 
-import java.util.Optional;
-
 public abstract class ClosedTankDriveController extends DitheredTankDriveController {
   private final PID leftPID;
   private final PID rightPID;

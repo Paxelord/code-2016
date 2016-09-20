@@ -4,9 +4,9 @@ import com.lynbrookrobotics.sixteen.config.RobotHardware;
 import com.lynbrookrobotics.sixteen.config.constants.DrivetrainConstants;
 import com.lynbrookrobotics.sixteen.sensors.encoder.DrivetrainEncoder;
 
-import javaslang.control.Either;
-
 import java.util.Optional;
+
+import javaslang.control.Either;
 
 public abstract class DitheredTankDriveController extends DrivetrainController {
   private final DrivetrainEncoder leftEncoder;

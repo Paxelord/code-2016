@@ -2,7 +2,6 @@ package com.lynbrookrobotics.sixteen.tasks.shooter.spinners;
 
 import com.lynbrookrobotics.potassium.tasks.FiniteTask;
 import com.lynbrookrobotics.sixteen.components.shooter.spinners.flywheel.ShooterFlywheel;
-import com.lynbrookrobotics.sixteen.components.shooter.spinners.flywheel.ShooterFlywheelController;
 import com.lynbrookrobotics.sixteen.components.shooter.spinners.secondary.ShooterSecondary;
 import com.lynbrookrobotics.sixteen.components.shooter.spinners.secondary.ShooterSecondaryController;
 import com.lynbrookrobotics.sixteen.config.RobotHardware;
