@@ -218,11 +218,11 @@ public class ShooterTasks {
         ).then(new FixedTime(1000).andUntilDone(new SpinSecondary(
             () -> ShooterFlywheelConstants.SHOOT_SECONDARY_POWER,
             shooterSecondary
-        ))).andUntilDone(new CollectMinMax(hardware).and(new KeepShooterArmToAngle(
+        ))).andUntilDone(new KeepShooterArmToAngle(
             ShooterArmConstants.SHOOT_FAR_ANGLE,
             hardware,
             shooterArm
-        ))));
+        ))).andUntilDone(new CollectMinMax(hardware));
 
     return withoutFlywheel.andUntilDone(new SpinFlywheelAtRPM(
         true,

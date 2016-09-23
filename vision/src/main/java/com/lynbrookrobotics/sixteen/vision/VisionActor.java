@@ -25,7 +25,7 @@ public class VisionActor extends UntypedActor {
 
   final InetSocketAddress roboRIO;
 
-  private final VideoCapture camera = new VideoCapture(0);
+  private VideoCapture camera;
 
   public VisionActor() {
     this(new InetSocketAddress("10.8.46.2", 8846));
@@ -36,14 +36,27 @@ public class VisionActor extends UntypedActor {
   public VisionActor(InetSocketAddress roboRIO) {
     this.roboRIO = roboRIO;
 
+    try {
+      new ProcessBuilder("/usr/bin/v4l2-ctl", "-c", "exposure_auto=1", "-c", "exposure_absolute=20").start().waitFor();
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+
+    camera = new VideoCapture(0);
+
     camera.set(Videoio.CAP_PROP_FRAME_WIDTH, 320);
     camera.set(Videoio.CAP_PROP_FRAME_HEIGHT, 200);
 
     try {
-      new ProcessBuilder("/usr/bin/v4l2-ctl", "-c", "exposure_auto=1", "-c", "exposure_absolute=30", "-c", "gain=0").start();
-    } catch (IOException e) {
+      Thread.sleep(5000);
+    } catch (InterruptedException e) {
       e.printStackTrace();
     }
+
+    camera.release();
+    camera = new VideoCapture(0);
 
     // request creation of a SimpleSender
     final ActorRef mgr = Udp.get(getContext().system()).getManager();

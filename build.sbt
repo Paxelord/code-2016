@@ -33,3 +33,5 @@ import com.etsy.sbt.checkstyle._
 Checkstyle.xsltTransformations := {
   Some(Set(XSLTSettings(baseDirectory(_ / "checkstyle-noframes.xsl").value, target(_ / "checkstyle-report.html").value)))
 }
+
+offline := true
