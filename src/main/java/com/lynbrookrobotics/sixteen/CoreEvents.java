@@ -301,9 +301,9 @@ public class CoreEvents {
               hardware
           ));
 
-      controls.driverStick
-          .onHold(14)
-          .forEach(new CollectMinMax(hardware));
+//      controls.driverStick
+//          .onHold(14)
+//          .forEach(new CollectMinMax(hardware));
 
       controls.operatorStick
           .onHold(OperatorButtonAssignments.POP_OUT)

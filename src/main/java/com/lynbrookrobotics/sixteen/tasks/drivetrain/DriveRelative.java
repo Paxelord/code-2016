@@ -9,8 +9,8 @@ import com.lynbrookrobotics.sixteen.config.RobotHardware;
  * Finite task to drive to some position relative to the position at the time of startTask().
  */
 public class DriveRelative extends FiniteTask {
-  private static final double errorThresholdForward = 1D / 12;
-  private static final double errorThresholdTurn = 3;
+  private static final double errorThresholdForward = 4D / 12;
+  private static final double errorThresholdTurn = 6;
 
   double distance;
   RobotHardware hardware;

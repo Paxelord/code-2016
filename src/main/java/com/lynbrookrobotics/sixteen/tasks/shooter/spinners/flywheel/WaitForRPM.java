@@ -27,6 +27,7 @@ public class WaitForRPM extends FiniteTask {
 
   @Override
   protected void update() {
+//    System.out.println("WAIT FOR RPMMMMMM");
     double curRPM = hardware.shooterSpinnersHardware.hallEffect.getRPM();
     if (System.currentTimeMillis() > startTime + 1000 && curRPM < Math.min(targetRPM, 250)) {
       hardware.shooterSpinnersHardware.hallEffect.markNotWorking();

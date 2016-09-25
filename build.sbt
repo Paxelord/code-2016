@@ -1,4 +1,4 @@
-enablePlugins(FRCPlugin, TravisCheckStylePlugin)
+enablePlugins(FRCPlugin)
 
 organization := "com.lynbrookrobotics"
 teamNumber := 846
@@ -35,3 +35,4 @@ Checkstyle.xsltTransformations := {
 }
 
 offline := true
+staticIP := true

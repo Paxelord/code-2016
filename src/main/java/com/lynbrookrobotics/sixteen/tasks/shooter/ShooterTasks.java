@@ -58,7 +58,7 @@ public class ShooterTasks {
             ShooterArmConstants.SHOOT_MID_ANGLE,
             hardware,
             shooterArm
-        )).andUntilDone(new CollectMinMax(hardware)));
+        )).andUntilDone(new CollectMinMax(hardware, "VARSPEED")));
 
     return withoutFlywheel.andUntilDone(new SpinFlywheelAtRPM(
         true,
@@ -132,7 +132,7 @@ public class ShooterTasks {
             ShooterArmConstants.SHOOT_SHORT_ANGLE,
             hardware,
             shooterArm
-        )));
+        )).andUntilDone(new CollectMinMax(hardware, "SHORT")));
 
     return withoutFlywheel.andUntilDone(new SpinFlywheelAtRPM(
         true,
@@ -177,7 +177,7 @@ public class ShooterTasks {
             ShooterArmConstants.SHOOT_MID_ANGLE,
             hardware,
             shooterArm
-        )));
+        )).andUntilDone(new CollectMinMax(hardware, "MID")));
 
     return withoutFlywheel.andUntilDone(new SpinFlywheelAtRPM(
         true,
@@ -222,7 +222,7 @@ public class ShooterTasks {
             ShooterArmConstants.SHOOT_FAR_ANGLE,
             hardware,
             shooterArm
-        ))).andUntilDone(new CollectMinMax(hardware));
+        )).andUntilDone(new CollectMinMax(hardware, "FAR")));
 
     return withoutFlywheel.andUntilDone(new SpinFlywheelAtRPM(
         true,
