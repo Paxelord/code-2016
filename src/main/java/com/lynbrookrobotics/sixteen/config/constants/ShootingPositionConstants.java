@@ -6,8 +6,8 @@ public class ShootingPositionConstants {
   public static final double LEFT_BATTER_TURN = 180 - 119;
 
   // tower 170 fd 120 side
-  public static final double ONE_FORWARD = (85 + (DISTANCE_WHEEL_BOTTOM / 2)) / 12;
-  public static final double ONE_TURN = -(180D - LEFT_BATTER_TURN);
+  public static final double ONE_FORWARD = (85 + 18 + (DISTANCE_WHEEL_BOTTOM / 2)) / 12;
+  public static final double ONE_TURN = -(180D - LEFT_BATTER_TURN) - 3;
   public static final double ONE_FORWARD_SECOND = 67D / 12;
 
   public static final double TWO_FORWARD = (104 + (DISTANCE_WHEEL_BOTTOM / 2)) / 12;
