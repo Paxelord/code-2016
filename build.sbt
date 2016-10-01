@@ -5,7 +5,7 @@ teamNumber := 846
 
 name := "code-2016"
 
-version := "0.4.0-SNAPSHOT"
+version := "0.4.0"
 
 robotClass := "com.lynbrookrobotics.sixteen.LaunchRobot"
 
@@ -33,6 +33,3 @@ import com.etsy.sbt.checkstyle._
 Checkstyle.xsltTransformations := {
   Some(Set(XSLTSettings(baseDirectory(_ / "checkstyle-noframes.xsl").value, target(_ / "checkstyle-report.html").value)))
 }
-
-offline := true
-staticIP := true
