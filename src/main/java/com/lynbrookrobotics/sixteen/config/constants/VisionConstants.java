@@ -9,12 +9,12 @@ public class VisionConstants {
 //  public static final double IMAGE_HORIZONTAL_FOV = 59.7D;
   public static final double IMAGE_HORIZONTAL_FOV = 70.0D;
 
-  public static final double CAMERA_TILT = 45D; // degrees camera is offset from vertical
+  public static final double CAMERA_TILT = 30D; // degrees camera is offset from vertical
 
   public static final double TOWER_HEIGHT = 53.251D / 12D; // tower height from ground
   public static final double CAMERA_HEIGHT = 10.5D / 12D; // camera height from ground
   public static final double CAMERA_TOWER_HEIGHT = TOWER_HEIGHT - CAMERA_HEIGHT; // tower height from camera level
 
   public static final double CAMERA_TO_MIDDLE_HORIZONTAL = 11D / 12D; // distance camera is from center of robot (side axis)
-  public static final double MIDDLE_TO_CAMERA_FORWARD = 10D / 12D;
+  public static final double MIDDLE_TO_CAMERA_FORWARD = 26D / 12D;
 }
