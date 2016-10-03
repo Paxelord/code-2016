@@ -326,7 +326,8 @@ public class AutoGenerator {
         return driveUp.then(new DriveRelative(hardware, 0.5, 0.1, drivetrain));
       } else if (defense == Defense.LOWBAR) {
         FiniteTask drivingToGoal = driveToShootingPosition(startingPosition)
-            .then(new AimForShot(hardware, drivetrain));
+            .then(new TurnByAngle(-20, hardware, drivetrain))
+            .then(new AimForShot(hardware, drivetrain).withTimeout(2000));
 
         FiniteTask beforeShot = driveUp
             .then(cross(defense))
