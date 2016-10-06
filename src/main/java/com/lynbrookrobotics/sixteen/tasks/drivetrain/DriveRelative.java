@@ -45,12 +45,12 @@ public class DriveRelative extends FiniteTask {
 
   @Override
   public void startTask() {
-    if (Math.abs(forwardTravel) <= 0.1) {
+    if (Math.abs(distance) <= 0.1) {
       finished();
     } else {
       double currentAverage = hardware.drivetrainHardware.currentDistance();
       driveDistanceController = new DriveStraightController(hardware,
-          currentAverage + forwardTravel,
+          currentAverage + distance,
           hardware.drivetrainHardware.mainGyro.currentPosition().valueZ(),
           maxSpeed);
       drivetrain.setController(driveDistanceController);

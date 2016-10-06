@@ -114,7 +114,7 @@ public class AutoGenerator {
           drivetrain
       );
     } else {
-      return (new DriveRelativeAtSpeed(
+      return (new DriveRelative(
           hardware,
           -DrivetrainConstants.DEFENSE_RAMP_DISTANCE,
           NORMAL_SPEED,
@@ -127,7 +127,7 @@ public class AutoGenerator {
           IntakeArmConstants.LOWBAR_ANGLE,
           intakeArm,
           hardware
-      ))).then(new DriveRelativeAtSpeed(
+      ))).then(new DriveRelative(
           hardware,
           -DrivetrainConstants.LOWBAR_DISTANCE,
           NORMAL_SPEED,
@@ -151,7 +151,7 @@ public class AutoGenerator {
           ShootingPositionConstants.ONE_TURN,
           hardware,
           drivetrain
-      )).then(new DriveRelativeAtSpeed(
+      )).then(new DriveRelative(
           hardware,
           ShootingPositionConstants.ONE_FORWARD_SECOND,
           NORMAL_SPEED,
@@ -324,7 +324,7 @@ public class AutoGenerator {
       }
 
       if (defense == Defense.DRAWBRIDGE || defense == Defense.SALLYPORT) {
-        return driveUp.then(new DriveRelativeAtSpeed(hardware, 0.5, 0.1, drivetrain));
+        return driveUp.then(new DriveRelative(hardware, 0.5, 0.1, drivetrain));
       } else if (defense == Defense.LOWBAR) {
         FiniteTask drivingToGoal = driveToShootingPosition(startingPosition)
             .then(new TurnByAngle(-20, hardware, drivetrain))

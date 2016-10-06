@@ -11,8 +11,6 @@ public class PID {
   private double dGain = 0;
   private double deadband = 0;
 
-  private double feedFoward = 0;
-
   private double lastError = 0;
 
   /**
@@ -50,16 +48,6 @@ public class PID {
   /**
    * Adds a derivative component to the controller.
    * @param gain the gain to apply to the derivative of error
-   */
-  public PID withD(double gain) {
-    dGain = gain;
-
-    return this;
-  }
-
-  /**
-   * Adds a feedFoward component to the controller, which is use
-   * @param feedForward the normalized feed forward
    */
   public PID withFeedForward(double feedForward) {
     if( Math.abs(feedForward) > 1) {
